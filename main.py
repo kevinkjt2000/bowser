@@ -3,7 +3,7 @@ from mcstatus import MinecraftServer
 
 client = discord.Client()
 servers = [
-    MinecraftServer.lookup('KnightOfficial.Playat.CH')
+    MinecraftServer(host='KnightOfficial.Playat.CH', port=25565)
 ]
 
 
@@ -21,4 +21,5 @@ async def on_message(message):
             mods_count, online_count, max_count, online_players)
         await client.send_message(message.channel, status_message)
 
-client.run('secret key')
+token = open('token.txt').read().replace('\n', '')
+client.run(token)
