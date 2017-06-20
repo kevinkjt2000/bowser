@@ -11,14 +11,17 @@ servers = [
 ]
 
 
+async def on_command_error(exception, context):
+    await bot.send_message(
+        context.message.channel,
+        'The server is not accepting connections at this time',
+    )
+
+bot.add_listener(on_command_error)
+
+
 @bot.command(description='For getting the status')
 async def status():
-    async def on_command_error(exception, context):
-        await bot.send_message(
-            context.message.channel,
-            'The server is not accepting connections at this time',
-        )
-    bot.add_listener(on_command_error)
     status = servers[0].status()
     online_players = [p.name for p in status.players.sample]
     online_players = str(online_players).replace("'", '')
