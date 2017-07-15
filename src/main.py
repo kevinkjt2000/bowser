@@ -17,8 +17,7 @@ def main():
 def get_formatted_status_message(minecraft_server=MinecraftServer(
         host='KnightOfficial.Playat.CH', port=25565)):
     status = minecraft_server.status()
-    online_players = [p.name for p in status.players.sample]
-    online_players = str(online_players).replace("'", '')
+    online_players = ', '.join([p.name for p in status.players.sample])
     online_count = status.players.online
     max_count = status.players.max
     mods_count = len(status.raw['modinfo']['modList'])

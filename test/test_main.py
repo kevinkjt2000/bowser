@@ -22,6 +22,6 @@ def test__can_fetch_good_server_status(fake_minecraft_server):
         },
     })
     fake_minecraft_server.status.return_value = good_status
-    status_regex = re.compile('\d+ mods loaded, players \d+/\d+: \[.*\]')
+    status_re = re.compile('\d+ mods loaded, players \d+/\d+: (.*(, )?)*')
     status_message = get_formatted_status_message(fake_minecraft_server)
-    assert status_regex.match(status_message) is not None
+    assert status_re.match(status_message) is not None
