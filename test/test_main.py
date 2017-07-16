@@ -1,10 +1,10 @@
 from mcstatus.pinger import PingResponse
 from unittest.mock import patch
-from src.main import get_formatted_status_message
+from src.Minecraft import Minecraft
 import re
 
 
-@patch('src.main.MinecraftServer')
+@patch('src.Minecraft.MinecraftServer')
 def test__can_fetch_good_server_status(fake_minecraft_server):
     good_status = PingResponse({
         'description': 'fake description',
@@ -23,5 +23,6 @@ def test__can_fetch_good_server_status(fake_minecraft_server):
     })
     fake_minecraft_server.status.return_value = good_status
     status_re = re.compile('\d+ mods loaded, players \d+/\d+: (.*(, )?)*')
-    status_message = get_formatted_status_message(fake_minecraft_server)
+    mc = Minecraft(test_server=fake_minecraft_server)
+    status_message = mc.get_formatted_status_message()
     assert status_re.match(status_message) is not None
