@@ -20,11 +20,6 @@ async def on_command_error(exception, context):
             context.message.channel,
             'The server is not accepting connections at this time.',
         )
-    else:
-        await bot.send_message(
-            context.message.channel,
-            'I do not recognize that command.',
-        )
 
 
 @bot.command(description='For getting the status')
