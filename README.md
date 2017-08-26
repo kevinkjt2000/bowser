@@ -1,0 +1,1 @@
+# Minecraft Server Status Bot for Discord [![Build Status](https://img.shields.io/travis/kevinkjt2000/discord-minecraft-server-status/master.svg?style=flat-square&label=Travis)](https://travis-ci.org/kevinkjt2000/discord-minecraft-server-status)
