@@ -9,6 +9,17 @@ class Minecraft:
         else:
             self.mc_server = MinecraftServer(host=host, port=port)
 
+    def get_forge_version_message(self):
+        status = self.mc_server.status()
+        forge = None
+        if 'modinfo' in status.raw:
+            forge = next(filter(lambda mod: mod['modid'] == 'forge',
+                                status.raw['modinfo']['modList']), None)
+        if forge:
+            return 'Forge is at version {}'.format(forge['version'])
+        else:
+            return 'The server does not have Forge installed'
+
     def get_formatted_status_message(self):
         status = self.mc_server.status()
         if status.players.online > 0:

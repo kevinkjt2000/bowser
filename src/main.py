@@ -26,5 +26,10 @@ async def on_command_error(exception, context):
 async def status():
     await bot.say(Minecraft().get_formatted_status_message())
 
+
+@bot.command(description='For getting the forge version')
+async def forge_version():
+    await bot.say(Minecraft().get_forge_version_message())
+
 if __name__ == '__main__':
     main()
