@@ -43,7 +43,7 @@ def test__forge_version_message_matches_modid_forge_version(fake):
 @patch('src.Minecraft.MinecraftServer')
 def test__can_fetch_modded_server_status(fake_minecraft_server):
     fake_minecraft_server.status.return_value = status_modded_online
-    status_re = re.compile('^\d+ mods loaded, players \d+/\d+: (.*(, )?)*$')
+    status_re = re.compile('^\d+ mods loaded, players \d+/\d+: `(.*(, )?)*`$')
     mc = Minecraft(test_server=fake_minecraft_server)
     status_message = mc.get_formatted_status_message()
     assert status_re.match(status_message) is not None

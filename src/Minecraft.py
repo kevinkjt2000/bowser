@@ -23,8 +23,8 @@ class Minecraft:
     def get_formatted_status_message(self):
         status = self.mc_server.status()
         if status.players.online > 0:
-            online_players = ': ' + ', '.join(
-                [p.name for p in status.players.sample])
+            online_players = ': `' + ', '.join(
+                [p.name for p in status.players.sample]) + '`'
         else:
             online_players = ''
         online_count = status.players.online
