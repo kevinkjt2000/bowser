@@ -15,10 +15,18 @@ def main():
 
 
 async def on_command_error(exception, context):
-    if str(context.command) == 'status':
+    if hasattr(exception, 'original'):
+        if exception.original.__class__.__name__ == 'ConnectionRefusedError':
+            await bot.send_message(
+                context.message.channel,
+                'The server is not accepting connections at this time.',
+            )
+    elif exception.__class__.__name__ == 'CommandNotFound':
+        pass
+    else:
         await bot.send_message(
             context.message.channel,
-            'The server is not accepting connections at this time.',
+            'The bot is giving up; something unknown happened.'
         )
 
 
