@@ -3,6 +3,6 @@ python:
   - "3.6"
   - "3.7-dev"
   - "nightly"
-install: "pip install -r requirements.txt test-requirements.txt"
+install: "pip install -r requirements.txt -r test-requirements.txt"
 script: pytest
 
