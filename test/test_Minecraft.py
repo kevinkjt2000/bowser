@@ -1,7 +1,17 @@
 from mcstatus.pinger import PingResponse
 from unittest.mock import patch
 from src.Minecraft import Minecraft
+import pytest
 import re
+
+
+@pytest.mark.skip(reason="need to move main.py's contents to a class first")
+@patch('src.Minecraft.MinecraftServer')
+def test__can_display_unable_to_connect_on_connection_error(
+        fake_minecraft_server):
+    fake_minecraft_server.status.side_effect = ConnectionRefusedError()
+    mc = Minecraft(test_server=fake_minecraft_server)
+    mc.get_formatted_status_message()
 
 
 @patch('src.Minecraft.MinecraftServer')

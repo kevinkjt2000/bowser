@@ -21,7 +21,7 @@ async def on_command_error(exception, context):
                 context.message.channel,
                 'The server is not accepting connections at this time.',
             )
-    elif exception.__class__.__name__ == 'CommandNotFound':
+    if exception.__class__.__name__ == 'CommandNotFound':
         pass
     else:
         await bot.send_message(
