@@ -1,5 +1,5 @@
 from discord.ext import commands
-from .Minecraft import Minecraft
+from Minecraft import Minecraft
 
 
 class Bot(commands.Bot):
@@ -19,6 +19,8 @@ class Bot(commands.Bot):
         if exception.__class__.__name__ == 'CommandNotFound':
             pass
         else:
+            print('unkown: ' + exception.__class__.__name__)
+            print(exception)
             await self.send_message(
                 context.message.channel,
                 'The bot is giving up; something unknown happened.'
@@ -29,13 +31,13 @@ bot = Bot()
 
 
 @bot.command(description='For getting the status')
-async def status(self):
-    await self.say(Minecraft().get_formatted_status_message())
+async def status():
+    await bot.say(Minecraft().get_formatted_status_message())
 
 
 @bot.command(description='For getting the forge version')
-async def forge_version(self):
-    await self.say(Minecraft().get_forge_version_message())
+async def forge_version():
+    await bot.say(Minecraft().get_forge_version_message())
 
 
 def main():
