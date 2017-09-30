@@ -1,32 +1,8 @@
 from mcstatus.pinger import PingResponse
-from unittest.mock import patch
+from unittest import TestCase
+from unittest.mock import MagicMock
 from src.Minecraft import Minecraft
-import pytest
 import re
-
-
-@pytest.mark.skip(reason="need to move main.py's contents to a class first")
-@patch('src.Minecraft.MinecraftServer')
-def test__can_display_unable_to_connect_on_connection_error(
-        fake_minecraft_server):
-    fake_minecraft_server.status.side_effect = ConnectionRefusedError()
-    mc = Minecraft(test_server=fake_minecraft_server)
-    mc.get_formatted_status_message()
-
-
-@patch('src.Minecraft.MinecraftServer')
-def test__can_display_server_status_from_vanilla_server(fake_minecraft_server):
-    status_vanilla_empty = PingResponse({
-        'description': {'text': 'Minecraft is awesome!', },
-        'players': {'online': 0, 'max': 8, },
-        'version': {'name': '1.12.1', 'protocol': 338, },
-    })
-    fake_minecraft_server.status.return_value = status_vanilla_empty
-    status_re = re.compile('^players \d+/\d+$')
-    mc = Minecraft(test_server=fake_minecraft_server)
-    status_message = mc.get_formatted_status_message()
-    assert status_re.match(status_message) is not None
-
 
 status_modded_online = PingResponse({
     'description': {'text': 'fake description', },
@@ -42,18 +18,32 @@ status_modded_online = PingResponse({
 })
 
 
-@patch('src.Minecraft.MinecraftServer')
-def test__forge_version_message_matches_modid_forge_version(fake):
-    fake.status.return_value = status_modded_online
-    mc = Minecraft(test_server=fake)
-    forge_message = mc.get_forge_version_message()
-    assert forge_message == 'Forge is at version 14.22.0.2460'
+class TestMinecraft(TestCase):
+    def setUp(self):
+        self.mc = Minecraft(MinecraftServer=MagicMock)
 
+    def test__can_display_server_status_from_vanilla_server(self):
+        status_vanilla_empty = PingResponse({
+            'description': {'text': 'Minecraft is awesome!', },
+            'players': {'online': 0, 'max': 8, },
+            'version': {'name': '1.12.1', 'protocol': 338, },
+        })
+        status_re = re.compile('^players \d+/\d+$')
+        self.mc = Minecraft(MinecraftServer=MagicMock)
+        self.mc.mc_server.status.return_value = status_vanilla_empty
+        status_message = self.mc.get_formatted_status_message()
+        assert status_re.match(status_message) is not None
 
-@patch('src.Minecraft.MinecraftServer')
-def test__can_fetch_modded_server_status(fake_minecraft_server):
-    fake_minecraft_server.status.return_value = status_modded_online
-    status_re = re.compile('^\d+ mods loaded, players \d+/\d+: `(.*(, )?)*`$')
-    mc = Minecraft(test_server=fake_minecraft_server)
-    status_message = mc.get_formatted_status_message()
-    assert status_re.match(status_message) is not None
+    def test__forge_version_message_matches_modid_forge_version(self):
+        self.mc = Minecraft(MinecraftServer=MagicMock)
+        self.mc.mc_server.status.return_value = status_modded_online
+        forge_message = self.mc.get_forge_version_message()
+        assert forge_message == 'Forge is at version 14.22.0.2460'
+
+    def test__can_fetch_modded_server_status(self):
+        status_re = \
+            re.compile('^\d+ mods loaded, players \d+/\d+: `(.*(, )?)*`$')
+        self.mc = Minecraft(MinecraftServer=MagicMock)
+        self.mc.mc_server.status.return_value = status_modded_online
+        status_message = self.mc.get_formatted_status_message()
+        assert status_re.match(status_message) is not None
