@@ -5,8 +5,8 @@ Adding this bot to a discord server will allow users to send the message "!statu
 ### Usage
 * Ensure Python 3.6+ is installed
 * Clone this repository or extract a downloaded zip copy
-* Run `pip install -U -r requirements.txt`
+* Run `pip install -e .`
 * Create a file "token.txt" with your app bot user token from https://discordapp.com/developers/applications/me
-* Run the bot with `python src/main.py`
-* Have the server owner add the bot by using your app client id in this link https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID_NUMBER_HERE&scope=bot&permissions=0
+* The server owner must add the bot by using the app client id in this link and browsing to it https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID_NUMBER_HERE&scope=bot&permissions=0
 * Give the bot read and write permissions for messages on any channels where you want the bot to respond
+* Run the bot with `python src/main.py`

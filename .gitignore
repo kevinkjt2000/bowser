@@ -2,6 +2,7 @@
 .coverage
 .ropeproject/*
 *.pyc
+UNKNOWN.egg-info/*
 venv/*
 
 token.txt

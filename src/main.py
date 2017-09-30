@@ -1,5 +1,5 @@
 from discord.ext import commands
-from Minecraft import Minecraft
+from src.Minecraft import Minecraft
 
 
 class Bot(commands.Bot):
