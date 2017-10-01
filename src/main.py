@@ -45,5 +45,9 @@ def main():
     bot.run(token)
 
 
-if __name__ == '__main__':
-    main()
+def init():
+    if __name__ == '__main__':
+        main()
+
+
+init()
