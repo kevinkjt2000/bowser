@@ -1,4 +1,5 @@
 from discord.ext import commands
+from discord.ext.commands.core import Command
 from src.Minecraft import Minecraft
 
 
@@ -8,39 +9,49 @@ class Bot(commands.Bot):
             command_prefix=commands.when_mentioned_or('!'),
             description='A bot for querying the status of a minecraft server.'
         )
+        self.add_command(Command(
+            name='status',
+            callback=self.status,
+            description='For getting the status',
+        ))
+        self.add_command(Command(
+            name='forge_version',
+            callback=self.forge_version,
+            description='For getting the forge version',
+        ))
 
     async def on_command_error(self, exception, context):
         if hasattr(exception, 'original'):
-            if exception.original.__class__.__name__ == 'ConnectionRefusedError':
+            original = exception.original.__class__.__name__
+            if original == 'ConnectionRefusedError':
                 await self.send_message(
                     context.message.channel,
                     'The server is not accepting connections at this time.',
                 )
         if exception.__class__.__name__ == 'CommandNotFound':
             pass
+        elif exception.__class__.__name__ == 'CommandInvokeError':
+            await self.send_message(
+                context.message.channel,
+                'The server is not fully ready for connections yet.'
+            )
         else:
-            print('unkown: ' + exception.__class__.__name__)
+            print('unknown: ' + exception.__class__.__name__)
             print(exception)
             await self.send_message(
                 context.message.channel,
                 'The bot is giving up; something unknown happened.'
             )
 
+    async def status(self):
+        await self.say(Minecraft().get_formatted_status_message())
 
-bot = Bot()
-
-
-@bot.command(description='For getting the status')
-async def status():
-    await bot.say(Minecraft().get_formatted_status_message())
-
-
-@bot.command(description='For getting the forge version')
-async def forge_version():
-    await bot.say(Minecraft().get_forge_version_message())
+    async def forge_version(self):
+        await self.say(Minecraft().get_forge_version_message())
 
 
 def main():
+    bot = Bot()
     token = open('token.txt').read().replace('\n', '')
     bot.run(token)
 
