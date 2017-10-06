@@ -9,6 +9,7 @@ class Bot(commands.Bot):
             command_prefix=commands.when_mentioned_or('!'),
             description='A bot for querying the status of a minecraft server.'
         )
+        self.mc = Minecraft()
         self.add_command(Command(
             name='status',
             callback=self.status,
@@ -44,10 +45,10 @@ class Bot(commands.Bot):
             )
 
     async def status(self):
-        await self.say(Minecraft().get_formatted_status_message())
+        await self.say(self.mc.get_formatted_status_message())
 
     async def forge_version(self):
-        await self.say(Minecraft().get_forge_version_message())
+        await self.say(self.mc.get_forge_version_message())
 
 
 def main():
