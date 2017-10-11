@@ -9,6 +9,7 @@ test_requirements = [
     'asynctest',
     'pytest',
     'pytest-cov',
+    'pytest-socket',
     'python-coveralls',
 ]
 
