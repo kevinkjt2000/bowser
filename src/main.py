@@ -45,10 +45,12 @@ class Bot(commands.Bot):
             )
 
     async def status(self):
-        await self.say(self.mc.get_formatted_status_message())
+        status_msg = self.mc.get_formatted_status_message()
+        await self.say(status_msg)
 
     async def forge_version(self):
-        await self.say(self.mc.get_forge_version_message())
+        forge_ver_msg = self.mc.get_forge_version_message()
+        await self.say(forge_ver_msg)
 
 
 def main():
