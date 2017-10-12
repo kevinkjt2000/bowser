@@ -2,7 +2,7 @@ from mcstatus import MinecraftServer
 
 
 class Minecraft:
-    def __init__(self, host='msb.teamrapturemc.stream', port=25456,
+    def __init__(self, host='msb2.mynode.in', port=25565,
                  MinecraftServer=MinecraftServer):
         self.mc_server = MinecraftServer(host=host, port=port)
 
