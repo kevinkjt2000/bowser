@@ -29,7 +29,7 @@ class Bot(commands.Bot):
                     context.message.channel,
                     'The server is not accepting connections at this time.',
                 )
-        if exception.__class__.__name__ == 'CommandNotFound':
+        elif exception.__class__.__name__ == 'CommandNotFound':
             pass
         elif exception.__class__.__name__ == 'CommandInvokeError':
             await self.send_message(
