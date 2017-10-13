@@ -1,6 +1,5 @@
 from unittest.mock import MagicMock, patch
 import asyncio
-import asynctest
 import discord
 import random
 import unittest
@@ -24,20 +23,19 @@ def async_test(f):
     return wrapper
 
 
-class TestBot(asynctest.TestCase):
+class TestBot(unittest.TestCase):
     def setUp(self):
-        from src.main import Bot
-        self.bot = Bot()
-        self.bot.user = _get_mock_user(bot=self.bot)
+        import src.main
+        self.bot = MagicMock(
+            spec=src.main.Bot,
+            user=_get_mock_user(bot=True),
+        )
         self.mock_run = asynctest.patch.object(self.bot, 'run')
         self.mock_run.start()
 
     def tearDown(self):
         self.mock_run.stop()
-        print('meh')
-        self.bot.session.close()
 
-    @async_test
     def test__sends_error_message_when_connection_refused(self):
         with patch.object(
                 self.bot.mc, 'get_formatted_status_message') as mock_mc:
