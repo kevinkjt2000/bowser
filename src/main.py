@@ -14,11 +14,13 @@ class Bot(commands.Bot):
             name='status',
             callback=self.status,
             description='For getting the status',
+            pass_context=True,
         ))
         self.add_command(Command(
             name='forge_version',
             callback=self.forge_version,
             description='For getting the forge version',
+            pass_context=True,
         ))
 
     async def on_command_error(self, exception, context):
@@ -44,11 +46,15 @@ class Bot(commands.Bot):
                 'The bot is giving up; something unknown happened.'
             )
 
-    async def status(self):
-        status_msg = self.mc.get_formatted_status_message()
-        await self.say(status_msg)
+    async def status(self, context):
+        sid = context.message.server.id
+        cid = context.message.channel.id
+        if ((sid == '269363626035511297' and cid == '345356752298049538') or
+                (sid == '339549920338116611' and cid == '345543855208267777')):
+            status_msg = self.mc.get_formatted_status_message()
+            await self.say(status_msg)
 
-    async def forge_version(self):
+    async def forge_version(self, context):
         forge_ver_msg = self.mc.get_forge_version_message()
         await self.say(forge_ver_msg)
 
