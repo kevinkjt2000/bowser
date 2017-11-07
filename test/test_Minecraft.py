@@ -4,6 +4,12 @@ from unittest.mock import MagicMock
 from src.Minecraft import Minecraft
 import re
 
+status_vanilla_empty = PingResponse({
+    'description': {'text': 'Minecraft is awesome!', },
+    'players': {'online': 0, 'max': 8, },
+    'version': {'name': '1.12.1', 'protocol': 338, },
+})
+
 status_modded_online = PingResponse({
     'description': {'text': 'fake description', },
     'modinfo': {'modList': [
@@ -23,11 +29,6 @@ class TestMinecraft(TestCase):
         self.mc = Minecraft(MinecraftServer=MagicMock)
 
     def test__can_display_server_status_from_vanilla_server(self):
-        status_vanilla_empty = PingResponse({
-            'description': {'text': 'Minecraft is awesome!', },
-            'players': {'online': 0, 'max': 8, },
-            'version': {'name': '1.12.1', 'protocol': 338, },
-        })
         status_re = re.compile('^players \d+/\d+$')
         self.mc.mc_server.status.return_value = status_vanilla_empty
         status_message = self.mc.get_formatted_status_message()
