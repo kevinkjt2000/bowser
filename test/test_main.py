@@ -25,7 +25,7 @@ class TestBot(asynctest.TestCase):
     def tearDown(self):
         self.mock_run.stop()
 
-    async def test__sends_error_message_when_connection_refused(self):
+    async def test__status_command_responds_status_message(self):
         mock_channel_id = str(random.randrange(999999))
         with asynctest.patch('src.main.minecrafts', {
             self.mock_server_id: {
