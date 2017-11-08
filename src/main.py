@@ -1,6 +1,15 @@
 from discord.ext import commands
 from discord.ext.commands.core import Command
 from src.Minecraft import Minecraft
+import json
+
+minecrafts = {}
+with open('servers.json') as json_data:
+    minecrafts = json.load(json_data)
+for sid in minecrafts:
+    for cid in minecrafts[sid]:
+        m = minecrafts[sid][cid]
+        minecrafts[sid][cid] = Minecraft(host=m['host'], port=m['port'])
 
 
 class Bot(commands.Bot):
@@ -9,7 +18,6 @@ class Bot(commands.Bot):
             command_prefix=commands.when_mentioned_or('!'),
             description='A bot for querying the status of a minecraft server.'
         )
-        self.mc = Minecraft()
         self.add_command(Command(
             name='status',
             callback=self.status,
@@ -26,11 +34,15 @@ class Bot(commands.Bot):
     async def on_command_error(self, exception, context):
         if hasattr(exception, 'original'):
             original = exception.original.__class__.__name__
-            if original == 'ConnectionRefusedError':
+            if original == 'ConnectionRefusedError' or \
+                    original == 'timeout':
                 await self.send_message(
                     context.message.channel,
                     'The server is not accepting connections at this time.',
                 )
+            else:
+                print('original: ' + original)
+                print(exception)
         elif exception.__class__.__name__ == 'CommandNotFound':
             pass
         elif exception.__class__.__name__ == 'CommandInvokeError':
@@ -49,14 +61,16 @@ class Bot(commands.Bot):
     async def status(self, context):
         sid = context.message.server.id
         cid = context.message.channel.id
-        if ((sid == '269363626035511297' and cid == '345356752298049538') or
-                (sid == '339549920338116611' and cid == '345543855208267777')):
-            status_msg = self.mc.get_formatted_status_message()
+        if sid in minecrafts and cid in minecrafts[sid]:
+            status_msg = minecrafts[sid][cid].get_formatted_status_message()
             await self.say(status_msg)
 
     async def forge_version(self, context):
-        forge_ver_msg = self.mc.get_forge_version_message()
-        await self.say(forge_ver_msg)
+        sid = context.message.server.id
+        cid = context.message.channel.id
+        if sid in minecrafts and cid in minecrafts[sid]:
+            forge_ver_msg = minecrafts[sid][cid].get_forge_version_message()
+            await self.say(forge_ver_msg)
 
 
 def main():
