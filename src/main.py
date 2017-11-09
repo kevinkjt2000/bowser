@@ -3,13 +3,19 @@ from discord.ext.commands.core import Command
 from src.Minecraft import Minecraft
 import json
 
-minecrafts = {}
-with open('servers.json') as json_data:
-    minecrafts = json.load(json_data)
-for sid in minecrafts:
-    for cid in minecrafts[sid]:
-        m = minecrafts[sid][cid]
-        minecrafts[sid][cid] = Minecraft(host=m['host'], port=m['port'])
+
+def get_minecraft_object_for_server_channel(sid, cid):
+    sid = str(sid)
+    cid = str(cid)
+    minecrafts = {}
+    with open('servers.json') as json_data:
+        minecrafts = json.load(json_data)
+    for s in minecrafts:
+        for c in minecrafts[sid]:
+            if s == sid and c == cid:
+                m = minecrafts[sid][cid]
+                return Minecraft(host=m['host'], port=m['port'])
+    return None
 
 
 class Bot(commands.Bot):
@@ -61,15 +67,17 @@ class Bot(commands.Bot):
     async def status(self, context):
         sid = context.message.server.id
         cid = context.message.channel.id
-        if sid in minecrafts and cid in minecrafts[sid]:
-            status_msg = minecrafts[sid][cid].get_formatted_status_message()
+        mc = get_minecraft_object_for_server_channel(sid, cid)
+        if mc:
+            status_msg = mc.get_formatted_status_message()
             await self.say(status_msg)
 
     async def forge_version(self, context):
         sid = context.message.server.id
         cid = context.message.channel.id
-        if sid in minecrafts and cid in minecrafts[sid]:
-            forge_ver_msg = minecrafts[sid][cid].get_forge_version_message()
+        mc = get_minecraft_object_for_server_channel(sid, cid)
+        if mc:
+            forge_ver_msg = mc.get_forge_version_message()
             await self.say(forge_ver_msg)
 
 

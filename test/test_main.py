@@ -27,14 +27,16 @@ class TestBot(asynctest.TestCase):
 
     async def test__status_command_responds_status_message(self):
         mock_channel_id = str(random.randrange(999999))
-        with asynctest.patch('src.main.minecrafts', {
-            self.mock_server_id: {
-                mock_channel_id: asynctest.MagicMock(
-                    spec=src.Minecraft.Minecraft,
-                ),
-            },
-        }) as mock_minecrafts:
-            mock_mc = mock_minecrafts[self.mock_server_id][mock_channel_id]
+        mock_mc = asynctest.MagicMock(spec=src.Minecraft.Minecraft)
+
+        def mock_get_minecraft(sid, cid):
+            if sid == self.mock_server_id and cid == mock_channel_id:
+                return mock_mc
+
+        with asynctest.patch(
+            'src.main.get_minecraft_object_for_server_channel',
+            side_effect=mock_get_minecraft,
+        ):
             mock_message = self._get_mock_message(
                 '!status',
                 channel=mock_channel_id,
