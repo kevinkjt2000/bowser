@@ -6,3 +6,4 @@ UNKNOWN.egg-info/*
 venv/*
 
 token.txt
+servers.json
