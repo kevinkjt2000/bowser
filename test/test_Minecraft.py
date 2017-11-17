@@ -34,7 +34,7 @@ class TestMinecraft(TestCase):
         status_message = self.mc.get_formatted_status_message()
         assert status_re.match(status_message) is not None
 
-    def test__forge_version_is_not_installed_on_vanillar(self):
+    def test__forge_version_is_not_installed_on_vanilla(self):
         self.mc.mc_server.status.return_value = status_vanilla_empty
         forge_message = self.mc.get_forge_version_message()
         assert forge_message == 'The server does not have Forge installed'
