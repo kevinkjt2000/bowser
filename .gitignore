@@ -1,5 +1,6 @@
 .cache/*
 .coverage
+.eggs/*
 .ropeproject/*
 *.pyc
 UNKNOWN.egg-info/*
