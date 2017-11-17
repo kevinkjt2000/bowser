@@ -40,8 +40,7 @@ class Bot(commands.Bot):
     async def on_command_error(self, exception, context):
         if hasattr(exception, 'original'):
             original = exception.original.__class__.__name__
-            if original == 'ConnectionRefusedError' or \
-                    original == 'timeout':
+            if original == 'ConnectionRefusedError' or original == 'timeout':
                 await self.send_message(
                     context.message.channel,
                     'The server is not accepting connections at this time.',

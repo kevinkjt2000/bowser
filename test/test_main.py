@@ -1,4 +1,5 @@
-from unittest.mock import patch
+from unittest.mock import patch, mock_open, MagicMock
+import asyncio
 import asynctest
 import discord
 import random
@@ -13,6 +14,18 @@ class TestMain(unittest.TestCase):
             src.main.init()
             mock_main.assert_called_once_with()
 
+    @patch('builtins.open', new_callable=mock_open, read_data="{}")
+    def test__get_minecraft_object_can_read_empty_json(self, mock_open):
+        mc = src.main.get_minecraft_object_for_server_channel(42, 5)
+        assert not mc
+
+    @patch('builtins.open', new_callable=mock_open,
+           read_data="""{"42": {"5": {"host": "fake_host", "port": 1234}}}""")
+    def test__get_minecraft_object_can_read_host_and_port(self, mock_open):
+        mc = src.main.get_minecraft_object_for_server_channel(42, 5)
+        assert mc.mc_server.host == "fake_host"
+        assert mc.mc_server.port == 1234
+
 
 class TestBot(asynctest.TestCase):
     def setUp(self):
@@ -25,15 +38,42 @@ class TestBot(asynctest.TestCase):
     def tearDown(self):
         self.mock_run.stop()
 
-    async def test__status_command_responds_status_message(self):
+    async def test__status_command_responds_even_with_connection_errors(self):
         mock_channel_id = str(random.randrange(999999))
-        mock_mc = asynctest.MagicMock(spec=src.Minecraft.Minecraft)
+        mock_mc = MagicMock(spec=src.main.Minecraft)
+        mock_mc.get_formatted_status_message.side_effect = \
+            ConnectionRefusedError
 
         def mock_get_minecraft(sid, cid):
             if sid == self.mock_server_id and cid == mock_channel_id:
                 return mock_mc
 
-        with asynctest.patch(
+        with patch(
+            'src.main.get_minecraft_object_for_server_channel',
+            side_effect=mock_get_minecraft,
+        ):
+            mock_message = self._get_mock_message(
+                '!status',
+                channel=mock_channel_id,
+            )
+            with asynctest.patch.object(self.bot, 'send_message') as mock_send:
+                await self.bot.on_message(mock_message)
+                mock_mc.get_formatted_status_message.assert_called_once()
+                await asyncio.sleep(0.3)
+                mock_send.assert_called_once_with(
+                    mock_message.channel,
+                    'The server is not accepting connections at this time.',
+                )
+
+    async def test__status_command_responds_with_status_message(self):
+        mock_channel_id = str(random.randrange(999999))
+        mock_mc = MagicMock(spec=src.Minecraft.Minecraft)
+
+        def mock_get_minecraft(sid, cid):
+            if sid == self.mock_server_id and cid == mock_channel_id:
+                return mock_mc
+
+        with patch(
             'src.main.get_minecraft_object_for_server_channel',
             side_effect=mock_get_minecraft,
         ):
