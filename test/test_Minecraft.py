@@ -36,16 +36,11 @@ status_modded_online_old = PingResponse({
 
 
 class TestMinecraft(TestCase):
-    def setUp(self):
+    def setup_class(self):
         self.mc = Minecraft(MinecraftServer=MagicMock)
 
     def test__can_handle_old_protocols_without_players_sample(self):
-        status_re = re.compile(
-            '^\d+ mods loaded, players \d+/\d+: `(.*(, )?)*`$'
-        )
-        self.mc.mc_server.status.return_value = status_modded_online_old
-        status_message = self.mc.get_formatted_status_message()
-        assert status_re.match(status_message) is not None
+        self._modded_test(status_modded_online_old)
 
     def test__can_display_server_status_from_vanilla_server(self):
         status_re = re.compile('^players \d+/\d+$')
@@ -64,9 +59,12 @@ class TestMinecraft(TestCase):
         assert forge_message == 'Forge is at version 14.22.0.2460'
 
     def test__can_fetch_modded_server_status(self):
+        self._modded_test(status_modded_online)
+
+    def _modded_test(self, status_dict):
         status_re = re.compile(
             '^\d+ mods loaded, players \d+/\d+: `(.*(, )?)*`$'
         )
-        self.mc.mc_server.status.return_value = status_modded_online
+        self.mc.mc_server.status.return_value = status_dict
         status_message = self.mc.get_formatted_status_message()
         assert status_re.match(status_message) is not None
