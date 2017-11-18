@@ -31,19 +31,19 @@ class TestBot(asynctest.TestCase):
     def setUp(self):
         self.mock_server_id = str(random.randrange(999999))
         self.mock_channel_id = str(random.randrange(999999))
-        self.mock_get_mc_patch = patch(
+        self.patch_get_mc = patch(
             'src.main.get_minecraft_object_for_server_channel',
             return_value=MagicMock(spec=src.main.Minecraft),
         )
-        self.mock_mc = self.mock_get_mc_patch.start()()
+        self.mock_mc = self.patch_get_mc.start()()
         self.bot = src.main.Bot()
         self.bot.user = self._get_mock_user(bot=True)
-        self.mock_run = asynctest.patch.object(self.bot, 'run')
-        self.mock_run.start()
+        self.patch_run = asynctest.patch.object(self.bot, 'run')
+        self.patch_run.start()
 
     def tearDown(self):
-        self.mock_run.stop()
-        self.mock_get_mc_path.stop()
+        self.patch_run.stop()
+        self.patch_get_mc.stop()
         yield from self.bot.close()
 
     async def test__status_command_responds_even_with_connection_errors(self):
