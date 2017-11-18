@@ -29,9 +29,11 @@ class TestMain(unittest.TestCase):
 
 class TestBot(asynctest.TestCase):
     def setUp(self):
+        self.mock_server_id = str(random.randrange(999999))
+        self.mock_channel_id = str(random.randrange(999999))
+        self.mock_mc = MagicMock(spec=src.main.Minecraft)
         self.bot = src.main.Bot()
         self.bot.user = self._get_mock_user(bot=True)
-        self.mock_server_id = str(random.randrange(999999))
         self.mock_run = asynctest.patch.object(self.bot, 'run')
         self.mock_run.start()
 
@@ -40,54 +42,39 @@ class TestBot(asynctest.TestCase):
         yield from self.bot.close()
 
     async def test__status_command_responds_even_with_connection_errors(self):
-        mock_channel_id = str(random.randrange(999999))
-        mock_mc = MagicMock(spec=src.main.Minecraft)
-        mock_mc.get_formatted_status_message.side_effect = \
+        self.mock_mc.get_formatted_status_message.side_effect = \
             ConnectionRefusedError
-
-        def mock_get_minecraft(sid, cid):
-            if sid == self.mock_server_id and cid == mock_channel_id:
-                return mock_mc
 
         with patch(
             'src.main.get_minecraft_object_for_server_channel',
-            side_effect=mock_get_minecraft,
+            return_value=self.mock_mc,
         ):
-            mock_message = self._get_mock_message(
-                '!status',
-                channel=mock_channel_id,
-            )
+            mock_message = self._get_mock_command_message('!status')
             with asynctest.patch.object(self.bot, 'send_message') as mock_send:
                 await self.bot.on_message(mock_message)
-                mock_mc.get_formatted_status_message.assert_called_once()
                 await asyncio.sleep(0.3)
+                self.mock_mc.get_formatted_status_message.assert_called_once()
                 mock_send.assert_called_once_with(
                     mock_message.channel,
                     'The server is not accepting connections at this time.',
                 )
 
     async def test__status_command_responds_with_status_message(self):
-        mock_channel_id = str(random.randrange(999999))
-        mock_mc = MagicMock(spec=src.Minecraft.Minecraft)
-
-        def mock_get_minecraft(sid, cid):
-            if sid == self.mock_server_id and cid == mock_channel_id:
-                return mock_mc
-
         with patch(
             'src.main.get_minecraft_object_for_server_channel',
-            side_effect=mock_get_minecraft,
+            return_value=self.mock_mc,
         ):
-            mock_message = self._get_mock_message(
-                '!status',
-                channel=mock_channel_id,
-            )
+            mock_message = self._get_mock_command_message('!status')
             with asynctest.patch.object(self.bot, 'say') as mock_say:
                 await self.bot.on_message(mock_message)
-                mock_mc.get_formatted_status_message.assert_called_once()
+                await asyncio.sleep(0.3)
+                self.mock_mc.get_formatted_status_message.assert_called_once()
                 mock_say.assert_called_once_with(
-                    mock_mc.get_formatted_status_message()
+                    self.mock_mc.get_formatted_status_message()
                 )
+
+    def _get_mock_command_message(self, command):
+        return self._get_mock_message(command, channel=self.mock_channel_id)
 
     def _get_mock_channel(self, **kwargs):
         id = kwargs.pop('id', str(random.randrange(999999)))
