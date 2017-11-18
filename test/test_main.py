@@ -37,6 +37,7 @@ class TestBot(asynctest.TestCase):
 
     def tearDown(self):
         self.mock_run.stop()
+        yield from self.bot.close()
 
     async def test__status_command_responds_even_with_connection_errors(self):
         mock_channel_id = str(random.randrange(999999))
