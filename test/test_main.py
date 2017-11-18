@@ -65,12 +65,13 @@ class TestBot(asynctest.TestCase):
             return_value=self.mock_mc,
         ):
             mock_message = self._get_mock_command_message('!status')
-            with asynctest.patch.object(self.bot, 'say') as mock_say:
+            with asynctest.patch.object(self.bot, 'send_message') as mock_send:
                 await self.bot.on_message(mock_message)
                 await asyncio.sleep(0.3)
                 self.mock_mc.get_formatted_status_message.assert_called_once()
-                mock_say.assert_called_once_with(
-                    self.mock_mc.get_formatted_status_message()
+                mock_send.assert_called_once_with(
+                    mock_message.channel,
+                    self.mock_mc.get_formatted_status_message(),
                 )
 
     def _get_mock_command_message(self, command):
