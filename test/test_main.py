@@ -40,8 +40,11 @@ class TestBot(asynctest.TestCase):
         self.bot.user = self._get_mock_user(bot=True)
         self.patch_run = asynctest.patch.object(self.bot, 'run')
         self.patch_run.start()
+        self.patch_send = asynctest.patch.object(self.bot, 'send_message')
+        self.mock_send = self.patch_send.start()
 
     def tearDown(self):
+        self.patch_send.stop()
         self.patch_run.stop()
         self.patch_get_mc.stop()
         yield from self.bot.close()
@@ -51,26 +54,24 @@ class TestBot(asynctest.TestCase):
             ConnectionRefusedError
 
         mock_message = self._get_mock_command_message('!status')
-        with asynctest.patch.object(self.bot, 'send_message') as mock_send:
-            await self.bot.on_message(mock_message)
-            await asyncio.sleep(0.3)
-            self.mock_mc.get_formatted_status_message.assert_called_once()
-            mock_send.assert_called_once_with(
-                mock_message.channel,
-                'The server is not accepting connections at this time.',
-            )
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_mc.get_formatted_status_message.assert_called_once()
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            'The server is not accepting connections at this time.',
+        )
 
     async def test__status_command_responds_with_status_message(
             self):
         mock_message = self._get_mock_command_message('!status')
-        with asynctest.patch.object(self.bot, 'send_message') as mock_send:
-            await self.bot.on_message(mock_message)
-            await asyncio.sleep(0.3)
-            self.mock_mc.get_formatted_status_message.assert_called_once()
-            mock_send.assert_called_once_with(
-                mock_message.channel,
-                self.mock_mc.get_formatted_status_message(),
-            )
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_mc.get_formatted_status_message.assert_called_once()
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            self.mock_mc.get_formatted_status_message(),
+        )
 
     def _get_mock_command_message(self, command):
         return self._get_mock_message(command, channel=self.mock_channel_id)
