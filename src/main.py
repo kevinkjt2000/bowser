@@ -44,7 +44,16 @@ class Bot(commands.Bot):
         ))
 
     async def on_command_error(self, exception, context):
-        if hasattr(exception, 'original'):
+        if exception.__class__.__name__ == 'CommandNotFound':
+            pass
+        elif not hasattr(exception, 'original'):
+            print('unknown: ' + exception.__class__.__name__)
+            print(exception)
+            await self.send_message(
+                context.message.channel,
+                'The bot is giving up; something unknown happened.'
+            )
+        else:
             original = exception.original.__class__.__name__
             if original == 'ConnectionRefusedError' or original == 'timeout':
                 await self.send_message(
@@ -54,20 +63,6 @@ class Bot(commands.Bot):
             else:
                 print('original: ' + original)
                 print(exception)
-        elif exception.__class__.__name__ == 'CommandNotFound':
-            pass
-        elif exception.__class__.__name__ == 'CommandInvokeError':
-            await self.send_message(
-                context.message.channel,
-                'The server is not fully ready for connections yet.'
-            )
-        else:
-            print('unknown: ' + exception.__class__.__name__)
-            print(exception)
-            await self.send_message(
-                context.message.channel,
-                'The bot is giving up; something unknown happened.'
-            )
 
     async def status(self, context):
         sid = context.message.server.id
