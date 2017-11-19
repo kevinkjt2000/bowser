@@ -49,6 +49,19 @@ class TestBot(asynctest.TestCase):
         self.patch_get_mc.stop()
         yield from self.bot.close()
 
+    async def test__bot_gives_up_on_discord_command_errors(self):
+        self.mock_mc.get_formatted_status_message.side_effect = \
+            discord.ext.commands.errors.CommandError
+
+        mock_message = self._get_mock_command_message('!status')
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_mc.get_formatted_status_message.assert_called_once()
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            'The bot is giving up; something unknown happened.',
+        )
+
     async def test__command_not_found_is_ignored(self):
         mock_message = self._get_mock_command_message('!lalala')
         await self.bot.on_message(mock_message)
