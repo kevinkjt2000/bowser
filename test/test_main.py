@@ -49,6 +49,12 @@ class TestBot(asynctest.TestCase):
         self.patch_get_mc.stop()
         yield from self.bot.close()
 
+    async def test__command_not_found_is_ignored(self):
+        mock_message = self._get_mock_command_message('!lalala')
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_send.assert_not_called()
+
     async def test__ip_command_responds_with_host_and_port(self):
         self.mock_mc.mc_server = MagicMock()
         mock_message = self._get_mock_command_message('!ip')
