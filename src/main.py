@@ -63,6 +63,10 @@ class Bot(commands.Bot):
             else:
                 print('original: ' + original)
                 print(exception)
+                await self.send_message(
+                    context.message.channel,
+                    'Ninjas hijacked the packets, but the author will fix it.',
+                )
 
     async def status(self, context):
         sid = context.message.server.id
