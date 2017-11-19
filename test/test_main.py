@@ -49,7 +49,7 @@ class TestBot(asynctest.TestCase):
         self.patch_get_mc.stop()
         yield from self.bot.close()
 
-    async def test__ip_command_respons_with_host_and_port(self):
+    async def test__ip_command_responds_with_host_and_port(self):
         self.mock_mc.mc_server = MagicMock()
         mock_message = self._get_mock_command_message('!ip')
         await self.bot.on_message(mock_message)
