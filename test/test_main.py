@@ -49,6 +49,16 @@ class TestBot(asynctest.TestCase):
         self.patch_get_mc.stop()
         yield from self.bot.close()
 
+    async def test__ip_command_respons_with_host_and_port(self):
+        self.mock_mc.mc_server = MagicMock()
+        mock_message = self._get_mock_command_message('!ip')
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            f'{self.mock_mc.mc_server.host}:{self.mock_mc.mc_server.port}',
+        )
+
     async def test__status_command_responds_even_with_connection_errors(self):
         self.mock_mc.get_formatted_status_message.side_effect = \
             ConnectionRefusedError
