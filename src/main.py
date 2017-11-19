@@ -36,6 +36,12 @@ class Bot(commands.Bot):
             description='For getting the forge version',
             pass_context=True,
         ))
+        self.add_command(Command(
+            name='ip',
+            callback=self.ip,
+            description='For getting the ip and port of the server',
+            pass_context=True,
+        ))
 
     async def on_command_error(self, exception, context):
         if hasattr(exception, 'original'):
@@ -78,6 +84,14 @@ class Bot(commands.Bot):
         if mc:
             forge_ver_msg = mc.get_forge_version_message()
             await self.say(forge_ver_msg)
+
+    async def ip(self, context):
+        sid = context.message.server.id
+        cid = context.message.channel.id
+        mc = get_minecraft_object_for_server_channel(sid, cid)
+        if mc:
+            ip_msg = f'{mc.mc_server.host}:{mc.mc_server.port}'
+            await self.say(ip_msg)
 
 
 def main():
