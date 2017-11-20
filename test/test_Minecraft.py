@@ -5,9 +5,9 @@ from src.Minecraft import Minecraft
 import re
 
 status_vanilla_empty = PingResponse({
-    'description': {'text': '', },
-    'players': {'online': 0, 'max': 8, },
-    'version': {'name': '1.12.1', 'protocol': 338, },
+    'description': {'text': ''},
+    'players': {'online': 0, 'max': 8},
+    'version': {'name': '1.12.1', 'protocol': 338},
 })
 
 status_modded_online = PingResponse({
