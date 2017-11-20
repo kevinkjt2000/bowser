@@ -26,12 +26,11 @@ class TestMain(unittest.TestCase):
         assert mc.mc_server.host == "fake_host"
         assert mc.mc_server.port == 1234
 
-    @patch('builtins.open', new_callable=mock_open,
-           read_data='mock_token')
-    def test__main_starts_the_bot(self, mock_open):
-        with patch('src.main.Bot.run') as mock_bot_run:
-            src.main.main()
-            mock_bot_run.assert_called_once_with('mock_token')
+    @patch('src.main.Bot.run')
+    @patch('builtins.open', new_callable=mock_open, read_data='mock_token')
+    def test__main_starts_the_bot(self, mock_open, mock_bot_run):
+        src.main.main()
+        mock_bot_run.assert_called_once_with('mock_token')
 
 
 class TestBot(asynctest.TestCase):
