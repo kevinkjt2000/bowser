@@ -80,6 +80,20 @@ class TestBot(asynctest.TestCase):
             'Ninjas hijacked the packets, but the author will fix it.',
         )
 
+    async def test__tells_the_user_when_the_ip_is_bad(self):
+        from socket import gaierror
+        self.mock_mc.get_formatted_status_message.side_effect = \
+            gaierror
+
+        mock_message = self._get_mock_command_message('!status')
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_mc.get_formatted_status_message.assert_called_once()
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            'The !ip is unreachable; complain to someone in charge.',
+        )
+
     async def test__bot_gives_up_on_discord_command_errors(self):
         self.mock_mc.get_formatted_status_message.side_effect = \
             discord.ext.commands.errors.CommandError

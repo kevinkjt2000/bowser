@@ -60,6 +60,11 @@ class Bot(commands.Bot):
                     context.message.channel,
                     'The server is not accepting connections at this time.',
                 )
+            elif original == 'gaierror':
+                await self.send_message(
+                    context.message.channel,
+                    'The !ip is unreachable; complain to someone in charge.',
+                )
             else:
                 print('original: ' + original)
                 print(exception)
