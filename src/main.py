@@ -42,32 +42,50 @@ class Bot(commands.Bot):
             description='For getting the ip and port of the server',
             pass_context=True,
         ))
+        self.add_command(Command(
+            name='motd',
+            callback=self.motd,
+            description='For getting the motd of the server',
+            pass_context=True,
+        ))
 
     async def on_command_error(self, exception, context):
-        if hasattr(exception, 'original'):
-            original = exception.original.__class__.__name__
-            if original == 'ConnectionRefusedError' or original == 'timeout':
-                await self.send_message(
-                    context.message.channel,
-                    'The server is not accepting connections at this time.',
-                )
-            else:
-                print('original: ' + original)
-                print(exception)
-        elif exception.__class__.__name__ == 'CommandNotFound':
+        if exception.__class__.__name__ == 'CommandNotFound':
             pass
-        elif exception.__class__.__name__ == 'CommandInvokeError':
-            await self.send_message(
-                context.message.channel,
-                'The server is not fully ready for connections yet.'
-            )
-        else:
+        elif not hasattr(exception, 'original'):
             print('unknown: ' + exception.__class__.__name__)
             print(exception)
             await self.send_message(
                 context.message.channel,
                 'The bot is giving up; something unknown happened.'
             )
+        else:
+            original = exception.original.__class__.__name__
+            if original == 'ConnectionRefusedError' or original == 'timeout':
+                await self.send_message(
+                    context.message.channel,
+                    'The server is not accepting connections at this time.',
+                )
+            elif original == 'gaierror':
+                await self.send_message(
+                    context.message.channel,
+                    'The !ip is unreachable; complain to someone in charge.',
+                )
+            else:
+                print('original: ' + original)
+                print(exception)
+                await self.send_message(
+                    context.message.channel,
+                    'Ninjas hijacked the packets, but the author will fix it.',
+                )
+
+    async def motd(self, context):
+        sid = context.message.server.id
+        cid = context.message.channel.id
+        mc = get_minecraft_object_for_server_channel(sid, cid)
+        if mc:
+            motd = mc.get_motd()
+            await self.say(motd)
 
     async def status(self, context):
         sid = context.message.server.id

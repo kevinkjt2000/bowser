@@ -26,6 +26,12 @@ class TestMain(unittest.TestCase):
         assert mc.mc_server.host == "fake_host"
         assert mc.mc_server.port == 1234
 
+    @patch('src.main.Bot.run')
+    @patch('builtins.open', new_callable=mock_open, read_data='mock_token')
+    def test__main_starts_the_bot(self, mock_open, mock_bot_run):
+        src.main.main()
+        mock_bot_run.assert_called_once_with('mock_token')
+
 
 class TestBot(asynctest.TestCase):
     def setUp(self):
@@ -49,7 +55,75 @@ class TestBot(asynctest.TestCase):
         self.patch_get_mc.stop()
         yield from self.bot.close()
 
-    async def test__ip_command_respons_with_host_and_port(self):
+    async def test__can_fetch_motd(
+            self):
+        mock_message = self._get_mock_command_message('!motd')
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_mc.get_motd.assert_called_once()
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            self.mock_mc.get_motd(),
+        )
+
+    async def test__can_fetch_forge_version(
+            self):
+        mock_message = self._get_mock_command_message('!forge_version')
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_mc.get_forge_version_message.assert_called_once()
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            self.mock_mc.get_forge_version_message(),
+        )
+
+    async def test__errors_in_command_execution_are_logged(self):
+        self.mock_mc.get_formatted_status_message.side_effect = \
+            Exception
+
+        mock_message = self._get_mock_command_message('!status')
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_mc.get_formatted_status_message.assert_called_once()
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            'Ninjas hijacked the packets, but the author will fix it.',
+        )
+
+    async def test__tells_the_user_when_the_ip_is_bad(self):
+        from socket import gaierror
+        self.mock_mc.get_formatted_status_message.side_effect = \
+            gaierror
+
+        mock_message = self._get_mock_command_message('!status')
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_mc.get_formatted_status_message.assert_called_once()
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            'The !ip is unreachable; complain to someone in charge.',
+        )
+
+    async def test__bot_gives_up_on_discord_command_errors(self):
+        self.mock_mc.get_formatted_status_message.side_effect = \
+            discord.ext.commands.errors.CommandError
+
+        mock_message = self._get_mock_command_message('!status')
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_mc.get_formatted_status_message.assert_called_once()
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            'The bot is giving up; something unknown happened.',
+        )
+
+    async def test__command_not_found_is_ignored(self):
+        mock_message = self._get_mock_command_message('!lalala')
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_send.assert_not_called()
+
+    async def test__ip_command_responds_with_host_and_port(self):
         self.mock_mc.mc_server = MagicMock()
         mock_message = self._get_mock_command_message('!ip')
         await self.bot.on_message(mock_message)
