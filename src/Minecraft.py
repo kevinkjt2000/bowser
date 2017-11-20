@@ -12,7 +12,9 @@ class Minecraft:
         motd = status.description['text']
         ansi_escape = re.compile(r'§[0-9a-z]')
         motd = ansi_escape.sub('', motd)
-        return motd
+        if motd:
+            return f'`{motd}`'
+        return 'There is no MOTD :('
 
     def get_forge_version_message(self):
         status = self.mc_server.status()

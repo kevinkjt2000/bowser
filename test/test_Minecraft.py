@@ -41,10 +41,15 @@ class TestMinecraft(TestCase):
     def setup_class(self):
         self.mc = Minecraft(MinecraftServer=MagicMock)
 
+    def test__handles_empty_motds(self):
+        self.mc.mc_server.status.return_value = status_modded_online_old
+        motd = self.mc.get_motd()
+        assert motd == 'There is no MOTD :('
+
     def test__removes_ansi_escapes_from_motd(self):
         self.mc.mc_server.status.return_value = status_modded_online
         motd = self.mc.get_motd()
-        assert motd == '||Stuff|| Whitelist: Offline✔\nStuff'
+        assert motd == '`||Stuff|| Whitelist: Offline✔\nStuff`'
 
     def test__can_handle_old_protocols_without_players_sample(self):
         self._modded_test(status_modded_online_old)
