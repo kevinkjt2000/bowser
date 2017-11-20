@@ -42,6 +42,12 @@ class Bot(commands.Bot):
             description='For getting the ip and port of the server',
             pass_context=True,
         ))
+        self.add_command(Command(
+            name='motd',
+            callback=self.motd,
+            description='For getting the motd of the server',
+            pass_context=True,
+        ))
 
     async def on_command_error(self, exception, context):
         if exception.__class__.__name__ == 'CommandNotFound':
@@ -72,6 +78,14 @@ class Bot(commands.Bot):
                     context.message.channel,
                     'Ninjas hijacked the packets, but the author will fix it.',
                 )
+
+    async def motd(self, context):
+        sid = context.message.server.id
+        cid = context.message.channel.id
+        mc = get_minecraft_object_for_server_channel(sid, cid)
+        if mc:
+            motd = mc.get_motd()
+            await self.say(motd)
 
     async def status(self, context):
         sid = context.message.server.id

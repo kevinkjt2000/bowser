@@ -55,6 +55,17 @@ class TestBot(asynctest.TestCase):
         self.patch_get_mc.stop()
         yield from self.bot.close()
 
+    async def test__can_fetch_motd(
+            self):
+        mock_message = self._get_mock_command_message('!motd')
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.1)
+        self.mock_mc.get_motd.assert_called_once()
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            self.mock_mc.get_motd(),
+        )
+
     async def test__can_fetch_forge_version(
             self):
         mock_message = self._get_mock_command_message('!forge_version')
