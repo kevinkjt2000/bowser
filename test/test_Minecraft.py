@@ -11,7 +11,9 @@ status_vanilla_empty = PingResponse({
 })
 
 status_modded_online = PingResponse({
-    'description': {'text': 'fake description', },
+    'description': {
+        'text': '§9§k||§bStuff§9§k||§r §7Whitelist:§r §2Offline✔§r\n§6Stuff',
+    },
     'modinfo': {'modList': [
         {'modid': 'FML', 'version': '8.0.99.99'},
         {'modid': 'forge', 'version': '14.22.0.2460'},
@@ -38,6 +40,11 @@ status_modded_online_old = PingResponse({
 class TestMinecraft(TestCase):
     def setup_class(self):
         self.mc = Minecraft(MinecraftServer=MagicMock)
+
+    def test__removes_ansi_escapes_from_motd(self):
+        self.mc.mc_server.status.return_value = status_modded_online
+        motd = self.mc.get_motd()
+        assert motd == '||Stuff|| Whitelist: Offline✔\nStuff'
 
     def test__can_handle_old_protocols_without_players_sample(self):
         self._modded_test(status_modded_online_old)
