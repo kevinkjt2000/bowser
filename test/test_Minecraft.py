@@ -5,7 +5,7 @@ from src.Minecraft import Minecraft
 import re
 
 status_vanilla_empty = PingResponse({
-    'description': {'text': 'Minecraft is awesome!', },
+    'description': {'text': '', },
     'players': {'online': 0, 'max': 8, },
     'version': {'name': '1.12.1', 'protocol': 338, },
 })
@@ -30,8 +30,12 @@ status_modded_online_old = PingResponse({
     'version': {'name': 'BungeeCord 1.8.x-1.12.x', 'protocol': 47},
     'players': {'max': 9001, 'online': 2},
     'description': {
-        'extra': [{'color': 'dark_blue', 'text': 'TR Lobby'}],
-        'text': ''
+        'extra': [
+            {'color': 'dark_blue', 'text': 'TR Lobby'},
+            {'color': 'aqua', 'obfuscated': True, 'text': '|!|!|'},
+            {'color': 'aqua', 'underlined': True, 'text': 'TR HUB'},
+        ],
+        'text': '',
     },
     'modinfo': {'type': 'FML', 'modList': []}
 })
@@ -41,8 +45,13 @@ class TestMinecraft(TestCase):
     def setup_class(self):
         self.mc = Minecraft(MinecraftServer=MagicMock)
 
-    def test__handles_empty_motds(self):
+    def test__old_protocol_motds_are_supported(self):
         self.mc.mc_server.status.return_value = status_modded_online_old
+        motd = self.mc.get_motd()
+        assert motd == '`TR Lobby|!|!|TR HUB`'
+
+    def test__handles_empty_motds(self):
+        self.mc.mc_server.status.return_value = status_vanilla_empty
         motd = self.mc.get_motd()
         assert motd == 'There is no MOTD :('
 

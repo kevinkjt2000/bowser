@@ -10,6 +10,8 @@ class Minecraft:
     def get_motd(self):
         status = self.mc_server.status()
         motd = status.description['text']
+        if 'extra' in status.description:
+            motd += ''.join([x['text'] for x in status.description['extra']])
         ansi_escape = re.compile(r'§[0-9a-z]')
         motd = ansi_escape.sub('', motd)
         if motd:
