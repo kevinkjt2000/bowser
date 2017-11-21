@@ -40,10 +40,21 @@ status_modded_online_old = PingResponse({
     'modinfo': {'type': 'FML', 'modList': []}
 })
 
+status_modded_really_old = PingResponse({
+    'description': 'Infamous Gaming - GTNH',
+    'players': {'max': 20, 'online': 0, 'sample': []},
+    'version': {'name': '1.7.10', 'protocol': 5},
+})
+
 
 class TestMinecraft(TestCase):
     def setup_class(self):
         self.mc = Minecraft(MinecraftServer=MagicMock)
+
+    def test__really_old_protocol_empty_motds_are_supported(self):
+        self.mc.mc_server.status.return_value = status_modded_really_old
+        motd = self.mc.get_motd()
+        assert motd == 'There is no MOTD :('
 
     def test__old_protocol_motds_are_supported(self):
         self.mc.mc_server.status.return_value = status_modded_online_old
