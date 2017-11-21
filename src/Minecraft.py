@@ -9,7 +9,10 @@ class Minecraft:
 
     def get_motd(self):
         status = self.mc_server.status()
-        motd = status.description['text']
+        try:
+            motd = status.description['text']
+        except TypeError:
+            return 'There is no MOTD :('
         if 'extra' in status.description:
             motd += ''.join([x['text'] for x in status.description['extra']])
         ansi_escape = re.compile(r'§[0-9a-z]')
