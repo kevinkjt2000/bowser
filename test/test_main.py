@@ -110,6 +110,12 @@ class TestBot(asynctest.TestCase):
             f'{self.mock_mc.mc_server.host}:{self.mock_mc.mc_server.port}',
         )
 
+    async def test__status_command_when_the_server_does_not_respond(self):
+        self.mock_mc.get_formatted_status_message.side_effect = \
+            OSError
+        await self._assert_status_command_responds_with(
+            'Server did not respond with any information.')
+
     async def test__status_command_responds_even_with_connection_errors(self):
         self.mock_mc.get_formatted_status_message.side_effect = \
             ConnectionRefusedError

@@ -71,6 +71,11 @@ class Bot(commands.Bot):
                     context.message.channel,
                     'The !ip is unreachable; complain to someone in charge.',
                 )
+            elif original == 'OSError':
+                await self.send_message(
+                    context.message.channel,
+                    'Server did not respond with any information.',
+                )
             else:
                 print('original: ' + original)
                 print(exception)
