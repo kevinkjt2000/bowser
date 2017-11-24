@@ -78,20 +78,20 @@ class TestBot(asynctest.TestCase):
     async def test__errors_in_command_execution_are_logged(self):
         self.mock_mc.get_formatted_status_message.side_effect = \
             Exception
-        self._assert_status_command_responds_with(
+        await self._assert_status_command_responds_with(
             'Ninjas hijacked the packets, but the author will fix it.')
 
     async def test__tells_the_user_when_the_ip_is_bad(self):
         from socket import gaierror
         self.mock_mc.get_formatted_status_message.side_effect = \
             gaierror
-        self._assert_status_command_responds_with(
+        await self._assert_status_command_responds_with(
             'The !ip is unreachable; complain to someone in charge.')
 
     async def test__bot_gives_up_on_discord_command_errors(self):
         self.mock_mc.get_formatted_status_message.side_effect = \
             discord.ext.commands.errors.CommandError
-        self._assert_status_command_responds_with(
+        await self._assert_status_command_responds_with(
             'The bot is giving up; something unknown happened.')
 
     async def test__command_not_found_is_ignored(self):
@@ -113,22 +113,20 @@ class TestBot(asynctest.TestCase):
     async def test__status_command_responds_even_with_connection_errors(self):
         self.mock_mc.get_formatted_status_message.side_effect = \
             ConnectionRefusedError
-        self._assert_status_command_responds_with(
+        await self._assert_status_command_responds_with(
             'The server is not accepting connections at this time.')
 
     async def test__status_command_responds_with_status_message(self):
-        self._assert_status_command_responds_with(
-            self.mock_mc.get_formatted_status_message())
+        msg = self.mock_mc.get_formatted_status_message()
+        self.mock_mc.get_formatted_status_message.reset_mock()
+        await self._assert_status_command_responds_with(msg)
 
-    def _assert_status_command_responds_with(self, resp_message):
+    async def _assert_status_command_responds_with(self, message):
         mock_message = self._get_mock_command_message('!status')
-        yield from self.bot.on_message(mock_message)
+        await self.bot.on_message(mock_message)
         self.mock_mc.get_formatted_status_message.assert_called_once()
-        yield from asyncio.sleep(0.1)
-        self.mock_send.assert_called_once_with(
-            mock_message.channel,
-            resp_message,
-        )
+        await asyncio.sleep(0.1)
+        self.mock_send.assert_called_once_with(mock_message.channel, message)
 
     def _get_mock_command_message(self, command):
         return self._get_mock_message(command, channel=self.mock_channel_id)
