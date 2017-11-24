@@ -72,11 +72,12 @@ class Bot(commands.Bot):
                     'The !ip is unreachable; complain to someone in charge.',
                 )
             else:
-                sid = context.message.server.id
-                cid = context.message.channel.id
-                print(f'sid: {sid} cid: {cid} command: {context.invoked_with}')
                 print('original: ' + original)
                 print(exception)
+                sid = context.message.server.id
+                cid = context.message.channel.id
+                print(f'command: {context.invoked_with}')
+                print(f'sid: {sid} cid: {cid}')
                 await self.send_message(
                     context.message.channel,
                     'Ninjas hijacked the packets, but the author will fix it.',
