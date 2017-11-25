@@ -49,11 +49,11 @@ class TestBot(asynctest.TestCase):
         self.patch_send = asynctest.patch.object(self.bot, 'send_message')
         self.mock_send = self.patch_send.start()
 
-    def tearDown(self):
+    async def tearDown(self):
         self.patch_send.stop()
         self.patch_run.stop()
         self.patch_get_mc.stop()
-        yield from self.bot.close()
+        await self.bot.close()
 
     async def test__can_fetch_motd(self):
         mock_message = self._get_mock_command_message('!motd')
