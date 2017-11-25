@@ -34,7 +34,7 @@ class TestMain(unittest.TestCase):
 
 
 class TestBot(asynctest.TestCase):
-    def setUp(self):
+    async def setUp(self):
         self.mock_server_id = str(random.randrange(999999))
         self.mock_channel_id = str(random.randrange(999999))
         self.patch_get_mc = patch(
