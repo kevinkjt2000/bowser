@@ -1,3 +1,4 @@
+from types import SimpleNamespace
 from unittest.mock import patch, mock_open, MagicMock
 import asyncio
 import asynctest
@@ -8,6 +9,14 @@ import src.main
 
 
 class TestMain(unittest.TestCase):
+    def setUp(self):
+        self.context = SimpleNamespace(
+            message=SimpleNamespace(
+                server=SimpleNamespace(id=42),
+                channel=SimpleNamespace(id=5),
+            )
+        )
+
     @patch('src.main.main')
     def test__init_calls_main_once(self, mock_main):
         with patch.object(src.main, '__name__', '__main__'):
@@ -16,13 +25,13 @@ class TestMain(unittest.TestCase):
 
     @patch('builtins.open', new_callable=mock_open, read_data="{}")
     def test__get_minecraft_object_can_read_empty_json(self, mock_open):
-        mc = src.main.get_minecraft_object_for_server_channel(42, 5)
+        mc = src.main.get_minecraft_object_for_server_channel(self.context)
         assert not mc
 
     @patch('builtins.open', new_callable=mock_open,
            read_data="""{"42": {"5": {"host": "fake_host", "port": 1234}}}""")
     def test__get_minecraft_object_can_read_host_and_port(self, mock_open):
-        mc = src.main.get_minecraft_object_for_server_channel(42, 5)
+        mc = src.main.get_minecraft_object_for_server_channel(self.context)
         assert mc.mc_server.host == "fake_host"
         assert mc.mc_server.port == 1234
 

@@ -4,9 +4,9 @@ from src.Minecraft import Minecraft
 import json
 
 
-def get_minecraft_object_for_server_channel(sid, cid):
-    sid = str(sid)
-    cid = str(cid)
+def get_minecraft_object_for_server_channel(context):
+    sid = str(context.message.server.id)
+    cid = str(context.message.channel.id)
     minecrafts = {}
     with open('servers.json') as json_data:
         minecrafts = json.load(json_data)
@@ -89,33 +89,25 @@ class Bot(commands.Bot):
                 )
 
     async def motd(self, context):
-        sid = context.message.server.id
-        cid = context.message.channel.id
-        mc = get_minecraft_object_for_server_channel(sid, cid)
+        mc = get_minecraft_object_for_server_channel(context)
         if mc:
             motd = mc.get_motd()
             await self.say(motd)
 
     async def status(self, context):
-        sid = context.message.server.id
-        cid = context.message.channel.id
-        mc = get_minecraft_object_for_server_channel(sid, cid)
+        mc = get_minecraft_object_for_server_channel(context)
         if mc:
             status_msg = mc.get_formatted_status_message()
             await self.say(status_msg)
 
     async def forge_version(self, context):
-        sid = context.message.server.id
-        cid = context.message.channel.id
-        mc = get_minecraft_object_for_server_channel(sid, cid)
+        mc = get_minecraft_object_for_server_channel(context)
         if mc:
             forge_ver_msg = mc.get_forge_version_message()
             await self.say(forge_ver_msg)
 
     async def ip(self, context):
-        sid = context.message.server.id
-        cid = context.message.channel.id
-        mc = get_minecraft_object_for_server_channel(sid, cid)
+        mc = get_minecraft_object_for_server_channel(context)
         if mc:
             ip_msg = f'{mc.mc_server.host}:{mc.mc_server.port}'
             await self.say(ip_msg)
