@@ -119,6 +119,13 @@ class TestBot(asynctest.TestCase):
             f'{self.mock_mc.mc_server.host}:{self.mock_mc.mc_server.port}',
         )
 
+    async def test__status_command_warns_about_missing_server(self):
+        self.mock_mc.get_formatted_status_message.side_effect = \
+            KeyError
+        await self._assert_status_command_responds_with(
+            'There is not yet a Minecraft server configured for this discord'
+            ' server channel.')
+
     async def test__status_command_when_the_server_does_not_respond(self):
         self.mock_mc.get_formatted_status_message.side_effect = \
             OSError

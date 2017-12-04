@@ -76,6 +76,12 @@ class Bot(commands.Bot):
                     context.message.channel,
                     'Server did not respond with any information.',
                 )
+            elif original == 'KeyError':
+                await self.send_message(
+                    context.message.channel,
+                    'There is not yet a Minecraft server configured for this'
+                    ' discord server channel.',
+                )
             else:
                 print('original: ' + original)
                 print(exception)
