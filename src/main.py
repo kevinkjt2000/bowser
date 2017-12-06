@@ -85,9 +85,9 @@ class Bot(commands.Bot):
             else:
                 print('original: ' + original)
                 print(exception)
+                print(f'command: {context.invoked_with}')
                 sid = context.message.server.id
                 cid = context.message.channel.id
-                print(f'command: {context.invoked_with}')
                 print(f'sid: {sid} cid: {cid}')
                 await self.send_message(
                     context.message.channel,
