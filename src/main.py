@@ -1,7 +1,6 @@
 from discord.ext import commands
 from discord.ext.commands.core import Command
 from src.Minecraft import Minecraft
-import functools
 import json
 
 
@@ -22,9 +21,12 @@ def get_minecraft_object_for_server_channel(context):
 class Bot(commands.Bot):
     def _command(self, help):
         def decorator(function):
+            async def wrapped(context):
+                mc = get_minecraft_object_for_server_channel(context)
+                return await function(self, mc)
             self.add_command(Command(
                 name=function.__name__,
-                callback=functools.partial(function, self),
+                callback=wrapped,
                 help=help,
                 pass_context=True,
             ))
@@ -37,29 +39,25 @@ class Bot(commands.Bot):
         )
 
         @self._command('Gets the MOTD.')
-        async def motd(self, context):
-            mc = get_minecraft_object_for_server_channel(context)
+        async def motd(self, mc):
             if mc:
                 motd = mc.get_motd()
                 await self.say(motd)
 
         @self._command('Number of mods loaded and who is online.')
-        async def status(self, context):
-            mc = get_minecraft_object_for_server_channel(context)
+        async def status(self, mc):
             if mc:
                 status_msg = mc.get_formatted_status_message()
                 await self.say(status_msg)
 
         @self._command('The forge version.')
-        async def forge_version(self, context):
-            mc = get_minecraft_object_for_server_channel(context)
+        async def forge_version(self, mc):
             if mc:
                 forge_ver_msg = mc.get_forge_version_message()
                 await self.say(forge_ver_msg)
 
         @self._command('The IP and port of the server.')
-        async def ip(self, context):
-            mc = get_minecraft_object_for_server_channel(context)
+        async def ip(self, mc):
             if mc:
                 ip_msg = f'{mc.mc_server.host}:{mc.mc_server.port}'
                 await self.say(ip_msg)
