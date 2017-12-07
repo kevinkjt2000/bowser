@@ -1,6 +1,7 @@
 from discord.ext import commands
 from discord.ext.commands.core import Command
 from src.Minecraft import Minecraft
+import functools
 import json
 
 
@@ -19,35 +20,49 @@ def get_minecraft_object_for_server_channel(context):
 
 
 class Bot(commands.Bot):
+    def _command(self, help):
+        def decorator(function, *args, **kwargs):
+            self.add_command(Command(
+                name=function.__name__,
+                callback=functools.partial(function, self),
+                help=help,
+                pass_context=True,
+            ))
+        return decorator
+
     def __init__(self):
         super().__init__(
             command_prefix=commands.when_mentioned_or('!'),
             description='A bot for querying the status of a minecraft server.'
         )
-        self.add_command(Command(
-            name='status',
-            callback=self.status,
-            description='For getting the status',
-            pass_context=True,
-        ))
-        self.add_command(Command(
-            name='forge_version',
-            callback=self.forge_version,
-            description='For getting the forge version',
-            pass_context=True,
-        ))
-        self.add_command(Command(
-            name='ip',
-            callback=self.ip,
-            description='For getting the ip and port of the server',
-            pass_context=True,
-        ))
-        self.add_command(Command(
-            name='motd',
-            callback=self.motd,
-            description='For getting the motd of the server',
-            pass_context=True,
-        ))
+
+        @self._command('Gets the MOTD.')
+        async def motd(self, context):
+            mc = get_minecraft_object_for_server_channel(context)
+            if mc:
+                motd = mc.get_motd()
+                await self.say(motd)
+
+        @self._command('Number of mods loaded and who is online.')
+        async def status(self, context):
+            mc = get_minecraft_object_for_server_channel(context)
+            if mc:
+                status_msg = mc.get_formatted_status_message()
+                await self.say(status_msg)
+
+        @self._command('The forge version.')
+        async def forge_version(self, context):
+            mc = get_minecraft_object_for_server_channel(context)
+            if mc:
+                forge_ver_msg = mc.get_forge_version_message()
+                await self.say(forge_ver_msg)
+
+        @self._command('The IP and port of the server.')
+        async def ip(self, context):
+            mc = get_minecraft_object_for_server_channel(context)
+            if mc:
+                ip_msg = f'{mc.mc_server.host}:{mc.mc_server.port}'
+                await self.say(ip_msg)
 
     async def on_command_error(self, exception, context):
         if exception.__class__.__name__ == 'CommandNotFound':
@@ -93,30 +108,6 @@ class Bot(commands.Bot):
                     context.message.channel,
                     'Ninjas hijacked the packets, but the author will fix it.',
                 )
-
-    async def motd(self, context):
-        mc = get_minecraft_object_for_server_channel(context)
-        if mc:
-            motd = mc.get_motd()
-            await self.say(motd)
-
-    async def status(self, context):
-        mc = get_minecraft_object_for_server_channel(context)
-        if mc:
-            status_msg = mc.get_formatted_status_message()
-            await self.say(status_msg)
-
-    async def forge_version(self, context):
-        mc = get_minecraft_object_for_server_channel(context)
-        if mc:
-            forge_ver_msg = mc.get_forge_version_message()
-            await self.say(forge_ver_msg)
-
-    async def ip(self, context):
-        mc = get_minecraft_object_for_server_channel(context)
-        if mc:
-            ip_msg = f'{mc.mc_server.host}:{mc.mc_server.port}'
-            await self.say(ip_msg)
 
 
 def main():
