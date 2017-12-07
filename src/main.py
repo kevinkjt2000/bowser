@@ -21,7 +21,7 @@ def get_minecraft_object_for_server_channel(context):
 
 class Bot(commands.Bot):
     def _command(self, help):
-        def decorator(function, *args, **kwargs):
+        def decorator(function):
             self.add_command(Command(
                 name=function.__name__,
                 callback=functools.partial(function, self),
