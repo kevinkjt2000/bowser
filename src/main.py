@@ -10,12 +10,8 @@ def get_minecraft_object_for_server_channel(context):
     minecrafts = {}
     with open('servers.json') as json_data:
         minecrafts = json.load(json_data)
-    for s in minecrafts:
-        for c in minecrafts[sid]:
-            if s == sid and c == cid:
-                m = minecrafts[sid][cid]
-                return Minecraft(host=m['host'], port=m['port'])
-    return None
+    m = minecrafts[sid][cid]
+    return Minecraft(host=m['host'], port=m['port'])
 
 
 class Bot(commands.Bot):
@@ -40,27 +36,23 @@ class Bot(commands.Bot):
 
         @self._command('Gets the MOTD.')
         async def motd(self, mc):
-            if mc:
-                motd = mc.get_motd()
-                await self.say(motd)
+            motd = mc.get_motd()
+            await self.say(motd)
 
         @self._command('Number of mods loaded and who is online.')
         async def status(self, mc):
-            if mc:
-                status_msg = mc.get_formatted_status_message()
-                await self.say(status_msg)
+            status_msg = mc.get_formatted_status_message()
+            await self.say(status_msg)
 
         @self._command('The forge version.')
         async def forge_version(self, mc):
-            if mc:
-                forge_ver_msg = mc.get_forge_version_message()
-                await self.say(forge_ver_msg)
+            forge_ver_msg = mc.get_forge_version_message()
+            await self.say(forge_ver_msg)
 
         @self._command('The IP and port of the server.')
         async def ip(self, mc):
-            if mc:
-                ip_msg = f'{mc.mc_server.host}:{mc.mc_server.port}'
-                await self.say(ip_msg)
+            ip_msg = f'{mc.mc_server.host}:{mc.mc_server.port}'
+            await self.say(ip_msg)
 
     async def on_command_error(self, exception, context):
         if exception.__class__.__name__ == 'CommandNotFound':

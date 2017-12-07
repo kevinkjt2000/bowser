@@ -24,9 +24,9 @@ class TestMain(unittest.TestCase):
             mock_main.assert_called_once_with()
 
     @patch('builtins.open', new_callable=mock_open, read_data="{}")
-    def test__get_minecraft_object_can_read_empty_json(self, mock_open):
-        mc = src.main.get_minecraft_object_for_server_channel(self.context)
-        assert not mc
+    def test__get_mc_object_raises_key_error_for_empty_json(self, mock_open):
+        with self.assertRaises(KeyError):
+            src.main.get_minecraft_object_for_server_channel(self.context)
 
     @patch('builtins.open', new_callable=mock_open,
            read_data="""{"42": {"5": {"host": "fake_host", "port": 1234}}}""")
