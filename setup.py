@@ -13,10 +13,14 @@ test_requirements = [
     'python-coveralls',
 ]
 
+setup_requirements = [
+    'setuptools_scm',
+]
+
 setup(
     install_requires=requirements,
     extras_require={'dev': test_requirements},
+    setup_requires=setup_requirements,
     packages=['src'],
-    setup_requires=['setuptools_scm'],
     use_scm_version=True,
 )
