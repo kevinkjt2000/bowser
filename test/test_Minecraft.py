@@ -1,7 +1,8 @@
 from mcstatus.pinger import PingResponse
 from unittest import TestCase
-from unittest.mock import MagicMock
+from unittest.mock import patch, mock_open, MagicMock
 from src.Minecraft import Minecraft
+from types import SimpleNamespace
 import re
 
 status_vanilla_empty = PingResponse({
@@ -50,6 +51,24 @@ status_modded_really_old = PingResponse({
 class TestMinecraft(TestCase):
     def setup_class(self):
         self.mc = Minecraft(MinecraftServer=MagicMock)
+        self.context = SimpleNamespace(
+            message=SimpleNamespace(
+                server=SimpleNamespace(id=42),
+                channel=SimpleNamespace(id=5),
+            )
+        )
+
+    @patch('builtins.open', new_callable=mock_open, read_data="{}")
+    def test__get_mc_object_raises_key_error_for_empty_json(self, mock_open):
+        with self.assertRaises(KeyError):
+            Minecraft.get_minecraft_object_for_server_channel(self.context)
+
+    @patch('builtins.open', new_callable=mock_open,
+           read_data="""{"42": {"5": {"host": "fake_host", "port": 1234}}}""")
+    def test__get_minecraft_object_can_read_host_and_port(self, mock_open):
+        mc = Minecraft.get_minecraft_object_for_server_channel(self.context)
+        assert mc.mc_server.host == "fake_host"
+        assert mc.mc_server.port == 1234
 
     def test__really_old_protocol_empty_motds_are_supported(self):
         self.mc.mc_server.status.return_value = status_modded_really_old
@@ -75,7 +94,7 @@ class TestMinecraft(TestCase):
         self._modded_test(status_modded_online_old)
 
     def test__can_display_server_status_from_vanilla_server(self):
-        status_re = re.compile('^players \d+/\d+$')
+        status_re = re.compile(r'^players \d+/\d+$')
         self.mc.mc_server.status.return_value = status_vanilla_empty
         status_message = self.mc.get_formatted_status_message()
         assert status_re.match(status_message) is not None
@@ -83,7 +102,7 @@ class TestMinecraft(TestCase):
     def test__forge_version_is_not_installed_on_vanilla(self):
         self.mc.mc_server.status.return_value = status_vanilla_empty
         forge_message = self.mc.get_forge_version_message()
-        assert forge_message == 'The server does not have Forge installed'
+        assert forge_message == 'The server does not have Forge installed.'
 
     def test__forge_version_message_matches_modid_forge_version(self):
         self.mc.mc_server.status.return_value = status_modded_online
@@ -95,7 +114,7 @@ class TestMinecraft(TestCase):
 
     def _modded_test(self, status_dict):
         status_re = re.compile(
-            '^\d+ mods loaded, players \d+/\d+: `(.*(, )?)*`$'
+            r'^\d+ mods loaded, players \d+/\d+: `(.*(, )?)*`$'
         )
         self.mc.mc_server.status.return_value = status_dict
         status_message = self.mc.get_formatted_status_message()
