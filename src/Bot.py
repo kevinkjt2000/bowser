@@ -20,7 +20,9 @@ class Bot(commands.Bot):
     def __init__(self):
         super().__init__(
             command_prefix=commands.when_mentioned_or('!'),
-            description='A bot for querying the status of a minecraft server.'
+            description="""
+            A bot for querying minecraft server stuff.
+            https://github.com/kevinkjt2000/discord-minecraft-server-status"""
         )
 
         @self._command('Gets the MOTD.')
