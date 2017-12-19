@@ -21,6 +21,7 @@ setup(
     install_requires=requirements,
     extras_require={'dev': test_requirements},
     setup_requires=setup_requirements,
-    packages=['src'],
+    packages=['bowser'],
+    scripts=['scripts/bowser-bot'],
     use_scm_version=True,
 )

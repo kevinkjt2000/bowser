@@ -3,7 +3,7 @@ import asyncio
 import asynctest
 import discord
 import random
-import src.Minecraft
+import bowser.Minecraft
 
 
 class TestBot(asynctest.TestCase):
@@ -11,11 +11,11 @@ class TestBot(asynctest.TestCase):
         self.mock_server_id = str(random.randrange(999999))
         self.mock_channel_id = str(random.randrange(999999))
         self.patch_get_mc = patch(
-            'src.Minecraft.Minecraft.get_minecraft_object_for_server_channel',
-            return_value=MagicMock(spec=src.Minecraft.Minecraft),
+            'bowser.Minecraft.Minecraft.get_minecraft_object_for_server_channel',
+            return_value=MagicMock(spec=bowser.Minecraft.Minecraft),
         )
         self.mock_mc = self.patch_get_mc.start()()
-        self.bot = src.main.Bot()
+        self.bot = bowser.main.Bot()
         self.bot.user = self._get_mock_user(bot=True)
         self.patch_run = asynctest.patch.object(self.bot, 'run')
         self.patch_run.start()

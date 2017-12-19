@@ -4,6 +4,6 @@ python:
   - "3.7-dev"
   - "nightly"
 install: "pip install -e .[dev]"
-script: pytest --cov-report term-missing --cov=src
+script: pytest --cov-report term-missing --cov=bowser
 after_success: coveralls
 
