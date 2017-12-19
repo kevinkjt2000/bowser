@@ -1,0 +1,7 @@
+version: '2'
+services:
+  bot:
+    build: .
+    depends_on: ["redis"]
+  redis:
+    image: "redis:alpine"
