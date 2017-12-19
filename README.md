@@ -1,6 +1,7 @@
-[![Build Status](https://img.shields.io/travis/kevinkjt2000/discord-minecraft-server-status/develop.svg?style=flat-square&label=Travis-CI)](https://travis-ci.org/kevinkjt2000/discord-minecraft-server-status?branch=develop) [![Coverage Status](https://img.shields.io/coveralls/kevinkjt2000/discord-minecraft-server-status/develop.svg?style=flat-square&label=Coveralls)](https://coveralls.io/github/kevinkjt2000/discord-minecraft-server-status?branch=develop)
-# Minecraft Server Status Bot for Discord
-Adding this bot to a discord server will allow users to send the message "!status" to see current status about the minecraft server configured in `servers.json`.  Configuration is limited to one minecraft server per discord channel, but you can have a different server on each channel of your discord server if you like.  Eventually I will make my instance of this bot public and add commands that allow some discord role to be able to configure minecraft servers dynamically.  For now, feel free to run the bot, or ping me on discord 
+[![Build Status](https://img.shields.io/travis/kevinkjt2000/discord-game-server-status/develop.svg?style=flat-square&label=Travis-CI)](https://travis-ci.org/kevinkjt2000/discord-game-server-status?branch=develop)
+[![Coverage Status](https://img.shields.io/coveralls/kevinkjt2000/discord-game-server-status/develop.svg?style=flat-square&label=Coveralls)](https://coveralls.io/github/kevinkjt2000/discord-game-server-status?branch=develop)
+# Game Server Status Bot for Discord
+Adding this bot to a discord server will allow users to send the message "!status" to see current status about the minecraft server configured in `servers.json`.  Configuration is limited to one minecraft server per discord channel, but you can have a different server on each channel of your discord server if you like.  Eventually I will make my instance of this bot public and add commands that allow some discord role to be able to configure minecraft servers dynamically.  For now, feel free to run the bot, or ping me on discord.
 
 ### Usage
 * Ensure Python 3.6+ is installed
