@@ -1,4 +1,4 @@
-from src.Bot import Bot
+from bowser.bot import Bot
 
 
 def main():

@@ -1,6 +1,6 @@
 from discord.ext import commands
 from discord.ext.commands.core import Command
-from src.Minecraft import Minecraft
+from bowser.Minecraft import Minecraft
 
 
 class Bot(commands.Bot):
