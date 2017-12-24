@@ -3,7 +3,7 @@
 .eggs/*
 .ropeproject/*
 *.pyc
-UNKNOWN.egg-info/*
+*.egg-info/*
 venv/*
 
 token.txt

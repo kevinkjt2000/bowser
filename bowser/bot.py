@@ -22,7 +22,7 @@ class Bot(commands.Bot):
             command_prefix=commands.when_mentioned_or('!'),
             description="""
             A bot for querying minecraft server stuff.
-            https://github.com/kevinkjt2000/discord-minecraft-server-status"""
+            https://github.com/kevinkjt2000/bowser"""
         )
 
         @self._command('Gets the MOTD.')
