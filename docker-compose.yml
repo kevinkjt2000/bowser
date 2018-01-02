@@ -4,6 +4,8 @@ services:
     build: .
     volumes:
       - .:/root/bowser
+    environment:
+      - PYTHONUNBUFFERED=1
     depends_on:
       - redis
   redis:
