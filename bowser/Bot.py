@@ -22,7 +22,7 @@ class Bot(commands.Bot):
             command_prefix=commands.when_mentioned_or('!'),
             description="""
             A bot for querying minecraft server stuff.
-            https://github.com/kevinkjt2000/discord-minecraft-server-status"""
+            https://github.com/kevinkjt2000/bowser"""
         )
 
         @self._command('Gets the MOTD.')
@@ -44,6 +44,8 @@ class Bot(commands.Bot):
         async def ip(self, mc):
             ip_msg = f'{mc.mc_server.host}:{mc.mc_server.port}'
             await self.say(ip_msg)
+
+        print('Bowser is ready!')
 
     async def on_command_error(self, exception, context):
         if exception.__class__.__name__ == 'CommandNotFound':

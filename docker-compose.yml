@@ -1,0 +1,14 @@
+version: '2.1'
+services:
+  bot:
+    build: .
+    volumes:
+      - .:/root/bowser
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - redis
+  redis:
+    image: "redis:alpine"
+    sysctls:
+      - net.core.somaxconn=511
