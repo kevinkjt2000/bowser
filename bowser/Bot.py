@@ -45,6 +45,8 @@ class Bot(commands.Bot):
             ip_msg = f'{mc.mc_server.host}:{mc.mc_server.port}'
             await self.say(ip_msg)
 
+        print('Bowser is ready!')
+
     async def on_command_error(self, exception, context):
         if exception.__class__.__name__ == 'CommandNotFound':
             pass
