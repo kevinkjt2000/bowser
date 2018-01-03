@@ -5,5 +5,8 @@ python:
   - "nightly"
 install: docker-compose build
 script: make test
-after_success: coveralls
-
+after_success:
+  - coveralls
+  - ./discord-webhook.sh success $WEBHOOK_URL
+after_failure:
+  - ./discord-webhook.sh failure $WEBHOOK_URL
