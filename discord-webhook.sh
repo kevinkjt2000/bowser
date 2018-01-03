@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This file is under the same MIT license, except that it is copyrighted only by
+# Copyright (c) 2017 Sankarsan Kampa
+
 if [ -z "$2" ]; then
   echo -e "WARNING!!\nYou need to pass the WEBHOOK_URL environment variable as the second argument to this script.\nFor details & guide, visit: https://github.com/k3rn31p4nic/travis-ci-discord-webhook" && exit
 fi
