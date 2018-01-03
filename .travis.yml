@@ -3,7 +3,7 @@ python:
   - "3.6"
   - "3.7-dev"
   - "nightly"
-install: "pip install -e .[dev]"
-script: pytest --cov-report term-missing --cov=bowser
+install: docker-compose build
+script: make test
 after_success: coveralls
 
