@@ -1,3 +1,3 @@
 .PHONY: test
 test:
-		docker-compose run --rm bowser pytest -v
+	docker-compose run --rm bowser pytest -v
