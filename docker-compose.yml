@@ -1,6 +1,6 @@
 version: '2.1'
 services:
-  bot:
+  bowser:
     build: .
     volumes:
       - .:/root/bowser
