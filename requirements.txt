@@ -10,7 +10,7 @@ discord.py==0.16.12
 dnspython==1.15.0
 dnspython3==1.15.0
 idna==2.6
-mcstatus==2.2
+git+https://github.com/kevinkjt2000/mcstatus.git@patch-1
 multidict==3.3.2
 pluggy==0.6.0
 py==1.5.2
