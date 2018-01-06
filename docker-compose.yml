@@ -12,7 +12,9 @@ services:
       - TRAVIS_PULL_REQUEST=${TRAVIS_PULL_REQUEST}
     depends_on:
       - redis
+    restart: unless-stopped
   redis:
     image: "redis:alpine"
     sysctls:
       - net.core.somaxconn=511
+    restart: unless-stopped
