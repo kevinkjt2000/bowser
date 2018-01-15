@@ -11,7 +11,7 @@ dnspython==1.15.0
 dnspython3==1.15.0
 idna==2.6
 git+https://github.com/kevinkjt2000/mcstatus.git@patch-1
-multidict==3.3.2
+multidict==4.0.0
 pluggy==0.6.0
 py==1.5.2
 pytest==3.3.2
