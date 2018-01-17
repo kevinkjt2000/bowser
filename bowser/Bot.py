@@ -1,24 +1,13 @@
 from discord.ext import commands
 from discord.ext.commands.core import Command
-from src.Minecraft import Minecraft
-import json
-
-
-def get_minecraft_object_for_server_channel(context):
-    sid = str(context.message.server.id)
-    cid = str(context.message.channel.id)
-    minecrafts = {}
-    with open('servers.json') as json_data:
-        minecrafts = json.load(json_data)
-    m = minecrafts[sid][cid]
-    return Minecraft(host=m['host'], port=m['port'])
+from bowser.Minecraft import Minecraft
 
 
 class Bot(commands.Bot):
     def _command(self, help):
         def decorator(function):
             async def wrapped(context):
-                mc = get_minecraft_object_for_server_channel(context)
+                mc = Minecraft.get_minecraft_object_for_server_channel(context)
                 return await function(self, mc)
             self.add_command(Command(
                 name=function.__name__,
@@ -31,7 +20,9 @@ class Bot(commands.Bot):
     def __init__(self):
         super().__init__(
             command_prefix=commands.when_mentioned_or('!'),
-            description='A bot for querying the status of a minecraft server.'
+            description="""
+            A bot for querying minecraft server stuff.
+            https://github.com/kevinkjt2000/bowser"""
         )
 
         @self._command('Gets the MOTD.')
@@ -53,6 +44,8 @@ class Bot(commands.Bot):
         async def ip(self, mc):
             ip_msg = f'{mc.mc_server.host}:{mc.mc_server.port}'
             await self.say(ip_msg)
+
+        print('Bowser is ready!')
 
     async def on_command_error(self, exception, context):
         if exception.__class__.__name__ == 'CommandNotFound':
@@ -98,17 +91,3 @@ class Bot(commands.Bot):
                     context.message.channel,
                     'Ninjas hijacked the packets, but the author will fix it.',
                 )
-
-
-def main():
-    bot = Bot()
-    token = open('token.txt').read().replace('\n', '')
-    bot.run(token)
-
-
-def init():
-    if __name__ == '__main__':
-        main()
-
-
-init()
