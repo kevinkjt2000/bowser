@@ -1,8 +1,8 @@
 from unittest.mock import patch, MagicMock
 import asyncio
+import random
 import asynctest
 import discord
-import random
 import bowser.Minecraft
 
 
@@ -134,7 +134,7 @@ class TestBot(asynctest.TestCase):
     def _get_mock_message(self, content, **kwargs):
         channel = kwargs.pop('channel', self._get_mock_channel())
         server = kwargs.pop('server', self._get_mock_server())
-        if type(channel) is str:
+        if isinstance(channel, str):
             channel = self._get_mock_channel(id=channel)
         return asynctest.MagicMock(
             spec=discord.Message,

@@ -1,5 +1,6 @@
 from unittest.mock import patch, mock_open
 import unittest
+import asynctest
 import bowser.main
 
 
@@ -9,6 +10,15 @@ class TestMain(unittest.TestCase):
         with patch.object(bowser.main, '__name__', '__main__'):
             bowser.main.init()
             mock_main.assert_called_once_with()
+
+    @asynctest.patch('bowser.main.Bot.close')
+    @asynctest.patch('bowser.main.Bot.run')
+    @patch('builtins.open', new_callable=mock_open, read_data='mock_token')
+    def test__main_catches_exceptions_and_closes_the_bot(
+            self, mock_open, mock_bot_run, mock_bot_close):
+        mock_bot_run.side_effect = ConnectionResetError
+        self.assertRaises(ConnectionResetError, bowser.main.main)
+        mock_bot_close.assert_called_once_with()
 
     @patch('bowser.main.Bot.run')
     @patch('builtins.open', new_callable=mock_open, read_data='mock_token')

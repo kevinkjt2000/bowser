@@ -7,6 +7,6 @@ install: docker-compose build
 script: make test
 after_success:
   - docker-compose run bowser coveralls
-  - ./discord-webhook.sh success $WEBHOOK_URL
+  - scripts/discord-webhook.sh success $WEBHOOK_URL
 after_failure:
-  - ./discord-webhook.sh failure $WEBHOOK_URL
+  - scripts/discord-webhook.sh failure $WEBHOOK_URL
