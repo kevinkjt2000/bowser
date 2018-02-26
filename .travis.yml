@@ -1,8 +1,6 @@
 language: python
 python:
   - "3.6"
-  - "3.7-dev"
-  - "nightly"
 install: docker-compose build
 script: make test
 after_success:
