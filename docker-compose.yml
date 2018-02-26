@@ -2,8 +2,6 @@ version: '2.1'
 services:
   bowser:
     build: .
-    volumes:
-      - .:/root/bowser
     environment:
       - PYTHONUNBUFFERED=1
       - TRAVIS=${TRAVIS}
