@@ -2,6 +2,7 @@ version: '2.1'
 services:
   bowser:
     environment:
+      - CODECOV_TOKEN=${CODECOV_TOKEN}
       - TRAVIS=${TRAVIS}
       - TRAVIS_JOB_ID=${TRAVIS_JOB_ID}
       - TRAVIS_BRANCH=${TRAVIS_BRANCH}
