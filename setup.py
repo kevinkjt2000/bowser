@@ -7,6 +7,7 @@ requirements = [
 
 test_requirements = [
     'asynctest',
+    'codecov',
     'pytest',
     'pytest-cov',
     'pytest-socket',
