@@ -2,14 +2,8 @@ version: '2.1'
 services:
   bowser:
     build: .
-    volumes:
-      - .:/root/bowser
     environment:
       - PYTHONUNBUFFERED=1
-      - TRAVIS=${TRAVIS}
-      - TRAVIS_JOB_ID=${TRAVIS_JOB_ID}
-      - TRAVIS_BRANCH=${TRAVIS_BRANCH}
-      - TRAVIS_PULL_REQUEST=${TRAVIS_PULL_REQUEST}
     depends_on:
       - redis
     restart: unless-stopped
