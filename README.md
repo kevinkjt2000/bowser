@@ -1,5 +1,5 @@
-[![Build Status](https://img.shields.io/travis/kevinkjt2000/bowser/develop.svg?style=flat-square&label=Travis-CI)](https://travis-ci.org/kevinkjt2000/bowser?branch=develop)
-[![Coverage Status](https://img.shields.io/codecov/c/github/kevinkjt2000/bowser/develop.svg?style=flat-square&label=Codecov)](https://codecov.io/gh/kevinkjt2000/bowser/branch/develop/graph/badge.svg)
+[![Build Status](https://img.shields.io/travis/kevinkjt2000/bowser/master.svg?style=flat-square&label=Travis-CI)](https://travis-ci.org/kevinkjt2000/bowser?branch=master)
+[![Coverage Status](https://img.shields.io/codecov/c/github/kevinkjt2000/bowser/master.svg?style=flat-square&label=Codecov)](https://codecov.io/gh/kevinkjt2000/bowser/branch/master/graph/badge.svg)
 [![Dependency Status](https://img.shields.io/gemnasium/kevinkjt2000/bowser.svg)](https://beta.gemnasium.com/projects/github.com/kevinkjt2000/bowser)
 # Bowser Bot for Discord
 Adding this bot to a discord server will allow users to send the message "!status" to see current status about the minecraft server configured in `servers.json`.  Configuration is limited to one minecraft server per discord channel, but you can have a different server on each channel of your discord server if you like.  Eventually I will make my instance of this bot public and add commands that allow some discord role to be able to configure minecraft servers dynamically.  For now, feel free to run the bot, or ping me on discord.
