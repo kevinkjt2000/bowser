@@ -1,6 +1,7 @@
 language: python
 python:
   - "3.6"
+sudo: required
 environment:
   - COMPOSE="docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.travis.yml"
 install: make build
