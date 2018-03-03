@@ -7,7 +7,8 @@ environment:
 install: make build
 script: make test
 after_success:
-  - make coveralls
+  - pip install codecov
+  - codecov
   - scripts/discord-webhook.sh success $WEBHOOK_URL
 after_failure:
   - scripts/discord-webhook.sh failure $WEBHOOK_URL

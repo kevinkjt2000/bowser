@@ -8,6 +8,6 @@ test:
 build:
 	$(COMPOSE) build
 
-.PHONY: coveralls
-coveralls:
-	$(COMPOSE) run --rm bowser coveralls
+.PHONY: coverage
+coverage:
+	$(COMPOSE) run --rm bowser codecov

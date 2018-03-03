@@ -10,7 +10,6 @@ test_requirements = [
     'pytest',
     'pytest-cov',
     'pytest-socket',
-    'python-coveralls',
 ]
 
 setup_requirements = [
