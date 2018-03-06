@@ -1,27 +1,31 @@
 from distutils.core import setup
 
-requirements = [
-    'discord.py',
-    'mcstatus',
-]
-
-test_requirements = [
-    'asynctest',
-    'codecov',
-    'pytest',
-    'pytest-cov',
-    'pytest-socket',
-]
-
-setup_requirements = [
-    'setuptools_scm',
-]
+REQUIREMENTS = {
+    'extras': {
+        'ci': [
+            'codecov',
+        ],
+        'test': [
+            'asynctest',
+            'pytest',
+            'pytest-cov',
+            'pytest-socket',
+        ],
+    },
+    'install': [
+        'discord.py',
+        'mcstatus',
+    ],
+    'setup': [
+        'setuptools_scm',
+    ],
+}
 
 setup(
     name='bowser',
-    install_requires=requirements,
-    extras_require={'dev': test_requirements},
-    setup_requires=setup_requirements,
+    install_requires=REQUIREMENTS['install'],
+    extras_require=REQUIREMENTS['extras'],
+    setup_requires=REQUIREMENTS['setup'],
     packages=['bowser'],
     scripts=['scripts/bowser-bot'],
     use_scm_version=True,
