@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 REQUIREMENTS = {
     'extras': {
@@ -27,6 +27,10 @@ setup(
     extras_require=REQUIREMENTS['extras'],
     setup_requires=REQUIREMENTS['setup'],
     packages=['bowser'],
-    scripts=['scripts/bowser-bot'],
+    entry_points={
+        'console_scripts': [
+            'bowser = bowser.main:main',
+        ]
+    },
     use_scm_version=True,
 )

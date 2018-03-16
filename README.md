@@ -22,7 +22,7 @@ Adding this bot to a discord server will allow users to send the message "!statu
 ### Installation (without Docker)
 * Ensure Python 3.6+ is installed
 * Run `pip install -e .`
-* Run the bot with `bowser-bot`
+* Run the bot with `bowser`
 
 ### Installation (with Docker)
 * This was tested with Docker 17.12
