@@ -32,7 +32,6 @@ class TestBot(asynctest.TestCase):
         mock_message = self._get_mock_command_message('!motd')
         await self.bot.on_message(mock_message)
         self.mock_mc.get_motd.assert_called_once()
-        await asyncio.sleep(0.1)
         self.mock_send.assert_called_once_with(
             mock_message.channel,
             self.mock_mc.get_motd(),
@@ -42,22 +41,19 @@ class TestBot(asynctest.TestCase):
         mock_message = self._get_mock_command_message('!forge_version')
         await self.bot.on_message(mock_message)
         self.mock_mc.get_forge_version_message.assert_called_once()
-        await asyncio.sleep(0.1)
         self.mock_send.assert_called_once_with(
             mock_message.channel,
             self.mock_mc.get_forge_version_message(),
         )
 
     async def test__errors_in_command_execution_are_logged(self):
-        self.mock_mc.get_formatted_status_message.side_effect = \
-            Exception
+        self.mock_mc.get_formatted_status_message.side_effect = Exception
         await self._assert_status_command_responds_with(
             'Ninjas hijacked the packets, but the author will fix it.')
 
     async def test__tells_the_user_when_the_ip_is_bad(self):
         from socket import gaierror
-        self.mock_mc.get_formatted_status_message.side_effect = \
-            gaierror
+        self.mock_mc.get_formatted_status_message.side_effect = gaierror
         await self._assert_status_command_responds_with(
             'The !ip is unreachable; complain to someone in charge.')
 
@@ -70,29 +66,25 @@ class TestBot(asynctest.TestCase):
     async def test__command_not_found_is_ignored(self):
         mock_message = self._get_mock_command_message('!lalala')
         await self.bot.on_message(mock_message)
-        await asyncio.sleep(0.1)
         self.mock_send.assert_not_called()
 
     async def test__ip_command_responds_with_host_and_port(self):
         self.mock_mc.mc_server = MagicMock()
         mock_message = self._get_mock_command_message('!ip')
         await self.bot.on_message(mock_message)
-        await asyncio.sleep(0.1)
         self.mock_send.assert_called_once_with(
             mock_message.channel,
             f'{self.mock_mc.mc_server.host}:{self.mock_mc.mc_server.port}',
         )
 
     async def test__status_command_warns_about_missing_server(self):
-        self.mock_mc.get_formatted_status_message.side_effect = \
-            KeyError
+        self.mock_mc.get_formatted_status_message.side_effect = KeyError
         await self._assert_status_command_responds_with(
             'There is not yet a Minecraft server configured for this discord'
             ' server channel.')
 
     async def test__status_command_when_the_server_does_not_respond(self):
-        self.mock_mc.get_formatted_status_message.side_effect = \
-            OSError
+        self.mock_mc.get_formatted_status_message.side_effect = OSError
         await self._assert_status_command_responds_with(
             'Server did not respond with any information.')
 
@@ -111,7 +103,7 @@ class TestBot(asynctest.TestCase):
         mock_message = self._get_mock_command_message('!status')
         await self.bot.on_message(mock_message)
         self.mock_mc.get_formatted_status_message.assert_called_once()
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(0.02)
         self.mock_send.assert_called_once_with(mock_message.channel, message)
 
     def _get_mock_command_message(self, command):
