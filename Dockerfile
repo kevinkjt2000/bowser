@@ -9,4 +9,4 @@ VOLUME "/root/bowser"
 WORKDIR "/root/bowser"
 
 ENTRYPOINT ["scripts/entrypoint.sh"]
-CMD ["bowser-bot"]
+CMD ["bowser"]
