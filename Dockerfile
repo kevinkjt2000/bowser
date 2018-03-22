@@ -1,4 +1,4 @@
-FROM python:3.6-alpine@sha256:20d014036dc80a73b64d35db756ce5d79abf6e319b545e54719e815d8c9660c5
+FROM python:3.6-alpine@sha256:e10e26000b4dcfb66c52c11a6a7cc5251f6a95f9512fa9228bb3a66efc6c7075
 
 RUN apk add --no-cache git
 
