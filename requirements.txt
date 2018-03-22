@@ -14,7 +14,7 @@ idna==2.6
 git+https://github.com/kevinkjt2000/mcstatus.git@patch-1
 multidict==4.1.0
 pluggy==0.6.0
-py==1.5.2
+py==1.5.3
 pytest==3.4.2
 pytest-cov==2.5.1
 pytest-socket==0.2.0
