@@ -11,10 +11,11 @@ class TestMain(unittest.TestCase):
             bowser.main.init()
             mock_main.assert_called_once_with()
 
+    @patch('time.sleep')
     @asynctest.patch('bowser.main.Bot.run')
     @patch('builtins.open', new_callable=mock_open, read_data='mock_token')
     def test__main_keeps_running_until_something_bad_happens(
-            self, mock_open, mock_bot_run):
+            self, mock_open, mock_bot_run, mock_sleep):
         mock_bot_run.side_effect = [
             ConnectionResetError,
             ConnectionResetError,
