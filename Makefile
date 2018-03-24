@@ -2,7 +2,7 @@ COMPOSE ?= docker-compose
 
 .PHONY: test
 test:
-	$(COMPOSE) run --rm bowser pytest -v
+	$(COMPOSE) run --rm bowser pytest
 
 .PHONY: build
 build:
