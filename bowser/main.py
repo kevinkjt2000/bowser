@@ -7,8 +7,9 @@ def main():
         token = open('token.txt').read().replace('\n', '')
         bot.run(token)
     except Exception as ex:
-        bot.loop.run_until_complete(bot.close())
         raise ex
+    finally:
+        bot.loop.run_until_complete(bot.close())
 
 
 def init():
