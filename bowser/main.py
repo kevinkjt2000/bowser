@@ -1,15 +1,21 @@
+import asyncio
 from bowser.Bot import Bot
+from retrying import retry
+loop = asyncio.get_event_loop()
 
 
+def retry_if_connection_reset(exception):
+    return isinstance(exception, ConnectionResetError)
+
+
+@retry(retry_on_exception=retry_if_connection_reset, wait_fixed=1000)
 def main():
     bot = Bot()
     try:
         token = open('token.txt').read().replace('\n', '')
         bot.run(token)
-    except Exception as ex:
-        raise ex
     finally:
-        bot.loop.run_until_complete(bot.close())
+        loop.run_until_complete(bot.close())
 
 
 def init():
