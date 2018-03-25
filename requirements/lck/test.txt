@@ -25,4 +25,4 @@ pytest-cov==2.5.1
 pytest-socket==0.2.0
 pytest==3.5.0
 six==1.11.0               # via mcstatus, more-itertools, pytest
-websockets==3.4           # via discord.py
+websockets==4.0.1           # via discord.py
