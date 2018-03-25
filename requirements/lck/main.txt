@@ -15,5 +15,6 @@ dnspython3==1.15.0        # via mcstatus
 dnspython==1.15.0         # via dnspython3
 mcstatus==2.2
 multidict==4.1.0          # via aiohttp
-six==1.11.0               # via mcstatus
+retrying==1.3.3
+six==1.11.0               # via mcstatus, retrying
 websockets==3.4           # via discord.py
