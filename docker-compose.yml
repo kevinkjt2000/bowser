@@ -9,9 +9,9 @@ services:
       - redis
     restart: unless-stopped
     volumes:
-      - ./dist/bowser.pex:/bowser.pex
-      - ./token.txt:/token.txt
-      - ./servers.json:/servers.json
+      - ./dist/bowser.pex:/bowser.pex:ro
+      - ./token.txt:/token.txt:ro
+      - ./servers.json:/servers.json:ro
   redis:
     image: 'redis:alpine'
     sysctls:

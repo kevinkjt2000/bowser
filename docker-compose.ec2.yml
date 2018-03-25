@@ -1,0 +1,7 @@
+version: '2.1'
+services:
+  bowser:
+    volumes:
+      - /home/core/bowser.pex:/bowser.pex:ro
+      - /home/core/token.txt:/token.txt:ro
+      - /home/core/servers.json:/servers.json:ro
