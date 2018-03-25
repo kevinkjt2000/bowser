@@ -1,13 +1,11 @@
 language: python
 python:
   - "3.6"
-sudo: required
-env:
-  - COMPOSE="docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.travis.yml"
-install: make build
-script: make test
+sudo: false
+install: pip install tox-travis
+script: tox
 after_success:
-  - make coverage
+  - tox -e ci
   - scripts/discord-webhook.sh success $WEBHOOK_URL
 after_failure:
   - scripts/discord-webhook.sh failure $WEBHOOK_URL

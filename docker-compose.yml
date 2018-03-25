@@ -1,14 +1,19 @@
 version: '2.1'
 services:
   bowser:
-    build: .
+    image: 'python:3.6-alpine'
+    command: /bowser.pex
     environment:
       - PYTHONUNBUFFERED=1
     depends_on:
       - redis
     restart: unless-stopped
+    volumes:
+      - ./dist/bowser.pex:/bowser.pex
+      - ./token.txt:/token.txt
+      - ./servers.json:/servers.json
   redis:
-    image: "redis:alpine"
+    image: 'redis:alpine'
     sysctls:
       - net.core.somaxconn=511
     restart: unless-stopped
