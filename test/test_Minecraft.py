@@ -6,45 +6,100 @@ from types import SimpleNamespace
 import re
 
 status_vanilla_empty = PingResponse({
-    'description': {'text': ''},
-    'players': {'online': 0, 'max': 8},
-    'version': {'name': '1.12.1', 'protocol': 338},
+    'description': {
+        'text': ''
+    },
+    'players': {
+        'online': 0,
+        'max': 8
+    },
+    'version': {
+        'name': '1.12.1',
+        'protocol': 338
+    },
 })
 
 status_modded_online = PingResponse({
     'description': {
         'text': '§9§k||§bStuff§9§k||§r §7Whitelist:§r §2Offline✔§r\n§6Stuff',
     },
-    'modinfo': {'modList': [
-        {'modid': 'FML', 'version': '8.0.99.99'},
-        {'modid': 'forge', 'version': '14.22.0.2460'},
-    ], },
-    'players': {'online': 1, 'max': 8, 'sample': [{
-        'id': '291b495c-b03b-46bb-b2c8-e31ad4cdef44',
+    'modinfo': {
+        'modList': [
+            {
+                'modid': 'FML',
+                'version': '8.0.99.99'
+            },
+            {
+                'modid': 'forge',
+                'version': '14.22.0.2460'
+            },
+        ],
+    },
+    'players': {
+        'online':
+        1,
+        'max':
+        8,
+        'sample': [
+            {
+                'id': '291b495c-b03b-46bb-b2c8-e31ad4cdef44',
+                'name': 'fake_name',
+            },
+        ],
+    },
+    'version': {
         'name': 'fake_name',
-    }, ], },
-    'version': {'name': 'fake_name', 'protocol': 316, },
+        'protocol': 316,
+    },
 })
 
-
 status_modded_online_old = PingResponse({
-    'version': {'name': 'BungeeCord 1.8.x-1.12.x', 'protocol': 47},
-    'players': {'max': 9001, 'online': 2},
+    'version': {
+        'name': 'BungeeCord 1.8.x-1.12.x',
+        'protocol': 47
+    },
+    'players': {
+        'max': 9001,
+        'online': 2
+    },
     'description': {
         'extra': [
-            {'color': 'dark_blue', 'text': 'TR Lobby'},
-            {'color': 'aqua', 'obfuscated': True, 'text': '|!|!|'},
-            {'color': 'aqua', 'underlined': True, 'text': 'TR HUB'},
+            {
+                'color': 'dark_blue',
+                'text': 'TR Lobby'
+            },
+            {
+                'color': 'aqua',
+                'obfuscated': True,
+                'text': '|!|!|'
+            },
+            {
+                'color': 'aqua',
+                'underlined': True,
+                'text': 'TR HUB'
+            },
         ],
-        'text': '',
+        'text':
+        '',
     },
-    'modinfo': {'type': 'FML', 'modList': []}
+    'modinfo': {
+        'type': 'FML',
+        'modList': []
+    }
 })
 
 status_modded_really_old = PingResponse({
-    'description': 'Infamous Gaming - GTNH',
-    'players': {'max': 20, 'online': 0, 'sample': []},
-    'version': {'name': '1.7.10', 'protocol': 5},
+    'description':
+    'Infamous Gaming - GTNH',
+    'players': {
+        'max': 20,
+        'online': 0,
+        'sample': []
+    },
+    'version': {
+        'name': '1.7.10',
+        'protocol': 5
+    },
 })
 
 
@@ -55,16 +110,17 @@ class TestMinecraft(TestCase):
             message=SimpleNamespace(
                 server=SimpleNamespace(id=42),
                 channel=SimpleNamespace(id=5),
-            )
-        )
+            ))
 
     @patch('builtins.open', new_callable=mock_open, read_data="{}")
     def test__get_mc_object_raises_key_error_for_empty_json(self, mock_open):
         with self.assertRaises(KeyError):
             Minecraft.get_minecraft_object_for_server_channel(self.context)
 
-    @patch('builtins.open', new_callable=mock_open,
-           read_data="""{"42": {"5": {"host": "fake_host", "port": 1234}}}""")
+    @patch(
+        'builtins.open',
+        new_callable=mock_open,
+        read_data="""{"42": {"5": {"host": "fake_host", "port": 1234}}}""")
     def test__get_minecraft_object_can_read_host_and_port(self, mock_open):
         mc = Minecraft.get_minecraft_object_for_server_channel(self.context)
         assert mc.mc_server.host == "fake_host"
@@ -114,8 +170,7 @@ class TestMinecraft(TestCase):
 
     def _modded_test(self, status_dict):
         status_re = re.compile(
-            r'^\d+ mods loaded, players \d+/\d+: `(.*(, )?)*`$'
-        )
+            r'^\d+ mods loaded, players \d+/\d+: `(.*(, )?)*`$')
         self.mc.mc_server.status.return_value = status_dict
         status_message = self.mc.get_formatted_status_message()
         assert status_re.match(status_message) is not None
