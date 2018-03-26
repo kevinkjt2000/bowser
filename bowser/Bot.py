@@ -9,12 +9,15 @@ class Bot(commands.Bot):
             async def wrapped(context):
                 mc = Minecraft.get_minecraft_object_for_server_channel(context)
                 return await function(self, mc)
-            self.add_command(Command(
-                name=function.__name__,
-                callback=wrapped,
-                help=help,
-                pass_context=True,
-            ))
+
+            self.add_command(
+                Command(
+                    name=function.__name__,
+                    callback=wrapped,
+                    help=help,
+                    pass_context=True,
+                ))
+
         return decorator
 
     def __init__(self):
@@ -22,7 +25,7 @@ class Bot(commands.Bot):
             command_prefix=commands.when_mentioned_or('!'),
             description="""
             A bot for querying minecraft server stuff.
-            https://github.com/kevinkjt2000/bowser"""
+            https://github.com/kevinkjt2000/bowser""",
         )
 
         @self._command('Gets the MOTD.')
@@ -55,7 +58,7 @@ class Bot(commands.Bot):
             print(exception)
             await self.send_message(
                 context.message.channel,
-                'The bot is giving up; something unknown happened.'
+                'The bot is giving up; something unknown happened.',
             )
         else:
             original = exception.original.__class__.__name__
