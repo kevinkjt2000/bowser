@@ -1,7 +1,7 @@
 version: '2.1'
 services:
   bowser:
-    image: 'python:3.6-alpine'
+    image: 'python:3.6-alpine@sha256:e10e26000b4dcfb66c52c11a6a7cc5251f6a95f9512fa9228bb3a66efc6c7075'
     command: /bowser.pex
     environment:
       - PYTHONUNBUFFERED=1
@@ -13,7 +13,7 @@ services:
       - ./token.txt:/token.txt:ro
       - ./servers.json:/servers.json:ro
   redis:
-    image: 'redis:alpine'
+    image: 'redis:alpine@sha256:aeaedc464482b5076c6f2c1d2de8653709c02cbdf0b7f42906d7318f35094e5e'
     sysctls:
       - net.core.somaxconn=511
     restart: unless-stopped
