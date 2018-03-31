@@ -2,4 +2,3 @@ asynctest
 pytest
 pytest-cov
 pytest-socket
--r main.in
