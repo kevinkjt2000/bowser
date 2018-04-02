@@ -13,7 +13,7 @@ services:
       - ./token.txt:/token.txt:ro
       - ./servers.json:/servers.json:ro
   redis:
-    image: 'redis:alpine@sha256:aeaedc464482b5076c6f2c1d2de8653709c02cbdf0b7f42906d7318f35094e5e'
+    image: 'redis:alpine@sha256:e6e3a62b67b4e5c956b8814ac64ce3fe531c1093606f2a4fe5492921f6592388'
     sysctls:
       - net.core.somaxconn=511
     restart: unless-stopped
