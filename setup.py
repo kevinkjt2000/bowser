@@ -15,6 +15,7 @@ REQUIREMENTS = {
     'install': [
         'discord.py',
         'mcstatus',
+        'redis',
         'retrying',
     ],
     'setup': [
