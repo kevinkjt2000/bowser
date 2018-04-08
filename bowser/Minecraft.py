@@ -53,13 +53,3 @@ class Minecraft:
         status_message += 'players {}/{}{}'.format(online_count, max_count,
                                                    online_players)
         return status_message
-
-    @staticmethod
-    def get_minecraft_object_for_server_channel(context):
-        sid = str(context.message.server.id)
-        cid = str(context.message.channel.id)
-        minecrafts = {}
-        with open('servers.json') as json_data:
-            minecrafts = json.load(json_data)
-        m = minecrafts[sid][cid]
-        return Minecraft(host=m['host'], port=m['port'])

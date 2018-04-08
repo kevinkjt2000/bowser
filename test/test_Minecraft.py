@@ -1,9 +1,9 @@
-from mcstatus.pinger import PingResponse
 from unittest import TestCase
-from unittest.mock import patch, mock_open, MagicMock
-from bowser.Minecraft import Minecraft
+from unittest.mock import MagicMock
 from types import SimpleNamespace
 import re
+from mcstatus.pinger import PingResponse
+from bowser.Minecraft import Minecraft
 
 status_vanilla_empty = PingResponse({
     'description': {
@@ -111,20 +111,6 @@ class TestMinecraft(TestCase):
                 server=SimpleNamespace(id=42),
                 channel=SimpleNamespace(id=5),
             ))
-
-    @patch('builtins.open', new_callable=mock_open, read_data="{}")
-    def test__get_mc_object_raises_key_error_for_empty_json(self, mock_open):
-        with self.assertRaises(KeyError):
-            Minecraft.get_minecraft_object_for_server_channel(self.context)
-
-    @patch(
-        'builtins.open',
-        new_callable=mock_open,
-        read_data="""{"42": {"5": {"host": "fake_host", "port": 1234}}}""")
-    def test__get_minecraft_object_can_read_host_and_port(self, mock_open):
-        mc = Minecraft.get_minecraft_object_for_server_channel(self.context)
-        assert mc.mc_server.host == "fake_host"
-        assert mc.mc_server.port == 1234
 
     def test__really_old_protocol_empty_motds_are_supported(self):
         self.mc.mc_server.status.return_value = status_modded_really_old
