@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord.ext.commands.core import Command
+from discord.ext.commands import core
 from bowser.Database import Database
 from bowser.Minecraft import Minecraft
 
@@ -21,13 +21,14 @@ class Bot(commands.Bot):
                 else:
                     return await function(self, *args)
 
+            wrapped.__commands_checks__ = checks
             self.add_command(
-                Command(
+                core.command(
                     name=name or function.__name__,
-                    callback=wrapped,
                     help=help,
                     pass_context=True,
-                    checks=checks,
+                )(
+                    wrapped,
                 ))
 
         return decorator
