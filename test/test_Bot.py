@@ -3,19 +3,24 @@ import asyncio
 import random
 import asynctest
 import discord
-import bowser.Minecraft
+import mockredis
+from bowser.Bot import Bot
 
 
 class TestBot(asynctest.TestCase):
     async def setUp(self):
         self.mock_server_id = str(random.randrange(999999))
         self.mock_channel_id = str(random.randrange(999999))
-        self.patch_get_mc = patch(
-            'bowser.Minecraft.Minecraft.get_minecraft_object_for_server_channel',
-            return_value=MagicMock(spec=bowser.Minecraft.Minecraft),
-        )
-        self.mock_mc = self.patch_get_mc.start()()
-        self.bot = bowser.main.Bot()
+        self.patch_mc = patch('bowser.Bot.Minecraft')
+        self.mock_mc = self.patch_mc.start()()
+        fake_data = {'host': 'fake_host', 'port': 123}
+        self.mock_mc.mc_server.host = fake_data['host']
+        self.mock_mc.mc_server.port = fake_data['port']
+        self.patch_db = patch('bowser.Database.redis.StrictRedis',
+                              mockredis.mock_strict_redis_client)
+        self.patch_db.start()
+        self.bot = Bot()
+        self.bot.db.set_data_of_server_channel(self.mock_server_id, self.mock_channel_id, fake_data)
         self.bot.user = self._get_mock_user(bot=True)
         self.patch_run = asynctest.patch.object(self.bot, 'run')
         self.patch_run.start()
@@ -25,7 +30,8 @@ class TestBot(asynctest.TestCase):
     async def tearDown(self):
         self.patch_send.stop()
         self.patch_run.stop()
-        self.patch_get_mc.stop()
+        self.patch_db.stop()
+        self.patch_mc.stop()
         await self.bot.close()
 
     async def test__can_fetch_motd(self):
@@ -69,7 +75,6 @@ class TestBot(asynctest.TestCase):
         self.mock_send.assert_not_called()
 
     async def test__ip_command_responds_with_host_and_port(self):
-        self.mock_mc.mc_server = MagicMock()
         mock_message = self._get_mock_command_message('!ip')
         await self.bot.on_message(mock_message)
         self.mock_send.assert_called_once_with(

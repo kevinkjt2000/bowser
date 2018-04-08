@@ -1,5 +1,6 @@
 from discord.ext import commands
 from discord.ext.commands.core import Command
+from bowser.Database import Database
 from bowser.Minecraft import Minecraft
 
 
@@ -7,7 +8,10 @@ class Bot(commands.Bot):
     def _command(self, help):
         def decorator(function):
             async def wrapped(context):
-                mc = Minecraft.get_minecraft_object_for_server_channel(context)
+                sid = str(context.message.server.id)
+                cid = str(context.message.channel.id)
+                data = self.db.fetch_data_of_server_channel(sid, cid)
+                mc = Minecraft(**data)
                 return await function(self, mc)
 
             self.add_command(
@@ -27,6 +31,7 @@ class Bot(commands.Bot):
             A bot for querying minecraft server stuff.
             https://github.com/kevinkjt2000/bowser""",
         )
+        self.db = Database()
 
         @self._command('Gets the MOTD.')
         async def motd(self, mc):
