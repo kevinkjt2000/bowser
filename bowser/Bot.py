@@ -5,14 +5,18 @@ from bowser.Minecraft import Minecraft
 
 
 class Bot(commands.Bot):
+    def _get_game_data(self, context):
+        sid = str(context.message.server.id)
+        cid = str(context.message.channel.id)
+        data = self.db.fetch_data_of_server_channel(sid, cid)
+        mc = Minecraft(**data)
+        return mc
+
     def _command(self, help, checks=None, name=None, get_mc=True):
         def decorator(function):
             async def wrapped(context, *args):
                 if get_mc:
-                    sid = str(context.message.server.id)
-                    cid = str(context.message.channel.id)
-                    data = self.db.fetch_data_of_server_channel(sid, cid)
-                    mc = Minecraft(**data)
+                    mc = self._get_game_data(context)
                     return await function(self, mc, *args)
                 else:
                     return await function(self, *args)
