@@ -83,8 +83,12 @@ class TestBot(asynctest.TestCase):
         )
 
     async def test__status_command_warns_about_missing_server(self):
-        self.mock_mc.get_formatted_status_message.side_effect = KeyError
-        await self._assert_status_command_responds_with(
+        mock_message = self._get_mock_command_message('!status')
+        mock_message.channel = self._get_mock_channel(id='some unconfigured channel')
+        await self.bot.on_message(mock_message)
+        self.mock_mc.get_formatted_status_message.assert_not_called()
+        await asyncio.sleep(0.02)
+        self.mock_send.assert_called_once_with(mock_message.channel,
             'There is not yet a Minecraft server configured for this discord'
             ' server channel.')
 
