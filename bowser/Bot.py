@@ -5,21 +5,25 @@ from bowser.Minecraft import Minecraft
 
 
 class Bot(commands.Bot):
-    def _command(self, help):
+    def _command(self, help, checks=None, name=None, get_mc=True):
         def decorator(function):
-            async def wrapped(context):
-                sid = str(context.message.server.id)
-                cid = str(context.message.channel.id)
-                data = self.db.fetch_data_of_server_channel(sid, cid)
-                mc = Minecraft(**data)
-                return await function(self, mc)
+            async def wrapped(context, *args):
+                if get_mc:
+                    sid = str(context.message.server.id)
+                    cid = str(context.message.channel.id)
+                    data = self.db.fetch_data_of_server_channel(sid, cid)
+                    mc = Minecraft(**data)
+                    return await function(self, mc, *args)
+                else:
+                    return await function(self, *args)
 
             self.add_command(
                 Command(
-                    name=function.__name__,
+                    name=name or function.__name__,
                     callback=wrapped,
                     help=help,
                     pass_context=True,
+                    checks=checks,
                 ))
 
         return decorator
@@ -32,6 +36,13 @@ class Bot(commands.Bot):
             https://github.com/kevinkjt2000/bowser""",
         )
         self.db = Database()
+
+        def is_admin(context):
+            return context.message.author.top_role.permissions.administrator
+
+        @self._command('Sets the host and port for this channel.', name='set', checks=[is_admin], get_mc=False)
+        async def set_info(self, host, port):
+            await self.say(f'Finished adding `{host}:{port}`.  Try `!status` now.')
 
         @self._command('Gets the MOTD.')
         async def motd(self, mc):
@@ -58,6 +69,11 @@ class Bot(commands.Bot):
     async def on_command_error(self, exception, context):
         if exception.__class__.__name__ == 'CommandNotFound':
             pass
+        elif exception.__class__.__name__ == 'CheckFailure':
+            await self.send_message(
+                context.message.channel,
+                'You do not have permission to run this command.',
+            )
         elif not hasattr(exception, 'original'):
             print('unknown: ' + exception.__class__.__name__)
             print(exception)

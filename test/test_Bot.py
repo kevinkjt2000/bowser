@@ -34,6 +34,26 @@ class TestBot(asynctest.TestCase):
         self.patch_mc.stop()
         await self.bot.close()
 
+    async def test__admin_can_add_a_server(self):
+        mock_message = self._get_mock_command_message(f'!set {self.mock_mc.mc_server.host} {self.mock_mc.mc_server.port}')
+        mock_message.author.top_role.permissions.administrator = True
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.02)
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            f'Finished adding `{self.mock_mc.mc_server.host}:{self.mock_mc.mc_server.port}`.  Try `!status` now.',
+        )
+
+    async def test__nonadmin_cannot_add_a_server(self):
+        mock_message = self._get_mock_command_message(f'!set {self.mock_mc.mc_server.host} {self.mock_mc.mc_server.port}')
+        mock_message.author.top_role.permissions.administrator = False
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.02)
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            'You do not have permission to run this command.',
+        )
+
     async def test__can_fetch_motd(self):
         mock_message = self._get_mock_command_message('!motd')
         await self.bot.on_message(mock_message)
@@ -148,7 +168,7 @@ class TestBot(asynctest.TestCase):
 
     def _get_mock_user(self, bot=None):
         return asynctest.MagicMock(
-            spec=discord.User,
+            spec=discord.Member,
             id=str(random.randrange(999999)),
             name='mock_user',
             bot=bot,
