@@ -12,14 +12,10 @@ class Bot(commands.Bot):
         mc = Minecraft(**data)
         return mc
 
-    def _command(self, help, checks=None, name=None, get_mc=True):
+    def _command(self, help, checks=None, name=None):
         def decorator(function):
             async def wrapped(context, *args):
-                if get_mc:
-                    mc = self._get_game_data(context)
-                    return await function(self, mc, *args)
-                else:
-                    return await function(self, *args)
+                return await function(self, context, *args)
 
             wrapped.__commands_checks__ = checks
             self.add_command(
@@ -45,27 +41,34 @@ class Bot(commands.Bot):
         def is_admin(context):
             return context.message.author.top_role.permissions.administrator
 
-        @self._command('Sets the host and port for this channel.', name='set', checks=[is_admin], get_mc=False)
-        async def set_info(self, host, port):
+        @self._command('Sets the host and port for this channel.', name='set', checks=[is_admin])
+        async def set_info(self, context, host, port: int):
+            sid = str(context.message.server.id)
+            cid = str(context.message.channel.id)
+            self.db.set_data_of_server_channel(sid, cid, {'host': host, 'port': port})
             await self.say(f'Finished adding `{host}:{port}`.  Try `!status` now.')
 
         @self._command('Gets the MOTD.')
-        async def motd(self, mc):
+        async def motd(self, context):
+            mc = self._get_game_data(context)
             motd = mc.get_motd()
             await self.say(motd)
 
         @self._command('Number of mods loaded and who is online.')
-        async def status(self, mc):
+        async def status(self, context):
+            mc = self._get_game_data(context)
             status_msg = mc.get_formatted_status_message()
             await self.say(status_msg)
 
         @self._command('The forge version.')
-        async def forge_version(self, mc):
+        async def forge_version(self, context):
+            mc = self._get_game_data(context)
             forge_ver_msg = mc.get_forge_version_message()
             await self.say(forge_ver_msg)
 
         @self._command('The IP and port of the server.')
-        async def ip(self, mc):
+        async def ip(self, context):
+            mc = self._get_game_data(context)
             ip_msg = f'{mc.mc_server.host}:{mc.mc_server.port}'
             await self.say(ip_msg)
 
