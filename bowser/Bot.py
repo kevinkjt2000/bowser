@@ -9,8 +9,7 @@ class Bot(commands.Bot):
         sid = str(context.message.server.id)
         cid = str(context.message.channel.id)
         data = self.db.fetch_data_of_server_channel(sid, cid)
-        mc = Minecraft(**data)
-        return mc
+        return Minecraft(**data)
 
     def _command(self, help, checks=None, name=None):
         def decorator(function):
