@@ -36,7 +36,7 @@ class TestBot(asynctest.TestCase):
 
     async def test__admin_can_add_a_server(self):
         mock_message = self._get_mock_command_message(f'!set {self.mock_mc.mc_server.host} {self.mock_mc.mc_server.port}')
-        mock_message.author.top_role.permissions.administrator = True
+        mock_message.channel.permissions_for().administrator = True
         await self.bot.on_message(mock_message)
         await asyncio.sleep(0.02)
         self.mock_send.assert_called_once_with(
@@ -46,7 +46,7 @@ class TestBot(asynctest.TestCase):
 
     async def test__nonadmin_cannot_add_a_server(self):
         mock_message = self._get_mock_command_message(f'!set {self.mock_mc.mc_server.host} {self.mock_mc.mc_server.port}')
-        mock_message.author.top_role.permissions.administrator = False
+        mock_message.channel.permissions_for().administrator = False
         await self.bot.on_message(mock_message)
         await asyncio.sleep(0.02)
         self.mock_send.assert_called_once_with(
