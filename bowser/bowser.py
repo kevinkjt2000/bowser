@@ -1,6 +1,6 @@
 from discord.ext import commands
-from bowser.Database import Database
-from bowser.Minecraft import Minecraft
+from bowser.database import Database
+from bowser.minecraft import Minecraft
 
 
 class Bowser():
