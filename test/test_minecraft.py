@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 from types import SimpleNamespace
 import re
 from mcstatus.pinger import PingResponse
-from bowser.Minecraft import Minecraft
+from bowser.minecraft import Minecraft
 
 status_vanilla_empty = PingResponse({
     'description': {

@@ -20,7 +20,7 @@ bowser = commands.Bot(
 def main():
     try:
         token = open('token.txt').read().replace('\n', '')
-        bowser.load_extension('bowser.Bot')
+        bowser.load_extension('bowser.bowser')
         bowser.run(token)
     finally:
         loop.run_until_complete(bowser.close())

@@ -5,19 +5,19 @@ import asynctest
 import discord
 from discord.ext import commands
 import mockredis
-from bowser.Bot import Bowser
+from bowser.bowser import Bowser
 
 
 class TestBowser(asynctest.TestCase):
     async def setUp(self):
         self.mock_server_id = str(random.randrange(999999))
         self.mock_channel_id = str(random.randrange(999999))
-        self.patch_mc = patch('bowser.Bot.Minecraft')
+        self.patch_mc = patch('bowser.bowser.Minecraft')
         self.mock_mc = self.patch_mc.start()()
         fake_data = {'host': 'fake_host', 'port': 123}
         self.mock_mc.mc_server.host = fake_data['host']
         self.mock_mc.mc_server.port = fake_data['port']
-        self.patch_db = patch('bowser.Database.redis.StrictRedis',
+        self.patch_db = patch('bowser.database.redis.StrictRedis',
                               mockredis.mock_strict_redis_client)
         self.patch_db.start()
         self.bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'))
