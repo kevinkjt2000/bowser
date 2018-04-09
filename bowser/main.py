@@ -1,5 +1,5 @@
 import asyncio
-from bowser.Bot import Bot
+from discord.ext import commands
 from retrying import retry
 loop = asyncio.get_event_loop()
 
@@ -8,14 +8,22 @@ def retry_if_connection_reset(exception):
     return isinstance(exception, ConnectionResetError)
 
 
+bowser = commands.Bot(
+    command_prefix=commands.when_mentioned_or('!'),
+    description="""
+    A bot for querying minecraft server stuff.
+    https://github.com/kevinkjt2000/bowser""",
+)
+
+
 @retry(retry_on_exception=retry_if_connection_reset, wait_fixed=1000)
 def main():
-    bot = Bot()
     try:
         token = open('token.txt').read().replace('\n', '')
-        bot.run(token)
+        bowser.load_extension('bowser.Bot')
+        bowser.run(token)
     finally:
-        loop.run_until_complete(bot.close())
+        loop.run_until_complete(bowser.close())
 
 
 def init():

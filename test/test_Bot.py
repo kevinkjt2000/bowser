@@ -3,11 +3,12 @@ import asyncio
 import random
 import asynctest
 import discord
+from discord.ext import commands
 import mockredis
-from bowser.Bot import Bot
+from bowser.Bot import Bowser
 
 
-class TestBot(asynctest.TestCase):
+class TestBowser(asynctest.TestCase):
     async def setUp(self):
         self.mock_server_id = str(random.randrange(999999))
         self.mock_channel_id = str(random.randrange(999999))
@@ -19,8 +20,10 @@ class TestBot(asynctest.TestCase):
         self.patch_db = patch('bowser.Database.redis.StrictRedis',
                               mockredis.mock_strict_redis_client)
         self.patch_db.start()
-        self.bot = Bot()
-        self.bot.db.set_data_of_server_channel(self.mock_server_id, self.mock_channel_id, fake_data)
+        self.bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'))
+        self.bowser = Bowser(self.bot)
+        self.bot.add_cog(self.bowser)
+        self.bowser.db.set_data_of_server_channel(self.mock_server_id, self.mock_channel_id, fake_data)
         self.bot.user = self._get_mock_user(bot=True)
         self.patch_run = asynctest.patch.object(self.bot, 'run')
         self.patch_run.start()
