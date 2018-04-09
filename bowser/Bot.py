@@ -20,11 +20,11 @@ class Bot(commands.Bot):
                 wrapped.__commands_checks__ = function.__commands_checks__
             except AttributeError:
                 pass
-            self.add_command(
-                core.command(
-                    name=name or function.__name__,
-                    pass_context=True,
-                )(wrapped))
+
+            self.command(
+                name=name or function.__name__,
+                pass_context=True,
+            )(wrapped)
 
         return decorator
 
