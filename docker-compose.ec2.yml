@@ -4,7 +4,6 @@ services:
     volumes:
       - /home/core/bowser.pex:/bowser.pex:ro
       - /home/core/token.txt:/token.txt:ro
-      - /home/core/servers.json:/servers.json:ro
   redis:
     volumes:
       - /home/core/redis-data:/data:rw
