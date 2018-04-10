@@ -2,7 +2,6 @@
 tox -r -e package
 
 docker-machine scp dist/bowser.pex bowser:.
-docker-machine scp servers.json bowser:.
 docker-machine scp token.txt bowser:.
 
 eval $(docker-machine env bowser)
