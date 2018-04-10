@@ -37,6 +37,16 @@ class TestBowser(asynctest.TestCase):
         self.patch_mc.stop()
         await self.bot.close()
 
+    async def test__command_missing_arguments_prints_how_to_get_help(self):
+        mock_message = self._get_mock_command_message(f'!set not_enough')
+        mock_message.channel.permissions_for().administrator = True
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.02)
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            f'Not enough arguments.  Try `!help set` for more information.',
+        )
+
     async def test__admin_can_add_a_server(self):
         mock_message = self._get_mock_command_message(f'!set {self.mock_mc.mc_server.host} {self.mock_mc.mc_server.port}')
         mock_message.channel.permissions_for().administrator = True

@@ -60,6 +60,11 @@ class Bowser():
                 context.message.channel,
                 'You do not have permission to run this command.',
             )
+        elif exception.__class__.__name__ == 'MissingRequiredArgument':
+            await self.bot.send_message(
+                context.message.channel,
+                f'Not enough arguments.  Try `!help {context.invoked_with}` for more information.',
+            )
         elif not hasattr(exception, 'original'):
             print('unknown: ' + exception.__class__.__name__)
             print(exception)
