@@ -39,7 +39,8 @@ class TestBowser(asynctest.TestCase):
 
     async def test__command_missing_arguments_prints_how_to_get_help(self):
         mock_message = self._get_mock_command_message(f'!set not_enough')
-        mock_message.channel.permissions_for().administrator = True
+        mock_message.channel.permissions_for.return_value = discord.permissions.Permissions()
+        mock_message.channel.permissions_for.return_value.administrator = True
         await self.bot.on_message(mock_message)
         await asyncio.sleep(0.02)
         self.mock_send.assert_called_once_with(
@@ -47,9 +48,10 @@ class TestBowser(asynctest.TestCase):
             f'Not enough arguments.  Try `!help set` for more information.',
         )
 
-    async def test__admin_can_add_a_server(self):
+    async def test__owner_can_add_a_server(self):
         mock_message = self._get_mock_command_message(f'!set {self.mock_mc.mc_server.host} {self.mock_mc.mc_server.port}')
-        mock_message.channel.permissions_for().administrator = True
+        mock_message.channel.permissions_for.return_value = discord.permissions.Permissions()
+        mock_message.author = mock_message.server.owner
         await self.bot.on_message(mock_message)
         await asyncio.sleep(0.02)
         self.mock_send.assert_called_once_with(
@@ -59,7 +61,7 @@ class TestBowser(asynctest.TestCase):
 
     async def test__nonadmin_cannot_add_a_server(self):
         mock_message = self._get_mock_command_message(f'!set {self.mock_mc.mc_server.host} {self.mock_mc.mc_server.port}')
-        mock_message.channel.permissions_for().administrator = False
+        mock_message.channel.permissions_for.return_value = discord.permissions.Permissions()
         await self.bot.on_message(mock_message)
         await asyncio.sleep(0.02)
         self.mock_send.assert_called_once_with(
