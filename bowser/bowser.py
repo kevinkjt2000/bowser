@@ -5,17 +5,26 @@ from bowser.minecraft import Minecraft
 
 def _set_permission(context):
     perms = context.message.channel.permissions_for(context.message.author)
+    is_owner = None
+    try:
+        is_owner = context.message.author == context.message.server.owner
+    except AttributeError:
+        pass
     return any([
-        perms.administrator,
-        perms.manage_channels,
-        perms.manage_server,
-        context.message.author == context.message.server.owner
+        getattr(perms, 'administrator', None),
+        getattr(perms, 'manage_channels', None),
+        getattr(perms, 'manage_server', None),
+        is_owner,
     ])
 
 
 class Bowser():
     def _get_game_data(self, context):
-        sid = str(context.message.server.id)
+        sid = None
+        try:
+            sid = str(context.message.server.id)
+        except AttributeError:
+            pass
         cid = str(context.message.channel.id)
         data = self.db.fetch_data_of_server_channel(sid, cid)
         return Minecraft(**data)
@@ -109,7 +118,11 @@ class Bowser():
                 print('original: ' + original)
                 print(exception)
                 print(f'command: {context.invoked_with}')
-                sid = context.message.server.id
+                sid = None
+                try:
+                    sid = context.message.server.id
+                except AttributeError:
+                    pass
                 cid = context.message.channel.id
                 print(f'sid: {sid} cid: {cid}')
                 await self.bot.send_message(
