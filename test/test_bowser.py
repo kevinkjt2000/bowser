@@ -37,8 +37,21 @@ class TestBowser(asynctest.TestCase):
         self.patch_mc.stop()
         await self.bot.close()
 
+    async def test__support_dms_by_ignoring_attribute_errors(self):
+        mock_message = self._get_mock_command_message('!help')
+        mock_message.server = None
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.02)
+        assert self.mock_send.call_count == 1
+
+        mock_message = self._get_mock_command_message('!ip')
+        mock_message.server = None
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.02)
+        assert self.mock_send.call_count == 2
+
     async def test__command_missing_arguments_prints_how_to_get_help(self):
-        mock_message = self._get_mock_command_message(f'!set not_enough')
+        mock_message = self._get_mock_command_message('!set not_enough')
         mock_message.channel.permissions_for.return_value = discord.permissions.Permissions()
         mock_message.channel.permissions_for.return_value.administrator = True
         await self.bot.on_message(mock_message)
