@@ -3,6 +3,16 @@ from bowser.database import Database
 from bowser.minecraft import Minecraft
 
 
+def _set_permission(context):
+    perms = context.message.channel.permissions_for(context.message.author)
+    return any([
+        perms.administrator,
+        perms.manage_channels,
+        perms.manage_server,
+        context.message.author == context.message.server.owner
+    ])
+
+
 class Bowser():
     def _get_game_data(self, context):
         sid = str(context.message.server.id)
@@ -16,7 +26,7 @@ class Bowser():
         print('Bowser is ready!')
 
     @commands.command(name='set', pass_context=True)
-    @commands.has_permissions(administrator=True)
+    @commands.check(_set_permission)
     async def set_info(self, context, host, port: int):
         '''Sets the host and port for this channel.'''
         sid = str(context.message.server.id)
@@ -106,6 +116,7 @@ class Bowser():
                     context.message.channel,
                     'Ninjas hijacked the packets, but the author will fix it.',
                 )
+
 
 def setup(bot):
     bot.add_cog(Bowser(bot))
