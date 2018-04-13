@@ -12,7 +12,7 @@ class TestMain(unittest.TestCase):
             mock_main.assert_called_once_with()
 
     @patch('time.sleep')
-    @patch('builtins.open', new_callable=mock_open, read_data='mock_token')
+    @patch('bowser.main.open', new_callable=mock_open, read_data='mock_token')
     @asynctest.patch.object(bowser.main.bowser, 'run')
     def test__main_keeps_running_until_something_bad_happens(
             self, mock_bot_run, *_):
@@ -25,7 +25,7 @@ class TestMain(unittest.TestCase):
         self.assertRaises(Exception, bowser.main.main)
         assert mock_bot_run.call_count == 4
 
-    @patch('builtins.open', new_callable=mock_open, read_data='mock_token')
+    @patch('bowser.main.open', new_callable=mock_open, read_data='mock_token')
     @patch.object(bowser.main.bowser, 'run')
     def test__main_starts_the_bot(self, mock_bot_run, *_):
         bowser.main.main()
