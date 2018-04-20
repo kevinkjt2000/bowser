@@ -1,7 +1,7 @@
 version: '2.1'
 services:
   bowser:
-    image: 'python:3.6-alpine@sha256:0f65c66115749270c8affffd7b164c91a0c756993b1f181d4c0870836b321d4b'
+    image: 'python:3.6-alpine@sha256:f35dac343955d3c7d553fe47164e54aea790979035cfaca89f1ad2e7439e220d'
     command: /bowser.pex
     environment:
       - PYTHONUNBUFFERED=1
