@@ -7,7 +7,7 @@
 #    tox -r -e sync
 #
 asynctest==0.12.0
-attrs==17.4.0             # via pytest
+attrs==18.1.0             # via pytest
 coverage==4.5.1           # via pytest-cov
 mockredispy==2.9.3
 more-itertools==4.1.0     # via pytest
