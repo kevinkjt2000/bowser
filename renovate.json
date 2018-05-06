@@ -8,6 +8,6 @@
   },
   "pip_requirements": {
     "enabled": true,
-    "fileMatch": "^requirements/lck/([\w-]*)\.(txt|pip)$"
+    "fileMatch": "^requirements/lck/([\\w-]*)\\.(txt|pip)$"
   }
 }
