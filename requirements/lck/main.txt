@@ -14,7 +14,7 @@ discord.py==0.16.12
 dnspython3==1.15.0        # via mcstatus
 dnspython==1.15.0         # via dnspython3
 git+https://github.com/kevinkjt2000/mcstatus.git@patch-1
-multidict==4.1.0          # via aiohttp
+multidict==4.3.0          # via aiohttp
 redis==2.10.6
 retrying==1.3.3
 six==1.11.0               # via mcstatus, retrying
