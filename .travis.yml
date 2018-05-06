@@ -4,8 +4,7 @@ python:
 sudo: false
 install:
   - pip install pipenv
-  - pipenv install --dev --system
-  - pipenv run pip install tox-travis
+  - pipenv install --dev
 script: pipenv run tox
 after_success:
   - pipenv run tox -e ci
