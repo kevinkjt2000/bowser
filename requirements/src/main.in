@@ -1,4 +1,0 @@
-discord.py
-git+https://github.com/kevinkjt2000/mcstatus.git@patch-1
-redis
-retrying
