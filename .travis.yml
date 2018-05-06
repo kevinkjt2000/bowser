@@ -6,7 +6,9 @@ sudo: false
 install:
   - pip install pipenv
   - pipenv install --dev
-script: pipenv run tox
+script:
+  - pipenv run tox
+  - pipenv run pip check
 after_success:
   - pipenv run tox -e ci
   - scripts/discord-webhook.sh success $WEBHOOK_URL
