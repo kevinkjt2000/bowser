@@ -309,20 +309,17 @@
         },
         "psutil": {
             "hashes": [
-                "sha256:12dd9c8abbad15f055e9579130035b38617020ce176f4a498b7870e6321ffa67",
-                "sha256:27d4c5ff3ab97389a9372d246e1aa27e5f02e4709fede48a0599f89d2873ca88",
-                "sha256:54781e463d9b9aa8c143033ee0d6a3149f9f143e6cc63099a95d4078f433dd56",
-                "sha256:57be53c045f2085e28d5371eedfce804f5e49e7b35fa79bcf63e271046058002",
-                "sha256:72ba7e4c82879b3781ccced1eeb901f07725a36fab66270e7555e484a460760d",
-                "sha256:773ba33fe365cb8b0998eedcbe494dc92ce7428998f07dca652a1360a9e2bce8",
-                "sha256:7a669b1897b8cdce1cea79defdf3a10fd6e4f0a8e42ac2a971dfe74bc1ce5679",
-                "sha256:7b1f9856c2fc9503a8a687db85e4f419ad1a10bfcab92ba786a7d43a6aa8cea0",
-                "sha256:e9ef8d265298268cad784dfece103ab06bd726512d57fc6ed9f94b55452e4571",
-                "sha256:f5d55618cd5b9270355fb52c0430ff30c4c84c5caf5b1254eec27f80d48e7a12",
-                "sha256:fc11c3a52990ec44064cbe026338dedcfff0e0027ca7516416eaa7d4f206c5af"
+                "sha256:8f208867d41eb3b6de416df098a9a28d08d40b432467d821b8ef5bb589a394ce",
+                "sha256:77b5e310de17085346ef2c4c21b64d5e39616ab4559b8ef6fea9f6f2ab0de66f",
+                "sha256:fec0e59dacbe91db7e063f038301f49da7e9361732fc31d28338ecaa4719520e",
+                "sha256:1268fb6959cd8d761c30e13e79908ae73ba5a69c3c3a5d09a7a27278446f9800",
+                "sha256:7eb2d80ef79d90474a03eead13b32e541d1fdeb47468cf04c881f0a7392ddbc5",
+                "sha256:69f1db4d13f362ce11a6246b20c752c31b87a6fd77452170fd03c26a8a20a4f2",
+                "sha256:6eb59bcfd48eade8889bae67a16e0d8c7b18af0732ba64dead61206fd7cb4e45",
+                "sha256:a4af5d4fcf6022886a30fb3b4fff71ff25f645865a68506680d43a3e634764af",
+                "sha256:5959e33e0fc69742dd22e88bfc7789a1f2e1fc2297794b543119e10cdac8dfb1"
             ],
-            "markers": "sys_platform == 'win32'",
-            "version": "==5.3.1"
+            "version": "==5.4.4"
         },
         "py": {
             "hashes": [
