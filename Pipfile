@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[requires]
+python_version = "3.6"
+
+[packages]
+"discord.py" = "*"
+mcstatus = { git = "https://github.com/kevinkjt2000/mcstatus.git@patch-1" }
+redis = "*"
+retrying = "*"
+"e1839a8" = {path = ".", editable = true}
+
+[dev-packages]
+asynctest = "*"
+codecov = "*"
+mockredispy = "*"
+pytest-cov = "*"
+pytest-socket = "*"
+pytest = "*"
+tox = "*"
+tox-pipenv = "*"
+setuptools-scm = "*"
