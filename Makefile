@@ -1,4 +1,5 @@
 SRCS := Pipfile.lock $(shell find -type f -name "*.py")
+SHELL := /bin/bash
 
 .PHONY : test
 test : .coverage
