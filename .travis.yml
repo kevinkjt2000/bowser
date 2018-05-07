@@ -5,12 +5,12 @@ python:
 sudo: false
 install:
   - pip install pipenv
-  - pipenv install --dev
+  - make requirements
 script:
-  - pipenv run tox
   - pipenv run pip check
+  - make test
 after_success:
-  - pipenv run tox -e ci
+  - pipenv run codecov
   - scripts/discord-webhook.sh success $WEBHOOK_URL
 after_failure:
   - scripts/discord-webhook.sh failure $WEBHOOK_URL
