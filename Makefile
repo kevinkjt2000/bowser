@@ -22,7 +22,9 @@ Pipfile.lock : Pipfile
 
 .PHONY : travis-install
 travis-install :
-	pip install pipenv
+	pip install --upgrade --force-reinstall pip
+	pip install --upgrade --force-reinstall "pipenv<11.1"
+	pip install --upgrade --force-reinstall pex
 	pipenv install --dev
 
 .PHONY : travis-script
