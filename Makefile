@@ -20,6 +20,15 @@ dist/bowser.pex : $(SRCS)
 Pipfile.lock : Pipfile
 	pipenv lock
 
+.PHONY : travis-install
+travis-install :
+	pip install pipenv
+	pipenv install --dev
+
+.PHONY : travis-script
+travis-script : test
+	pipenv run pip check
+
 .PHONY : clean
 clean :
 	find -name "*.pyc" -delete
