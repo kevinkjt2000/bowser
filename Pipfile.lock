@@ -272,9 +272,11 @@
         },
         "pipenv": {
             "hashes": [
-                "sha256:0796cb5078b00a26b9332a87ed137efa0c21e585dbf945d5943022e9b35e1663"
+                "sha256:a93b85b2db20fbed5068895e3ef5d7fc0b21afe44e38cb2bfff82eaa86dda8e0",
+                "sha256:d3f03016f9f7f22e7c5f5ffc8a5a805274ee244dbedd8fd93069a81850ac1e32",
+                "sha256:72f1ad664019301fd2fdd5666498f730e0492b3278a6ff8657d846c4082b3efc"
             ],
-            "version": "==11.0.2"
+            "version": "==11.10.3"
         },
         "pluggy": {
             "hashes": [
