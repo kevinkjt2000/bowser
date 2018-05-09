@@ -9,6 +9,7 @@ services:
       - redis
     restart: unless-stopped
     volumes:
+      - ./dist/requirements.pex:/dist/requirements.pex:ro
       - ./dist/bowser.pex:/bowser.pex:ro
       - ./token.txt:/token.txt:ro
       - ./servers.json:/servers.json:ro
