@@ -2,6 +2,7 @@ version: '2.1'
 services:
   bowser:
     volumes:
+      - /home/core/requirements.pex:/dist/requirements.pex:ro
       - /home/core/bowser.pex:/bowser.pex:ro
       - /home/core/token.txt:/token.txt:ro
   redis:

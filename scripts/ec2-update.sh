@@ -1,6 +1,7 @@
 #!/bin/bash
-tox -r -e package
+make package
 
+docker-machine scp dist/requirements.pex bowser:.
 docker-machine scp dist/bowser.pex bowser:.
 docker-machine scp token.txt bowser:.
 
