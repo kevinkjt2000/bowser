@@ -3,22 +3,27 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[[source]]
+url = "https://test.pypi.org/simple"
+verify_ssl = true
+name = "testpypi"
+
 [requires]
 python_version = "3.6"
 
 [packages]
 "discord.py" = "*"
-mcstatus = { git = "https://github.com/kevinkjt2000/mcstatus.git@patch-1" }
+mcstatus = {version = ">2.2", index = "testpypi"}
 redis = "*"
 retrying = "*"
-"e1839a8" = {path = ".", editable = true}
 
 [dev-packages]
 asynctest = "*"
 codecov = "*"
+"e1839a8" = {path = ".", editable = true}
 mockredispy = "*"
+pex = "*"
 pytest-cov = "*"
 pytest-socket = "*"
 pytest = "*"
 setuptools-scm = "*"
-pex = "*"
