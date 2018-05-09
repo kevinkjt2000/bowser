@@ -1,4 +1,4 @@
-SRCS := Pipfile.lock $(shell find -type f -name "*.py")
+SRCS := $(shell find -type f -name "*.py")
 SHELL := /bin/bash
 
 .PHONY : test
@@ -9,16 +9,18 @@ package : dist/bowser.pex
 
 .PHONY : requirements
 requirements : Pipfile.lock
-	pipenv install --dev --keep-outdated
 
 .coverage : $(SRCS)
 	pipenv run pytest
 
-dist/bowser.pex : $(SRCS)
-	pipenv run pex -c bowser -o dist/bowser.pex .
+dist/bowser.pex : dist/requirements.pex $(SRCS)
+	pipenv run pex . --script=bowser --output-file=dist/bowser.pex --pex-path=dist/requirements.pex
+
+dist/requirements.pex : requirements
+	pipenv run pex --output-file=dist/requirements.pex --requirement=<(pipenv lock --requirements | awk '{print $$1}') --index-url=https://test.pypi.org/simple
 
 Pipfile.lock : Pipfile
-	pipenv lock
+	pipenv install --dev
 
 .PHONY : travis-install
 travis-install :
