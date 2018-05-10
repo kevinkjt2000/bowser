@@ -23,17 +23,23 @@
     "default": {
         "aiohttp": {
             "hashes": [
-                "sha256:3a253332a0d8f82549e65035ebe7199580c3ea0e47071b7428f25b109b3c0310",
-                "sha256:3ac6fa105355928e2fc02e876d0d72d6230557d4637017ebf09aec7611124155",
-                "sha256:3bfcb76553d7f6296d1a598162d5fb890198f98c021540cbbb85bb604ff198db",
-                "sha256:714c62532ca6be90be4b54002743e7ea277ec78b45f04ae86cdc6f45a8400abd",
-                "sha256:81a6aaace2b9e8a87531277a5d5f998efbd3554c15bf47173834386966d1bbe1",
-                "sha256:ad374a5d7be1de271ecd0fb0ef87c0f8dd9fb062e6fae350fa6c098360018978",
-                "sha256:c3e1897726f97d40e067e8b658b2dbdfe216f32b801c5c589212e1b1f9aa8388",
-                "sha256:c579ec606f25b3f756f177fee6db344f8d7ef75cfc0603a94c9fa1d1c645789d",
-                "sha256:e1985766a4c83fcbdf7dde06544231fc9fb3de8929788179e623d6f9f9f321d2"
+                "sha256:b034ab3a8e328705625467fe7b3a59e23da6952ba19b5a14b044aef206b653fa",
+                "sha256:46c004a3bd91c42caa1bb9c4d44ef156ccf0d7f56272590da8d066710e7c63be",
+                "sha256:7dc80c5984613a30a6608718a401143598f69907770a46e5b6df87c7b9d06ce8",
+                "sha256:4af32e7641f8029fd2cb6b3d3e51e92074ae0d42347d56e93b25fbb3f49a43bb",
+                "sha256:ef885a19bcff2a20ae0362ab6b8f8ac62b8bd8490dd3e031f15933abbe41d2b2",
+                "sha256:b6abeb48f66ac26690fb681cc3c1f9eed1d2f9f29b7cd4f3e182d3276001f663",
+                "sha256:51652ba1310e5a71a20133976ae6cbe301edce3387c6d3df4a8451841af8c9c7",
+                "sha256:424ad41a5434c25920fc8d0ce24c2f8d749965bce8996b86c9be0cd50f0051b2",
+                "sha256:233b9a7816d29700e4ae6e024e0cc5d9d6fbd2a9b0878d0c89b75fa708a8b204",
+                "sha256:ee39b92c1dc2425784b424bd442bd255f31e272546be92a28035dabe9da3495e",
+                "sha256:af183773b170da552bfb1f78bc84647e3f7316ff5c77ae379e34362ffbafed0b",
+                "sha256:695dc053980c9ad73030d426de40d7d0c66f4226c698b1c68ae94b9b761f28bd",
+                "sha256:57854a9e1f0ed26acfd5765caa5522679b6e78a4dfcd137855cd058fdae5abe2",
+                "sha256:8aa12ad9cccbdf0f896dd3f1bbe78093b09eb1a456cbd7208080c2c0e9c338e1",
+                "sha256:1be3903fe6a36d20492e74efb326522dd4702bf32b45ffc7acbc0fb34ab240a6"
             ],
-            "version": "==1.0.5"
+            "version": "==3.2.0"
         },
         "async-timeout": {
             "hashes": [
