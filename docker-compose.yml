@@ -14,7 +14,7 @@ services:
       - ./token.txt:/token.txt:ro
       - ./servers.json:/servers.json:ro
   redis:
-    image: 'redis:alpine@sha256:aab35d6ec4c49ef5c1674f0582eeb2f6e90ee0fd3010d8a806d8833f36cc0525'
+    image: 'redis:alpine@sha256:26cb6d6cd7ea424a78266c5a5e08e7df9919f52729a6b0e820e10597337ce9a2'
     entrypoint: redis-server --appendonly yes
     sysctls:
       - net.core.somaxconn=511
