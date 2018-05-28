@@ -107,3 +107,4 @@ venv.bak/
 token.txt
 servers.json
 redis-data/
+backup/
