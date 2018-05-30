@@ -2,7 +2,7 @@ SRCS := $(shell find -type f -name "*.py")
 SHELL := /bin/bash
 
 .PHONY : test
-test : .coverage
+test : tests-unit
 
 .PHONY : package
 package : dist/bowser.pex
@@ -10,8 +10,11 @@ package : dist/bowser.pex
 .PHONY : requirements
 requirements : Pipfile.lock
 
+.PHONY : tests-unit
+tests-unit : .coverage
+
 .coverage : $(SRCS)
-	pipenv run pytest
+	pipenv run pytest tests/unit
 
 dist/bowser.pex : dist/requirements.pex $(SRCS)
 	pipenv run pex . --script=bowser --output-file=dist/bowser.pex --pex-path=dist/requirements.pex
