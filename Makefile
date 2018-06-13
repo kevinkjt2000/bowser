@@ -13,6 +13,16 @@ requirements : Pipfile.lock
 .PHONY : tests-unit
 tests-unit : .coverage
 
+.PHONY : tests-integration
+tests-integration : run
+	pipenv run pytest tests/integration
+
+.PHONY : run
+run : package
+	eval "$$(docker-machine env -u)" && \
+	docker-compose up -d && \
+	docker-compose restart
+
 .coverage : $(SRCS)
 	pipenv run pytest tests/unit
 
