@@ -151,10 +151,10 @@
     "develop": {
         "asynctest": {
             "hashes": [
-                "sha256:3cc304cfb59608d09fb302acbe086feafa010b0a9254b1b04c4c75f2265767fc",
-                "sha256:afd030357379ea52193c14ed73f97866a8076ba83e402f12dc0c717c7723a18d"
+                "sha256:56bd75b03df55956d57437db26700503d1013616314db5d1ea1a73be1186fd71",
+                "sha256:77520850ae21620ec31738f4a7b467acaa44de6d3752d8ac7a9f4dcf55d77853"
             ],
-            "version": "==0.12.1"
+            "version": "==0.12.2"
         },
         "attrs": {
             "hashes": [
