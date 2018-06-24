@@ -1,5 +1,7 @@
 SRCS := $(shell find -type f -name "*.py")
 SHELL := /bin/bash
+-include .env
+export
 
 .PHONY : test
 test : tests-unit
