@@ -1,3 +1,4 @@
+import os
 from unittest.mock import patch, mock_open
 import unittest
 import asynctest
@@ -24,6 +25,14 @@ class TestMain(unittest.TestCase):
         ]
         self.assertRaises(Exception, bowser.main.main)
         assert mock_bot_run.call_count == 4
+
+    @patch('bowser.main.open', new_callable=mock_open, read_data='mock_token')
+    @patch.object(bowser.main.bowser, 'run')
+    def test__environment_tokens_are_preffered(self, mock_bot_run, *_):
+        os.environ['BOWSER_TOKEN'] = 'mock_env_token'
+        bowser.main.main()
+        del os.environ['BOWSER_TOKEN']
+        mock_bot_run.assert_called_once_with('mock_env_token')
 
     @patch('bowser.main.open', new_callable=mock_open, read_data='mock_token')
     @patch.object(bowser.main.bowser, 'run')
