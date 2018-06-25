@@ -2,7 +2,7 @@ language: python
 cache: pip
 python:
   - "3.6"
-sudo: false
+sudo: true
 install: make travis-install
 script: make travis-script
 after_success:

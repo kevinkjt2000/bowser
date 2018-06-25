@@ -45,6 +45,8 @@ travis-install :
 	pip install --upgrade --force-reinstall "setuptools<34.0,>=20.3"
 	pip install --upgrade --force-reinstall "setuptools<34.0,>=20.3"
 	pipenv install --dev
+	curl -L https://github.com/docker/machine/releases/download/v0.14.0/docker-machine-$(shell uname -s)-$(shell uname -m) >/tmp/docker-machine
+	sudo install /tmp/docker-machine /usr/local/bin/docker-machine
 
 .PHONY : check-pipenv
 check-pipenv :
