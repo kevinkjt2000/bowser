@@ -51,5 +51,5 @@ def bowser_testing(server):
 def test_getting_ip_works(loop, channel, koopa, bowser_testing):
     task = loop.create_task(koopa.wait_for_message(author=bowser_testing))
     loop.run_until_complete(koopa.send_message(channel, '!ip'))
-    message = loop.run_until_complete(asyncio.wait_for(task, 2))
+    message = loop.run_until_complete(asyncio.wait_for(task, 5))
     assert message.content == 'play.minesuperior.com:25565'
