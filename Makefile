@@ -46,9 +46,12 @@ travis-install :
 	pip install --upgrade --force-reinstall "setuptools<34.0,>=20.3"
 	pipenv install --dev
 
-.PHONY : travis-script
-travis-script : test
+.PHONY : check-pipenv
+check-pipenv :
 	pipenv run pip check
+
+.PHONY : travis-script
+travis-script : check-pipenv test tests-integration
 
 .PHONY : clean
 clean :
