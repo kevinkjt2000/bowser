@@ -1,4 +1,4 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import asyncio
 import random
 import asynctest
@@ -23,7 +23,11 @@ class TestBowser(asynctest.TestCase):
         self.bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'))
         self.bowser = Bowser(self.bot)
         self.bot.add_cog(self.bowser)
-        self.bowser.db.set_data_of_server_channel(self.mock_server_id, self.mock_channel_id, fake_data)
+        self.bowser.db.set_data_of_server_channel(
+            self.mock_server_id,
+            self.mock_channel_id,
+            fake_data
+        )
         self.bot.user = self._get_mock_user(bot=True)
         self.patch_run = asynctest.patch.object(self.bot, 'run')
         self.patch_run.start()
