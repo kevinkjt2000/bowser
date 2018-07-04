@@ -10,9 +10,9 @@ services:
       - redis
     restart: unless-stopped
     volumes:
-      - ./dist/requirements.pex:/dist/requirements.pex:ro
-      - ./dist/bowser.pex:/bowser.pex:ro
-      - ./token.txt:/token.txt:ro
+      - ./dist/requirements.pex:/dist/requirements.pex
+      - ./dist/bowser.pex:/bowser.pex
+      - ./token.txt:/token.txt
   redis:
     image: 'redis:alpine@sha256:43e4d14fcffa05a5967c353dd7061564f130d6021725dd219f0c6fcbcc6b5076'
     entrypoint: redis-server --appendonly yes

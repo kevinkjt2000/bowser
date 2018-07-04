@@ -1,8 +1,10 @@
 import asyncio
+import logging
 import os
 from discord.ext import commands
 from retrying import retry
 loop = asyncio.get_event_loop()
+logging.basicConfig(level=logging.DEBUG)
 
 
 def retry_if_connection_reset(exception):
@@ -20,6 +22,8 @@ bowser = commands.Bot(
 @retry(retry_on_exception=retry_if_connection_reset, wait_fixed=1000)
 def main():
     try:
+        logging.debug('lalalala take number 1234')
+        logging.debug(os.environ)
         token = os.getenv('BOWSER_TOKEN') or \
             open('token.txt').read().replace('\n', '')
         bowser.load_extension('bowser.bowser')

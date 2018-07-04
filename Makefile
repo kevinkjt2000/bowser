@@ -9,9 +9,6 @@ test : tests-unit
 .PHONY : package
 package : dist/bowser.pex
 
-.PHONY : requirements
-requirements : Pipfile.lock
-
 .PHONY : tests-unit
 tests-unit : .coverage
 
@@ -23,7 +20,7 @@ tests-integration : run
 .PHONY : run
 run : package
 	eval "$$(docker-machine env -u)" && \
-	docker-compose up -d && \
+	docker-compose up --detach && \
 	docker-compose restart
 
 .coverage : $(SRCS)
@@ -32,11 +29,12 @@ run : package
 dist/bowser.pex : dist/requirements.pex $(SRCS)
 	pipenv run pex . --script=bowser --output-file=dist/bowser.pex --pex-path=dist/requirements.pex
 
-dist/requirements.pex : requirements
+dist/requirements.pex : Pipfile.lock
 	pipenv run pex --output-file=dist/requirements.pex --requirement=<(pipenv lock --requirements | awk '{print $$1}') --index-url=https://test.pypi.org/simple
 
 Pipfile.lock : Pipfile
 	pipenv install --dev
+	pipenv lock
 
 .PHONY : travis-install
 travis-install :
