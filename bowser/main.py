@@ -20,10 +20,8 @@ bowser = commands.Bot(
 @retry(retry_on_exception=retry_if_connection_reset, wait_fixed=1000)
 def main():
     try:
-        token = os.getenv(
-            'BOWSER_TOKEN',
+        token = os.getenv('BOWSER_TOKEN') or \
             open('token.txt').read().replace('\n', '')
-        )
         bowser.load_extension('bowser.bowser')
         bowser.run(token)
     finally:
