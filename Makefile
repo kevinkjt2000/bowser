@@ -18,6 +18,7 @@ tests-unit : .coverage
 .PHONY : tests-integration
 tests-integration : run
 	pipenv run pytest tests/integration
+	docker-compose down
 
 .PHONY : run
 run : package
