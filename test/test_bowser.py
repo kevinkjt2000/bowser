@@ -41,6 +41,28 @@ class TestBowser(asynctest.TestCase):
         self.patch_mc.stop()
         await self.bot.close()
 
+    async def test__statuses_command_works(self):
+        mock_mcs = [self.mock_mc, self.mock_mc]
+        fake_data = {'host': 'fake_host', 'port': 123}
+        for i, _ in enumerate(mock_mcs):
+            mock_mcs[i].mc_server.host = fake_data['host'] + str(i)
+            mock_mcs[i].mc_server.port = fake_data['port']
+            self.bowser.db.set_data_of_server_channel(
+                self.mock_server_id,
+                self.mock_channel_id + str(i),
+                fake_data,
+            )
+        mock_message = self._get_mock_command_message('!statuses')
+        await self.bot.on_message(mock_message)
+        await asyncio.sleep(0.02)
+        mock_mcs.append(self.mock_mc)
+
+        self.mock_send.assert_called_once_with(
+            mock_message.channel,
+            '\n'.join(str(mock_mc.get_formatted_status_message())
+                      for mock_mc in mock_mcs),
+        )
+
     async def test__support_dms_by_ignoring_attribute_errors(self):
         mock_message = self._get_mock_command_message('!help')
         mock_message.server = None
