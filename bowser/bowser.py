@@ -34,6 +34,15 @@ class Bowser():
         self.db = Database()
         print('Bowser is ready!')
 
+    @commands.command(name='statuses', pass_context=True)
+    async def statuses(self, context):
+        '''Shows all the statuses in one message.'''
+        sid = str(context.message.server.id)
+        datas = self.db.fetch_datas_of_server(sid)
+        statuses = [Minecraft(**data).get_formatted_status_message()
+                    for data in datas]
+        await self.bot.say('\n'.join(str(status) for status in statuses))
+
     @commands.command(name='set', pass_context=True)
     @commands.check(_set_permission)
     async def set_info(self, context, host, port: int):
