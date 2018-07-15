@@ -1,6 +1,7 @@
 from unittest.mock import patch
 import asyncio
 import random
+import string
 import asynctest
 import discord
 from discord.ext import commands
@@ -10,29 +11,18 @@ from bowser.bowser import Bowser
 
 class HelperFunctions(asynctest.TestCase):
     async def setUp(self):
-        self.mock_server_id = str(random.randrange(999999))
-        self.mock_channel_id = str(random.randrange(999999))
-        self.patch_mc = patch('bowser.bowser.Minecraft')
-        self.mock_mc = self.patch_mc.start()()
-        fake_data = {'host': 'fake_host', 'port': 123}
-        self.mock_mc.mc_server.host = fake_data['host']
-        self.mock_mc.mc_server.port = fake_data['port']
         self.patch_db = patch('bowser.database.redis.StrictRedis',
                               mockredis.mock_strict_redis_client)
         self.patch_db.start()
         self.bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'))
         self.bowser = Bowser(self.bot)
         self.bot.add_cog(self.bowser)
-        self.bowser.db.set_data_of_server_channel(
-            self.mock_server_id,
-            self.mock_channel_id,
-            fake_data
-        )
         self.bot.user = self._get_mock_user(bot=True)
         self.patch_run = asynctest.patch.object(self.bot, 'run')
         self.patch_run.start()
         self.patch_send = asynctest.patch.object(self.bot, 'send_message')
         self.mock_send = self.patch_send.start()
+        self._add_minecraft_channel()
 
     async def tearDown(self):
         self.patch_send.stop()
@@ -40,6 +30,23 @@ class HelperFunctions(asynctest.TestCase):
         self.patch_db.stop()
         self.patch_mc.stop()
         await self.bot.close()
+
+    def _add_minecraft_channel(self):
+        self.mock_server_id = str(random.randrange(999999))
+        self.mock_channel_id = str(random.randrange(999999))
+        self.patch_mc = patch('bowser.bowser.Minecraft')
+        self.mock_mc = self.patch_mc.start()()
+        fake_data = {
+            'host': ''.join(random.choice(string.ascii_lowercase) for _ in range(10)),
+            'port': random.randrange(65535),
+        }
+        self.mock_mc.mc_server.host = fake_data['host']
+        self.mock_mc.mc_server.port = fake_data['port']
+        self.bowser.db.set_data_of_server_channel(
+            self.mock_server_id,
+            self.mock_channel_id,
+            fake_data
+        )
 
     def _get_mock_command_message(self, command):
         return self._get_mock_message(command, channel=self.mock_channel_id)
