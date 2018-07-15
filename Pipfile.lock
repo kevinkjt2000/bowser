@@ -296,10 +296,9 @@
         },
         "pytest-socket": {
             "hashes": [
-                "sha256:4777314046f09a6f4a06aac91b8be21d5083bb693a42147907e75b0ca3f02fca",
-                "sha256:b25297375d32661219c6fd7913dc5a9bd9d6f422b404bd4acbfd36b26b0a1546"
+                "sha256:b82ed132b5a8e9eacef6c6532ace93a37865ff873090459ca360da25a2c7e1aa"
             ],
-            "version": "==0.2.0"
+            "version": "==0.3.0"
         },
         "requests": {
             "hashes": [
