@@ -11,6 +11,7 @@ from bowser.bowser import Bowser
 
 class HelperFunctions(asynctest.TestCase):
     async def setUp(self):
+        self.server_id = str(random.randrange(999999))
         self.patch_db = patch('bowser.database.redis.StrictRedis',
                               mockredis.mock_strict_redis_client)
         self.patch_db.start()
@@ -35,7 +36,7 @@ class HelperFunctions(asynctest.TestCase):
 
     def _add_game_channel(self):
         game = {
-            'server_id': str(random.randrange(999999)),
+            'server_id': self.server_id,
             'channel_id': str(random.randrange(999999)),
             'host': ''.join(random.choice(string.ascii_lowercase) for _ in range(10)),
             'port': random.randrange(65535),
