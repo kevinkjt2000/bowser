@@ -8,7 +8,7 @@ import mockredis
 from bowser.bowser import Bowser
 
 
-class TestBowser(asynctest.TestCase):
+class HelperFunctions(asynctest.TestCase):
     async def setUp(self):
         self.mock_server_id = str(random.randrange(999999))
         self.mock_channel_id = str(random.randrange(999999))
@@ -41,6 +41,47 @@ class TestBowser(asynctest.TestCase):
         self.patch_mc.stop()
         await self.bot.close()
 
+    def _get_mock_command_message(self, command):
+        return self._get_mock_message(command, channel=self.mock_channel_id)
+
+    def _get_mock_channel(self, **kwargs):
+        id = kwargs.pop('id', str(random.randrange(999999)))
+        return asynctest.MagicMock(
+            spec=discord.Channel,
+            id=id,
+        )
+
+    def _get_mock_server(self):
+        return asynctest.MagicMock(
+            spec=discord.Server,
+            id=self.mock_server_id,
+            me=self.bot.user,
+        )
+
+    def _get_mock_message(self, content, **kwargs):
+        channel = kwargs.pop('channel', self._get_mock_channel())
+        server = kwargs.pop('server', self._get_mock_server())
+        if isinstance(channel, str):
+            channel = self._get_mock_channel(id=channel)
+        return asynctest.MagicMock(
+            spec=discord.Message,
+            author=self._get_mock_user(),
+            channel=channel,
+            server=server,
+            content=content,
+            mentions=[],
+        )
+
+    def _get_mock_user(self, bot=None):
+        return asynctest.MagicMock(
+            spec=discord.Member,
+            id=str(random.randrange(999999)),
+            name='mock_user',
+            bot=bot,
+        )
+
+
+class TestBowser(HelperFunctions):
     async def test__statuses_command_works(self):
         mock_mcs = [self.mock_mc, self.mock_mc]
         fake_data = {'host': 'fake_host', 'port': 123}
@@ -188,42 +229,3 @@ class TestBowser(asynctest.TestCase):
         self.mock_mc.get_formatted_status_message.assert_called_once()
         await asyncio.sleep(0.02)
         self.mock_send.assert_called_once_with(mock_message.channel, message)
-
-    def _get_mock_command_message(self, command):
-        return self._get_mock_message(command, channel=self.mock_channel_id)
-
-    def _get_mock_channel(self, **kwargs):
-        id = kwargs.pop('id', str(random.randrange(999999)))
-        return asynctest.MagicMock(
-            spec=discord.Channel,
-            id=id,
-        )
-
-    def _get_mock_server(self):
-        return asynctest.MagicMock(
-            spec=discord.Server,
-            id=self.mock_server_id,
-            me=self.bot.user,
-        )
-
-    def _get_mock_message(self, content, **kwargs):
-        channel = kwargs.pop('channel', self._get_mock_channel())
-        server = kwargs.pop('server', self._get_mock_server())
-        if isinstance(channel, str):
-            channel = self._get_mock_channel(id=channel)
-        return asynctest.MagicMock(
-            spec=discord.Message,
-            author=self._get_mock_user(),
-            channel=channel,
-            server=server,
-            content=content,
-            mentions=[],
-        )
-
-    def _get_mock_user(self, bot=None):
-        return asynctest.MagicMock(
-            spec=discord.Member,
-            id=str(random.randrange(999999)),
-            name='mock_user',
-            bot=bot,
-        )
