@@ -303,9 +303,9 @@
         },
         "pytest-socket": {
             "hashes": [
-                "sha256:b82ed132b5a8e9eacef6c6532ace93a37865ff873090459ca360da25a2c7e1aa"
+                "sha256:bb0857c4a459b7ed4586c51b48ad99920ca82f3314c95ed6de84847c2a8b6eef"
             ],
-            "version": "==0.3.0"
+            "version": "==0.3.1"
         },
         "requests": {
             "hashes": [
