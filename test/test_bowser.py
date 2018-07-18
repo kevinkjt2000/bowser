@@ -12,27 +12,32 @@ from bowser.bowser import Bowser
 class HelperFunctions(asynctest.TestCase):
     async def setUp(self):
         self.server_id = str(random.randrange(999999))
-        self.patch_db = patch('bowser.database.redis.StrictRedis',
-                              mockredis.mock_strict_redis_client)
-        self.patch_db.start()
+
+        patch_db = patch('bowser.database.redis.StrictRedis', mockredis.mock_strict_redis_client)
+        patch_db.start()
+        self.addCleanup(patch_db.stop)
+
         self.patch_mc = patch('bowser.bowser.Minecraft')
         self.mock_mc = self.patch_mc.start()()
+        self.addCleanup(self.patch_mc.stop)
+
         self.bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'))
         self.bowser = Bowser(self.bot)
         self.bot.add_cog(self.bowser)
         self.bot.user = self._get_mock_user(bot=True)
-        self.patch_run = asynctest.patch.object(self.bot, 'run')
-        self.patch_run.start()
-        self.patch_send = asynctest.patch.object(self.bot, 'send_message')
-        self.mock_send = self.patch_send.start()
+
+        patch_run = asynctest.patch.object(self.bot, 'run')
+        patch_run.start()
+        self.addCleanup(patch_run.stop)
+
+        patch_send = asynctest.patch.object(self.bot, 'send_message')
+        self.mock_send = patch_send.start()
+        self.addCleanup(patch_send.stop)
+
         self.games = []
         self._add_game_channel()
 
     async def tearDown(self):
-        self.patch_send.stop()
-        self.patch_run.stop()
-        self.patch_db.stop()
-        self.patch_mc.stop()
         await self.bot.close()
 
     def _add_game_channel(self):
