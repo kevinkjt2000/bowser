@@ -39,8 +39,10 @@ class Bowser():
         '''Shows all the statuses in one message.'''
         sid = str(context.message.server.id)
         datas = self.db.fetch_datas_of_server(sid)
-        statuses = [Minecraft(**data).get_formatted_status_message()
-                    for data in datas]
+        statuses = []
+        for data in datas:
+            status = Minecraft(**data).get_formatted_status_message()
+            statuses.append(f"{data['host']} {status}")
         await self.bot.say('\n'.join(str(status) for status in statuses))
 
     @commands.command(name='set', pass_context=True)
