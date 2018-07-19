@@ -107,8 +107,10 @@ class TestBowser(HelperFunctions):
 
         self.mock_send.assert_called_once_with(
             mock_message.channel,
-            '\n'.join(str(game['mock'].get_formatted_status_message())
-                      for game in self.games),
+            '\n'.join(
+                f"{game['host']} {game['mock'].get_formatted_status_message()}"
+                for game in self.games
+            ),
         )
 
     async def test__support_dms_by_ignoring_attribute_errors(self):
