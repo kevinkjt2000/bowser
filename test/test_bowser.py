@@ -101,16 +101,22 @@ class TestBowser(HelperFunctions):
     async def test__statuses_command_works(self):
         self._add_game_channel()
         self._add_game_channel()
+        self.games[1]['mock'].get_formatted_status_message.side_effect = Exception
         mock_message = self._get_mock_command_message('!statuses')
         await self.bot.on_message(mock_message)
         await asyncio.sleep(0.02)
 
+        expected_statuses = []
+        for game in self.games:
+            try:
+                status = game['mock'].get_formatted_status_message()
+            except Exception:
+                status = '<error message goes here>'
+            expected_statuses.append(f"{game['host']} {status}")
+
         self.mock_send.assert_called_once_with(
             mock_message.channel,
-            '\n'.join(
-                f"{game['host']} {game['mock'].get_formatted_status_message()}"
-                for game in self.games
-            ),
+            '\n'.join(expected_statuses),
         )
 
     async def test__support_dms_by_ignoring_attribute_errors(self):
