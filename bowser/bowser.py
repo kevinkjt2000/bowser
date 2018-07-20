@@ -41,7 +41,10 @@ class Bowser():
         datas = self.db.fetch_datas_of_server(sid)
         statuses = []
         for data in datas:
-            status = Minecraft(**data).get_formatted_status_message()
+            try:
+                status = Minecraft(**data).get_formatted_status_message()
+            except Exception:
+                status = '<error message goes here>'
             statuses.append(f"{data['host']} {status}")
         await self.bot.say('\n'.join(str(status) for status in statuses))
 
