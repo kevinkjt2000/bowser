@@ -429,10 +429,14 @@
         },
         "setuptools-scm": {
             "hashes": [
-                "sha256:1261fb48def5ac5e4d04cb6196886cb8c2de5dc066ed2bfee99d4bb21aecb781",
-                "sha256:a767141fecdab1c0b3c8e4c788ac912d7c94a0d6c452d40777ba84f918316379"
+                "sha256:c8304c7702b4d8b38fdbae5728924cba5e5836b8eaac3eabdfe97fd9faa64f3b",
+                "sha256:f4d89dee3f890dac871f5cdb921e9ad29464f9342e4276f86a64ac96aa1c0069",
+                "sha256:3826fa51bf1cbcc814362b4723fd3070e5a9d35722f2753982b87232f4006559",
+                "sha256:5d7f6a30f7cbfcfb63031fa3aab45543019936c00fce0348eb49a128a2fb2da0",
+                "sha256:78de5dda9fad8c71eb4d785dfd93beb19e6ed9c5b8f0c8ef3472abe522f9ee4a",
+                "sha256:9ee396bc97c8f870a062d79362b8d0feb1b4ddf628b2e44bd0f2971aed1a401d"
             ],
-            "version": "==2.1.0"
+            "version": "==3.0.0"
         },
         "six": {
             "hashes": [
