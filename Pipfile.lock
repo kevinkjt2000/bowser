@@ -429,10 +429,9 @@
         },
         "setuptools-scm": {
             "hashes": [
-                "sha256:1261fb48def5ac5e4d04cb6196886cb8c2de5dc066ed2bfee99d4bb21aecb781",
-                "sha256:a767141fecdab1c0b3c8e4c788ac912d7c94a0d6c452d40777ba84f918316379"
+                "sha256:9def056f01597086ea9d1a6eb50da67682162132b7300f437707070be8a18a60"
             ],
-            "version": "==2.1.0"
+            "version": "==3.0.3"
         },
         "six": {
             "hashes": [
