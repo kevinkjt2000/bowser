@@ -428,14 +428,14 @@
         },
         "setuptools-scm": {
             "hashes": [
-                "sha256:9052a96e378fbda25c1e540b6a91fda476729d62730dc086b94f6f891d312597",
-                "sha256:f064c6faa29333957f0c07fda17eb625f5f4aadd1585f9d755b6ba3847d970ef",
-                "sha256:836c6ecedd18ff76e92ae1d39362afd5515e3fca9c82e90ce955fb4c17c48ef1",
-                "sha256:cd3298bd3df76f4ac4dbd3d425ce4c7bb9879146839f9fef2859f2f5711dbfd1",
-                "sha256:8f6d7b1edd306eda90d04c962f5eb4b2843d2ec952bc91b4066f76165af8b7c2",
-                "sha256:e3edaf4008ee2d01934d8aa0503cfbd9470f941e2e8aa5eb56de33cdaf69ec3c"
+                "sha256:61aef187d0c5e09c96a497a156020782697a6133ae3430fe7b52fe2373ab84fa",
+                "sha256:e37c3b908a13d30ef85ddc64b9be81db839544999faefb0fd52a0f228b8eefda",
+                "sha256:7bcc8cca47e14d66f946b59fe7aa712284ccb759c881eb171b9701e4ef8c4941",
+                "sha256:a89c3a099683046c9fd5f4caddc38d2bb2bc761b018537e41b54538743a23bf6",
+                "sha256:2981590502da5876caac2be42365431972266cca2410be4cb945bade11919086",
+                "sha256:a9cd4250443f96947c35e4790513fc008b7cc91c1475b8b523e7c7dd69766437"
             ],
-            "version": "==3.0.5"
+            "version": "==3.0.6"
         },
         "six": {
             "hashes": [
