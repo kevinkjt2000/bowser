@@ -151,10 +151,10 @@
     "develop": {
         "astroid": {
             "hashes": [
-                "sha256:0ef2bf9f07c3150929b25e8e61b5198c27b0dca195e156f0e4d5bdd89185ca1a",
-                "sha256:fc9b582dba0366e63540982c3944a9230cbc6f303641c51483fa547dcc22393a"
+                "sha256:57152b96d17e8e2026255987a43b4d860bc23814fb1709ae9b25cdad37c45a02",
+                "sha256:e6dbe13f4afe364c323ba605e0027dc29b5a301a4dace2ff02c17cae891c1d8c"
             ],
-            "version": "==1.6.5"
+            "version": "==2.0.3"
         },
         "asynctest": {
             "hashes": [
