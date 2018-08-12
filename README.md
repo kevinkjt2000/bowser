@@ -8,6 +8,8 @@
 # Bowser Bot for Discord
 Bowser responds to commands, such as `!status`, by querying channel's configured game server and responding with a message that shows who is online, how many mods are loaded, etc.
 
+![image](https://user-images.githubusercontent.com/4098674/44004785-1e47ca14-9e2e-11e8-87da-58574c06ab6f.png)
+
 ### Setup
 1. The server owner navigates to this link https://discordapp.com/oauth2/authorize?client_id=392875945717137418&scope=bot&permissions=0 .
 2. Bowser is given read and write permissions on any channels where bowser should respond to commands.
