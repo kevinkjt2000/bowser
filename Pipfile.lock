@@ -373,10 +373,10 @@
         },
         "pex": {
             "hashes": [
-                "sha256:72d6d914b58b183cc252ece731760b8ffc57257006c102101c730e5a0de673fd",
-                "sha256:120e2cf55b84c5e0c95bb2d39d1b05da044ac1ac59e390ead0eed983fac64913"
+                "sha256:65b0e6d3439a063ec8f334f7ff89437f806960a1d1e5f6ffc9ad06c4c5102680",
+                "sha256:4c6d906daea8a729c010857a199ad21b4a2cb29f84783a7eb91b1597c35a4072"
             ],
-            "version": "==1.4.5"
+            "version": "==1.4.8"
         },
         "pluggy": {
             "hashes": [
