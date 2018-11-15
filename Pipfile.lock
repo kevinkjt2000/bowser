@@ -393,11 +393,10 @@
         },
         "pex": {
             "hashes": [
-                "sha256:6143465a09ca84dc0000ffc74c6eaf8f3210e590150e115832974994479b662b",
-                "sha256:6e72c7fb480469713f8df827f8bfcbe5fac74606b7bea930f1be490d9822b54f"
+                "sha256:4b439e4885408b4855a34704c6284b7ce6f3d61456da1a7bb91432ed7287283b",
+                "sha256:a0244c9e25172598fca73cb61e2a2f133503565c95d99210c3d5c0e85950c4bd"
             ],
-            "index": "pypi",
-            "version": "==1.5.2"
+            "version": "==1.5.3"
         },
         "pluggy": {
             "hashes": [
