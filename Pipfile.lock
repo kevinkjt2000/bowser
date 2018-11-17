@@ -386,10 +386,9 @@
         },
         "neovim": {
             "hashes": [
-                "sha256:02633a4527612a9b4957d1a67f5516c4915945adc06f19610890e916437ca7a3"
+                "sha256:a6a0e7a5b4433bf4e6ddcbc5c5ff44170be7d84259d002b8e8d8fb4ee78af60f"
             ],
-            "index": "pypi",
-            "version": "==0.3.0"
+            "version": "==0.3.1"
         },
         "pex": {
             "hashes": [
