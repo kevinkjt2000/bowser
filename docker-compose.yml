@@ -13,7 +13,7 @@ services:
       - ./dist/bowser.pex:/bowser.pex:ro
       - ./token.txt:/token.txt:ro
   redis:
-    image: 'redis:alpine@sha256:96cc76d39766ee1db844f2adc68c0122615b56bf1fa6f75a7fedcfd7ba561234'
+    image: 'redis:alpine@sha256:6f1cbe37b4b486fb28e2b787de03a944a47004b7b379d0f8985760350640380b'
     entrypoint: redis-server --appendonly yes
     sysctls:
       - net.core.somaxconn=511
