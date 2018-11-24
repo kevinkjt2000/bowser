@@ -1,6 +1,4 @@
 [![Build Status](https://img.shields.io/travis/kevinkjt2000/bowser/master.svg?label=Travis-CI)](https://travis-ci.org/kevinkjt2000/bowser?branch=master)
-[![Coverage Status](https://img.shields.io/codecov/c/github/kevinkjt2000/bowser/master.svg?label=Codecov)](https://codecov.io/gh/kevinkjt2000/bowser/branch/master)
-[![Dependency Status](https://pyup.io/repos/github/kevinkjt2000/bowser/shield.svg)](https://pyup.io/repos/github/kevinkjt2000/bowser)
 
 [![Discord Bots](https://discordbots.org/api/widget/status/392875945717137418.svg)](https://discordbots.org/bot/392875945717137418)
 [![Discord Bots](https://discordbots.org/api/widget/upvotes/392875945717137418.svg)](https://discordbots.org/bot/392875945717137418)
