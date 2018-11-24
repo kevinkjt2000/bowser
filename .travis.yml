@@ -1,12 +1,6 @@
-language: python
-cache: pip
-python:
-  - "3.6"
+language: elixir
 sudo: false
-install: make travis-install
-script: make travis-script
 after_success:
-  - pipenv run codecov
   - scripts/discord-webhook.sh success $WEBHOOK_URL
 after_failure:
   - scripts/discord-webhook.sh failure $WEBHOOK_URL
