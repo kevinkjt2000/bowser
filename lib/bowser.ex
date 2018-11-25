@@ -76,7 +76,7 @@ defmodule Bowser do
   end
 
   def set_command(msg, [host]) do
-    set_command(msg, [host, "25565"])
+    set_command(msg, [host, "25_565"])
   end
 
   def set_command(msg, [host, port]) do
