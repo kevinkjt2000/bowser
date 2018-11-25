@@ -1,4 +1,6 @@
 defmodule Protocols.Minecraft do
+  @moduledoc "Minecraft server protocol handler"
+
   alias Protocols.ProtocolError
 
   def _remove_ascii_escape_codes(str) do

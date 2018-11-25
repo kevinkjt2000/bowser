@@ -1,4 +1,6 @@
 defmodule Bowser do
+  @moduledoc "Discord command handler"
+
   use Nostrum.Consumer
   require Logger
 
