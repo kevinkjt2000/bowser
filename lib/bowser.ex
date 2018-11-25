@@ -1,5 +1,6 @@
 defmodule Bowser do
   use Nostrum.Consumer
+  require Logger
 
   alias Nostrum.Api
   alias Protocols.ProtocolError
@@ -169,8 +170,7 @@ defmodule Bowser do
         Api.create_message!(msg.channel_id, err.message)
 
       err ->
-        IO.inspect(__STACKTRACE__)
-        IO.inspect(err)
+        Logger.error(__STACKTRACE__, err)
 
         Api.create_message!(
           msg.channel_id,
