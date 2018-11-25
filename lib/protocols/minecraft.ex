@@ -5,7 +5,7 @@ defmodule Protocols.Minecraft do
     Regex.replace(~r/§[0-9a-z]/, str, "")
   end
 
-  def get_forge_version(host, port \\ 25565) do
+  def get_forge_version(host, port \\ 25_565) do
     info = _get_info_object!(host, port)
 
     try do
@@ -17,12 +17,12 @@ defmodule Protocols.Minecraft do
     end
   end
 
-  def get_motd(host, port \\ 25565) do
+  def get_motd(host, port \\ 25_565) do
     info = _get_info_object!(host, port)
     "`#{_remove_ascii_escape_codes(info["description"]["text"])}`"
   end
 
-  def get_status_message(host, port \\ 25565) do
+  def get_status_message(host, port \\ 25_565) do
     info = _get_info_object!(host, port)
 
     if Map.has_key?(info, "modinfo") do
@@ -38,7 +38,7 @@ defmodule Protocols.Minecraft do
       end
   end
 
-  def _get_info_object!(host, port \\ 25565) do
+  def _get_info_object!(host, port \\ 25_565) do
     mc_info =
       try do
         MCPing.get_info(host, port)
