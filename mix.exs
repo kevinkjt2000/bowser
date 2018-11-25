@@ -27,8 +27,7 @@ defmodule Bowser.MixProject do
       {:distillery, "~> 2.0", runtime: false},
       {:jason, "~> 1.1"},
       {:mcping, git: "https://github.com/kevinkjt2000/mcping-elixir.git"},
-      {:nostrum,
-       git: "https://github.com/kevinkjt2000/nostrum.git", branch: "experiment-reduce-acc"},
+      {:nostrum, git: "https://github.com/kevinkjt2000/nostrum.git"},
       {:redix, "~> 0.8"},
       {:remix, git: "https://github.com/harlantwood/remix.git", only: :dev}
     ]
