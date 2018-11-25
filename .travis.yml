@@ -1,5 +1,8 @@
 language: elixir
 sudo: false
+script:
+  - mix format --check-formatted
+  - mix test --no-start
 after_success:
   - scripts/discord-webhook.sh success $WEBHOOK_URL
 after_failure:
