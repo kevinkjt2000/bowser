@@ -24,6 +24,7 @@ defmodule Bowser.MixProject do
 
   defp deps do
     [
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:distillery, "~> 2.0", runtime: false},
       {:jason, "~> 1.1"},
       {:mcping, git: "https://github.com/kevinkjt2000/mcping-elixir.git"},
