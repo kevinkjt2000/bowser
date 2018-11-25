@@ -191,9 +191,7 @@ defmodule Bowser do
     json = Redix.command!(:redix, ["HGET", msg.guild_id, msg.channel_id])
 
     if json do
-      decoded = Jason.decode!(json)
-      {port, ""} = Integer.parse(decoded["port"])
-      Map.replace!(decoded, "port", port)
+      Jason.decode!(json)
     else
       raise ProtocolError, message: "There is not yet a game server configured for this channel."
     end
