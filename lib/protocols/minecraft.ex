@@ -44,7 +44,7 @@ defmodule Protocols.Minecraft do
         MCPing.get_info(host, port)
       rescue
         MatchError ->
-          raise ProtocolError, message: "The server seems to be running too old of a version."
+          reraise ProtocolError, message: "The server seems to be running too old of a version."
       end
 
     case mc_info do
