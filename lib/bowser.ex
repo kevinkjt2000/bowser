@@ -153,19 +153,26 @@ defmodule Bowser do
     Redix.command!(:redix, ["HDEL", channel.guild_id, channel.id])
   end
 
+  @command_prefix "!"
   def handle_event({:MESSAGE_CREATE, {msg}, _ws_state}) do
-    [cmd | args] = String.split(msg.content, " ")
+    [prefix_cmd | args] = String.split(msg.content, " ")
 
     try do
-      case cmd do
-        "!help" -> help_command(msg)
-        "!ip" -> ip_command(msg)
-        "!forge" -> forge_command(msg)
-        "!motd" -> motd_command(msg)
-        "!set" -> set_command(msg, args)
-        "!status" -> status_command(msg)
-        "!statuses" -> statuses_command(msg)
-        _ -> :ignore
+      case prefix_cmd do
+        @command_prefix <> cmd ->
+          cond do
+            cmd in ["help", "ip", "forge", "motd", "status", "statuses"] ->
+              :erlang.apply(__MODULE__, String.to_atom(cmd <> "_command"), [msg])
+
+            cmd in ["set"] ->
+              :erlang.apply(__MODULE__, String.to_atom(cmd <> "_command"), [msg, args])
+
+            true ->
+              :ignore
+          end
+
+        _ ->
+          :ignore
       end
     rescue
       err in ProtocolError ->
