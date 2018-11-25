@@ -31,7 +31,7 @@ defmodule Protocols.Minecraft do
       ""
     end <>
       "players #{info["players"]["online"]}/#{info["players"]["max"]}" <>
-      if info["players"]["online"] > 0 do
+      if info["players"]["online"] > 0 and info["players"]["sample"] do
         ": `" <> (info["players"]["sample"] |> Enum.map(& &1["name"]) |> Enum.join(", ")) <> "`"
       else
         ""
