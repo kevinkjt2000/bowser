@@ -142,7 +142,10 @@ defmodule Bowser do
       end
       |> Enum.join("\n")
 
-    Api.create_message!(msg.channel_id, "```#{helps}```")
+    Api.create_message!(
+      msg.channel_id,
+      "```#{helps}```\nJoin https://discord.gg/dXe38sa if you have questions about this bot."
+    )
   end
 
   def handle_event({:GUILD_DELETE, {guild, _unavailable}, _ws_state}) do
