@@ -43,23 +43,30 @@ defmodule Bowser do
   end
 
   def _check_set_perms(msg) do
-    guild = Nostrum.Cache.GuildCache.get!(msg.guild_id)
-    member = Map.get(guild.members, msg.author.id)
+    case msg.guild_id do
+      nil ->
+        :noop
 
-    perms = Nostrum.Struct.Guild.Member.guild_channel_permissions(member, guild, msg.channel_id)
+      _ ->
+        guild = Nostrum.Cache.GuildCache.get!(msg.guild_id)
+        member = Map.get(guild.members, msg.author.id)
 
-    if Enum.all?(
-         [:administrator, :manage_channels, :manage_guild, :manage_roles],
-         &(&1 not in perms)
-       ) do
-      mario_roles =
-        guild.roles
-        |> Enum.filter(fn {_id, %{name: name}} -> name == "mario" end)
-        |> Enum.map(fn {id, _role} -> id end)
+        perms =
+          Nostrum.Struct.Guild.Member.guild_channel_permissions(member, guild, msg.channel_id)
 
-      if Enum.all?(member.roles, &(&1 not in mario_roles)) do
-        raise ProtocolError, message: "You do not have permission to use this command."
-      end
+        if Enum.all?(
+             [:administrator, :manage_channels, :manage_guild, :manage_roles],
+             &(&1 not in perms)
+           ) do
+          mario_roles =
+            guild.roles
+            |> Enum.filter(fn {_id, %{name: name}} -> name == "mario" end)
+            |> Enum.map(fn {id, _role} -> id end)
+
+          if Enum.all?(member.roles, &(&1 not in mario_roles)) do
+            raise ProtocolError, message: "You do not have permission to use this command."
+          end
+        end
     end
   end
 
@@ -70,7 +77,13 @@ defmodule Bowser do
   def set_command(msg, []) do
     _check_set_perms(msg)
 
-    Redix.command!(:redix, ["HDEL", msg.guild_id, msg.channel_id])
+    guild_id =
+      case msg.guild_id do
+        nil -> "dm"
+        _ -> msg.guild_id
+      end
+
+    Redix.command!(:redix, ["HDEL", guild_id, msg.channel_id])
 
     Api.create_message!(
       msg.channel_id,
@@ -79,18 +92,23 @@ defmodule Bowser do
   end
 
   def set_command(msg, [host]) do
-    set_command(msg, [host, "25_565"])
+    set_command(msg, [host, "25565"])
   end
 
   def set_command(msg, [host, port]) do
     # TODO: validate user input
-
     _check_set_perms(msg)
     {int_port, ""} = Integer.parse(port)
 
+    guild_id =
+      case msg.guild_id do
+        nil -> "dm"
+        _ -> msg.guild_id
+      end
+
     Redix.command!(:redix, [
       "HSET",
-      msg.guild_id,
+      guild_id,
       msg.channel_id,
       Jason.encode!(%{"host" => host, "port" => int_port})
     ])
@@ -109,13 +127,19 @@ defmodule Bowser do
   Does the status command for every channel, aggregating the data into one message.
   """
   def statuses_command(msg) do
-    datas = Redix.command!(:redix, ["HVALS", msg.guild_id])
+    datas =
+      case msg.guild_id do
+        nil ->
+          [Redix.command!(:redix, ["HGET", "dm", msg.channel_id])]
+
+        _ ->
+          Redix.command!(:redix, ["HVALS", msg.guild_id])
+      end
 
     statuses =
       for data <- datas do
         # TODO: parallelize this list comprehension
-        %{"host" => host, "port" => str_port} = Jason.decode!(data)
-        {port, ""} = Integer.parse(str_port)
+        %{"host" => host, "port" => port} = Jason.decode!(data)
 
         try do
           status = Protocols.Minecraft.get_status_message(host, port)
@@ -126,7 +150,13 @@ defmodule Bowser do
       end
       |> Enum.join("\n")
 
-    Api.create_message!(msg.channel_id, statuses)
+    Api.create_message!(
+      msg.channel_id,
+      case statuses do
+        "" -> "Nothing has been configured yet."
+        _ -> statuses
+      end
+    )
   end
 
   @doc """
@@ -200,7 +230,13 @@ defmodule Bowser do
   end
 
   def _get_game_server_info!(msg) do
-    json = Redix.command!(:redix, ["HGET", msg.guild_id, msg.channel_id])
+    guild_id =
+      case msg.guild_id do
+        nil -> "dm"
+        _ -> msg.guild_id
+      end
+
+    json = Redix.command!(:redix, ["HGET", guild_id, msg.channel_id])
 
     if json do
       Jason.decode!(json)
