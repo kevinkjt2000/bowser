@@ -1,4 +1,4 @@
-FROM elixir:1.7-alpine as builder
+FROM elixir:1.8-alpine as builder
 
 ARG APP_NAME=bowser
 ARG COOKIE
