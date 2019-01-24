@@ -13,7 +13,7 @@ RUN mix local.hex --force && \
 
 WORKDIR /app
 COPY mix.* ./
-RUN mix do deps.get, deps.compile
+RUN mix do deps.get --only prod, deps.compile
 COPY . .
 RUN mix release --verbose --env=${MIX_ENV} && \
     mkdir -p /opt/built && \
