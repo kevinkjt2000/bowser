@@ -1,3 +1,4 @@
 {
-	"pinDigests": true
+	"pinDigests": true,
+	"preserveSemverRanges": true
 }
