@@ -1,4 +1,4 @@
-FROM elixir:1.8-alpine as builder
+FROM elixir:1.8-alpine@sha256:a6d290dae372b27cab73b93091e79dad800bcf76803d1539558b4a830a685a86 as builder
 
 ARG APP_NAME=bowser
 ARG COOKIE
@@ -24,7 +24,7 @@ RUN mix release --verbose --env=${MIX_ENV} && \
 
 
 
-FROM alpine:latest
+FROM alpine:latest@sha256:28ef97b8686a0b5399129e9b763d5b7e5ff03576aa5580d6f4182a49c5fe1913
 
 RUN apk --no-cache add \
     bash \
