@@ -9,7 +9,7 @@ services:
     env_file: .env
     restart: unless-stopped
   redis:
-    image: "redis:alpine@sha256:c8d2a155166857e772e5389a44f2c9cbdabc7e7500123fdb9a04b5181b9756b8"
+    image: "redis:alpine@sha256:2c8839911829aac720d41690edc07c0aff8385294fccd3a892af46d1a83b1ac0"
     command: redis-server --port 6379 --appendonly yes
     ports:
       - "127.0.0.1:6379:6379"
