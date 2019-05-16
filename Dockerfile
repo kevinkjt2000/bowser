@@ -1,4 +1,4 @@
-FROM elixir:1.8-alpine@sha256:e8bc436f1c48183638255344a59298f09ef008f8150deb2d4ae0bdfb9ce48829 as builder
+FROM elixir:1.8-alpine@sha256:9d20327532863264f777a75b01a17d1a1e8c7b867a4757cff51e7e593650bb32 as builder
 
 ARG APP_NAME=bowser
 ARG COOKIE
