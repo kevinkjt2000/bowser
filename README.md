@@ -1,4 +1,5 @@
 [![Build Status](https://img.shields.io/travis/kevinkjt2000/bowser/master.svg?label=Travis-CI)](https://travis-ci.org/kevinkjt2000/bowser?branch=master)
+[![Discord Chat](https://img.shields.io/discord/339549920338116611.svg)](https://discord.gg/dXe38sa)
 
 [![Discord Bots](https://discordbots.org/api/widget/status/392875945717137418.svg)](https://discordbots.org/bot/392875945717137418)
 [![Discord Bots](https://discordbots.org/api/widget/upvotes/392875945717137418.svg)](https://discordbots.org/bot/392875945717137418)
