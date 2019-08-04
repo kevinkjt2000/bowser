@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 
 services:
   bot:
@@ -6,13 +6,20 @@ services:
       context: .
       args:
         - COOKIE=${COOKIE}
-    env_file: .env
+    environment:
+      - BOT_TOKEN
+      - COOKIE
+      - REDIS_PORT
     restart: unless-stopped
+    links:
+      - redis
   redis:
     image: "redis:alpine@sha256:a6d1a88fc04782573b49d1b16c1399f9af3e488cdae4ee2eeafe5383e15b2539"
-    command: redis-server --port 6379 --appendonly yes
-    ports:
-      - "127.0.0.1:6379:6379"
+    environment:
+      - REDIS_PORT
+    command: redis-server --port ${REDIS_PORT} --appendonly yes
+    expose:
+      - "${REDIS_PORT}"
     sysctls:
       net.core.somaxconn: 1024
     restart: unless-stopped

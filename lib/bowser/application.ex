@@ -11,9 +11,11 @@ defmodule Bowser.Application do
   end
 
   def start(_type, _args) do
+    {redis_port, ""} = Integer.parse(Application.get_env(:bowser, :redis_port))
+
     children = [
       worker(Bowser, []),
-      {Redix, name: :redix, host: Application.get_env(:bowser, :redis_host)}
+      {Redix, name: :redix, host: Application.get_env(:bowser, :redis_host), port: redis_port}
     ]
 
     Process.flag(:trap_exit, true)
