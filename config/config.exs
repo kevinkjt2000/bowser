@@ -16,3 +16,6 @@ if Mix.env() == :prod do
   config :bowser,
     redis_host: "redis"
 end
+
+config :bowser,
+  redis_port: System.get_env("REDIS_PORT")
