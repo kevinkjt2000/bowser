@@ -24,7 +24,7 @@ RUN mix release --verbose --env=${MIX_ENV} && \
 
 
 
-FROM alpine:latest@sha256:769fddc7cc2f0a1c35abb2f91432e8beecf83916c421420e6a6da9f8975464b6
+FROM alpine:latest@sha256:6a92cd1fcdc8d8cdec60f33dda4db2cb1fcdcacf3410a8e05b3741f44a9b5998
 
 RUN apk --no-cache add \
     bash \
