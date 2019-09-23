@@ -1,4 +1,4 @@
-/.env
+/.env*
 redis-data/
 
 # The directory Mix will write compiled artifacts to.

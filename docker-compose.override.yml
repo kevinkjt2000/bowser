@@ -1,6 +1,14 @@
-version: '3.2'
+version: '3.4'
 
 services:
+  bot:
+    environment:
+      REDIS_PORT: 6380
   redis:
+    environment:
+      REDIS_PORT: 6380
     ports:
-      - "127.0.0.1:${REDIS_PORT}:${REDIS_PORT}"
+      - "127.0.0.1:${REDIS_PORT:-6380}:${REDIS_PORT:-6380}"
+    expose:
+      - "${REDIS_PORT:-6380}"
+    command: redis-server --port ${REDIS_PORT:-6380} --appendonly yes
