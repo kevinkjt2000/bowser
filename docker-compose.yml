@@ -5,7 +5,7 @@ services:
     build:
       context: .
       args:
-        - COOKIE=${COOKIE}
+        COOKIE:
     environment:
       BOT_TOKEN:
       COOKIE:
@@ -20,6 +20,8 @@ services:
     command: redis-server --port ${REDIS_PORT:-6381} --appendonly yes
     expose:
       - "${REDIS_PORT:-6381}"
+    ports:
+      - "127.0.0.1:${REDIS_PORT:-6381}:${REDIS_PORT:-6381}"
     sysctls:
       net.core.somaxconn: 1024
     restart: unless-stopped
