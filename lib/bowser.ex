@@ -178,16 +178,22 @@ defmodule Bowser do
     )
   end
 
+  def handle_event({:READY, _thing, _ws_state}) do
+    channels = Redix.command!(:redix, ["DBSIZE"])
+    Logger.info("🎬 Bowser is ready, and currently serving #{channels} channel(s).")
+  end
+
+  def handle_event({:CHANNEL_DELETE, channel, _ws_state}) do
+    Redix.command!(:redix, ["HDEL", channel.guild_id, channel.id])
+  end
+
   def handle_event({:GUILD_DELETE, {guild, _unavailable}, _ws_state}) do
     Redix.command!(:redix, ["DEL", guild.id])
   end
 
-  def handle_event({:CHANNEL_DELETE, {channel}, _ws_state}) do
-    Redix.command!(:redix, ["HDEL", channel.guild_id, channel.id])
-  end
-
   @command_prefix "!"
-  def handle_event({:MESSAGE_CREATE, {msg}, _ws_state}) do
+  def handle_event({:MESSAGE_CREATE, msg, _ws_state}) do
+    Logger.info("Message received")
     [prefix_cmd | args] = String.split(msg.content, " ")
 
     try do
