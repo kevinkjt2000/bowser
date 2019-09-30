@@ -1,9 +1,13 @@
 language: elixir
 elixir: 1.9.1
 sudo: false
+env:
+  - REDIS_PORT=6381
 script:
   - mix format --check-formatted
   - mix test --no-start
+services:
+  - redis-server
 after_success:
   - scripts/discord-webhook.sh success $WEBHOOK_URL
 after_failure:
