@@ -4,10 +4,11 @@ defmodule Bowser.MixProject do
   def project do
     [
       app: :bowser,
-      version: "0.1.0",
-      elixir: "~> 1.6",
+      version: "0.2.0",
+      elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       aliases: [test: "test --no-start"],
+      releases: releases(),
       deps: deps()
     ]
   end
@@ -23,10 +24,17 @@ defmodule Bowser.MixProject do
   defp extra_applications(:dev), do: extra_applications(:all) ++ [:remix]
   defp extra_applications(_all), do: [:logger, :nostrum]
 
+  defp releases() do
+    [
+      bowser: [
+        include_executables_for: [:unix]
+      ]
+    ]
+  end
+
   defp deps do
     [
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
-      {:distillery, "~> 2.0", runtime: false},
       {:jason, "~> 1.1"},
       {:mcping, git: "https://github.com/kevinkjt2000/mcping-elixir.git"},
       {:nostrum, "~> 0.4"},

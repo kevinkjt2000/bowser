@@ -193,7 +193,6 @@ defmodule Bowser do
 
   @command_prefix "!"
   def handle_event({:MESSAGE_CREATE, msg, _ws_state}) do
-    Logger.info("Message received")
     [prefix_cmd | args] = String.split(msg.content, " ")
 
     try do
