@@ -11,7 +11,7 @@ defmodule Bowser do
   Returns the IP and port of the configured server.
   """
   def ip_command(msg) do
-    %{"host" => host, "port" => port} = _get_game_server_info!(msg)
+    %{"host" => host, "port" => port} = get_game_server_info!(msg)
     Api.create_message(msg.channel_id, "`#{host}:#{port}`")
   end
 
@@ -19,7 +19,7 @@ defmodule Bowser do
   Returns the version of the "forge" mod, if it is installed on the server.
   """
   def forge_command(msg) do
-    %{"host" => host, "port" => port} = _get_game_server_info!(msg)
+    %{"host" => host, "port" => port} = get_game_server_info!(msg)
     forge = Protocols.Minecraft.get_forge_version(host, port)
     Api.create_message!(msg.channel_id, forge)
   end
@@ -28,7 +28,7 @@ defmodule Bowser do
   Displays the server's message of the day (MOTD).
   """
   def motd_command(msg) do
-    %{"host" => host, "port" => port} = _get_game_server_info!(msg)
+    %{"host" => host, "port" => port} = get_game_server_info!(msg)
     motd = Protocols.Minecraft.get_motd(host, port)
     Api.create_message!(msg.channel_id, motd)
   end
@@ -37,12 +37,12 @@ defmodule Bowser do
   Fetches the status from the server, shows online players, and shows the number of mods installed.
   """
   def status_command(msg) do
-    %{"host" => host, "port" => port} = _get_game_server_info!(msg)
+    %{"host" => host, "port" => port} = get_game_server_info!(msg)
     status = Protocols.Minecraft.get_status_message(host, port)
     Api.create_message!(msg.channel_id, status)
   end
 
-  def _check_set_perms(msg) do
+  defp check_set_perms(msg) do
     case msg.guild_id do
       nil ->
         :noop
@@ -75,7 +75,7 @@ defmodule Bowser do
   If the command is used by itself, the information stored for the channel that the command originated from is erased.
   """
   def set_command(msg, []) do
-    _check_set_perms(msg)
+    check_set_perms(msg)
 
     guild_id =
       case msg.guild_id do
@@ -97,7 +97,7 @@ defmodule Bowser do
 
   def set_command(msg, [host, port]) do
     # TODO: validate user input
-    _check_set_perms(msg)
+    check_set_perms(msg)
     {int_port, ""} = Integer.parse(port)
 
     guild_id =
@@ -234,7 +234,7 @@ defmodule Bowser do
     Consumer.start_link(__MODULE__)
   end
 
-  def _get_game_server_info!(msg) do
+  defp get_game_server_info!(msg) do
     guild_id =
       case msg.guild_id do
         nil -> "dm"

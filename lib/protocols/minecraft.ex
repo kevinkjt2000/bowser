@@ -3,12 +3,12 @@ defmodule Protocols.Minecraft do
 
   alias Protocols.ProtocolError
 
-  def _remove_ascii_escape_codes(str) do
+  defp remove_ascii_escape_codes(str) do
     Regex.replace(~r/§[0-9a-z]/, str, "")
   end
 
   def get_forge_version(host, port \\ 25_565) do
-    info = _get_info_object!(host, port)
+    info = get_info_object!(host, port)
 
     try do
       [forge] = info["modinfo"]["modList"] |> Enum.filter(&(&1["modid"] == "forge"))
@@ -20,12 +20,12 @@ defmodule Protocols.Minecraft do
   end
 
   def get_motd(host, port \\ 25_565) do
-    info = _get_info_object!(host, port)
-    "`#{_remove_ascii_escape_codes(info["description"]["text"])}`"
+    info = get_info_object!(host, port)
+    "`#{remove_ascii_escape_codes(info["description"]["text"])}`"
   end
 
   def get_status_message(host, port \\ 25_565) do
-    info = _get_info_object!(host, port)
+    info = get_info_object!(host, port)
 
     if Map.has_key?(info, "modinfo") do
       "#{length(info["modinfo"]["modList"])} mods loaded, "
@@ -40,7 +40,7 @@ defmodule Protocols.Minecraft do
       end
   end
 
-  def _get_info_object!(host, port \\ 25_565) do
+  defp get_info_object!(host, port) do
     mc_info =
       try do
         MCPing.get_info(host, port)
