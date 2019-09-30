@@ -1,15 +1,15 @@
-use Mix.Config
+import Config
 
 if Mix.env() == :dev do
   # Even though production also uses REDIS_PORT and BOT_TOKEN,
   # those variables must be given via runtime configuration instead.
-  # (see: rel/config/runtime.exs)
+  # (see: config/releases.exs)
   config :bowser,
     redis_host: "localhost",
-    redis_port: System.get_env("REDIS_PORT")
+    redis_port: String.to_integer(System.fetch_env!("REDIS_PORT"))
 
   config :nostrum,
-    token: System.get_env("BOT_TOKEN")
+    token: System.fetch_env!("BOT_TOKEN")
 
   config :remix,
     escript: false,
