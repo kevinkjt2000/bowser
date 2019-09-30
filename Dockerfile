@@ -1,6 +1,8 @@
+ARG APP_NAME=bowser
+
 FROM elixir:1.9-alpine@sha256:cdf3e9e7ea3c076b3780a0963c16f0e7cb6f8abe6c8e160618e73049ac61585e as builder
 
-ARG APP_NAME=bowser
+ARG APP_NAME
 ARG COOKIE
 ARG MIX_ENV=prod
 
@@ -24,7 +26,9 @@ RUN mix release --verbose --env=${MIX_ENV} && \
 
 
 
-FROM alpine:3.10@sha256:acd3ca9941a85e8ed16515bfc5328e4e2f8c128caa72959a58a127b7801ee01f
+FROM alpine:3.10@sha256:acd3ca9941a85e8ed16515bfc5328e4e2f8c128caa72959a58a127b7801ee01f as production
+
+ARG APP_NAME
 
 RUN apk --no-cache add \
     bash \
@@ -33,4 +37,4 @@ RUN apk --no-cache add \
 WORKDIR /app
 COPY --from=builder /opt/built .
 
-CMD ["./bin/bowser", "foreground"]
+CMD ["./bin/${APP_NAME}", "foreground"]
