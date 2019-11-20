@@ -38,7 +38,7 @@ defmodule Bowser.MixProject do
       {:jason, "~> 1.1"},
       {:mcping, git: "https://github.com/kevinkjt2000/mcping-elixir.git"},
       {:nostrum, "~> 0.4"},
-      {:redix, "~> 0.8"},
+      {:redix, "~> 0.10"},
       {:remix, git: "https://github.com/harlantwood/remix.git", only: :dev}
     ]
   end
