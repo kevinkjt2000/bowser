@@ -71,8 +71,8 @@ defmodule Bowser do
   end
 
   @doc """
-  When given a host and port, that information will be stored to the database for the status command to use later.
-  If the command is used by itself, the information stored for the channel that the command originated from is erased.
+  When given a host and port, that information will be stored to the database for the status command to use later. If the command is used by itself, the information stored for the channel that the command originated from is erased.
+  Note: You must be assigned a role named "mario" or have at least one of the following permissions: manage channels, manage guild, manage roles, or administrator.
   """
   def set_command(msg, []) do
     check_set_perms(msg)
@@ -180,7 +180,7 @@ defmodule Bowser do
 
   def handle_event({:READY, _thing, _ws_state}) do
     channels = Redix.command!(:redix, ["DBSIZE"])
-    Logger.info("🎬 Bowser is ready, and currently serving #{channels} channel(s).")
+    Logger.info("🎬 Bowser is ready, and currently serving #{channels} guild(s).")
   end
 
   def handle_event({:CHANNEL_DELETE, channel, _ws_state}) do

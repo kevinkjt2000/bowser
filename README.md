@@ -14,4 +14,4 @@ Bowser responds to commands, such as `!status`, by querying channel's configured
 2. Bowser is given read and write permissions on any channels where bowser should respond to commands.
 
 ### Usage
-Any channel bowser has read and write permissions for, bowser will respond to the command `!help`.  Configuration is currently limited to one minecraft server per discord channel, and the administrator role is able to configure it with `!set <host> <port>`.
+Any channel bowser has read and write permissions for, bowser will respond to the command `!help`.  Configuration is currently limited to one minecraft server per discord channel, and either an administrator or any user with a role named `mario` should be able to configure with `!set <host> <port>`.
