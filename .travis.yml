@@ -5,7 +5,7 @@ env:
   - REDIS_PORT=6381
 script:
   - mix format --check-formatted
-  - mix test --no-start
+  - mix test
 services:
   - redis-server
 after_success:
