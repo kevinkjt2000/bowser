@@ -4,7 +4,7 @@ defmodule Bowser do
   use Nostrum.Consumer
   require Logger
 
-  alias Nostrum.Api
+  alias Bowser.Discord
   alias Protocols.ProtocolError
 
   @doc """
@@ -12,7 +12,7 @@ defmodule Bowser do
   """
   def ip_command(msg) do
     %{"host" => host, "port" => port} = get_game_server_info!(msg)
-    Api.create_message(msg.channel_id, "`#{host}:#{port}`")
+    Discord.send_message(msg.channel_id, "`#{host}:#{port}`")
   end
 
   @doc """
@@ -21,7 +21,7 @@ defmodule Bowser do
   def forge_command(msg) do
     %{"host" => host, "port" => port} = get_game_server_info!(msg)
     forge = Protocols.Minecraft.get_forge_version(host, port)
-    Api.create_message!(msg.channel_id, forge)
+    Discord.send_message(msg.channel_id, forge)
   end
 
   @doc """
@@ -30,7 +30,7 @@ defmodule Bowser do
   def motd_command(msg) do
     %{"host" => host, "port" => port} = get_game_server_info!(msg)
     motd = Protocols.Minecraft.get_motd(host, port)
-    Api.create_message!(msg.channel_id, motd)
+    Discord.send_message(msg.channel_id, motd)
   end
 
   @doc """
@@ -39,7 +39,7 @@ defmodule Bowser do
   def status_command(msg) do
     %{"host" => host, "port" => port} = get_game_server_info!(msg)
     status = Protocols.Minecraft.get_status_message(host, port)
-    Api.create_message!(msg.channel_id, status)
+    Discord.send_message(msg.channel_id, status)
   end
 
   defp check_set_perms(msg) do
@@ -85,7 +85,7 @@ defmodule Bowser do
 
     Redix.command!(:redix, ["HDEL", guild_id, msg.channel_id])
 
-    Api.create_message!(
+    Discord.send_message(
       msg.channel_id,
       "Server configuration has been removed from this channel."
     )
@@ -113,14 +113,14 @@ defmodule Bowser do
       Jason.encode!(%{"host" => host, "port" => int_port})
     ])
 
-    Api.create_message!(
+    Discord.send_message(
       msg.channel_id,
       "Added `#{host}:#{port}` to the database."
     )
   end
 
   def set_command(msg, _wrong_args) do
-    Api.create_message!(msg.channel_id, "Incorrect arguments given.")
+    Discord.send_message(msg.channel_id, "Incorrect arguments given.")
   end
 
   @doc """
@@ -150,7 +150,7 @@ defmodule Bowser do
       end
       |> Enum.join("\n")
 
-    Api.create_message!(
+    Discord.send_message(
       msg.channel_id,
       case statuses do
         "" -> "Nothing has been configured yet."
@@ -172,7 +172,7 @@ defmodule Bowser do
       end
       |> Enum.join("\n")
 
-    Api.create_message!(
+   Discord.send_message(
       msg.channel_id,
       "```#{helps}```\nJoin https://discord.gg/dXe38sa if you have questions about this bot."
     )
@@ -214,12 +214,12 @@ defmodule Bowser do
       end
     rescue
       err in ProtocolError ->
-        Api.create_message!(msg.channel_id, err.message)
+        Discord.send_message(msg.channel_id, err.message)
 
       err ->
         Logger.error(__STACKTRACE__, err)
 
-        Api.create_message!(
+        Discord.send_message(
           msg.channel_id,
           "Ninjas hijacked the packets, but the bot author will probably fix it."
         )
@@ -241,7 +241,7 @@ defmodule Bowser do
         _ -> msg.guild_id
       end
 
-    json = Redix.command!(:redix, ["HGET", guild_id, msg.channel_id])
+    json = Bowser.Redis.get_guild_channel_config(guild_id, msg.channel_id)
 
     if json do
       Jason.decode!(json)

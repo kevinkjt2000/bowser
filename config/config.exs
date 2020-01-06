@@ -1,5 +1,9 @@
 import Config
 
+config :bowser,
+  discord_impl: Nostrum,
+  redis_impl: Redix
+
 if Mix.env() == :dev do
   # Even though production also uses REDIS_PORT and BOT_TOKEN,
   # those variables must be given via runtime configuration instead.
@@ -14,6 +18,12 @@ if Mix.env() == :dev do
   config :remix,
     escript: false,
     silent: true
+end
+
+if Mix.env() == :test do
+  config :bowser,
+    discord_impl: Bowser.Discord.Mock,
+    redis_impl: Bowser.Redis.Mock
 end
 
 if Mix.env() == :prod do
