@@ -1,7 +1,7 @@
 import Config
 
 config :bowser,
-  discord_impl: Nostrum,
+  discord_impl: Bowser.Discord.Nostrum,
   redis_impl: Redix
 
 if Mix.env() == :dev do
