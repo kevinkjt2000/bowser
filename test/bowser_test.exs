@@ -13,7 +13,6 @@ defmodule BowserTest do
 
   describe "get_guild_channel_config/2" do
     test "older servers without nicknames default to nil" do
-
     end
   end
 end
