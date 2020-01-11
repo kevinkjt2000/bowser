@@ -82,7 +82,7 @@ defmodule Bowser do
         _ -> msg.guild_id
       end
 
-    Redix.command!(:redix, ["HDEL", guild_id, msg.channel_id])
+    database_impl().delete_config(guild_id, msg.channel_id)
 
     discord_impl().send_message(
       msg.channel_id,
@@ -105,12 +105,11 @@ defmodule Bowser do
         _ -> msg.guild_id
       end
 
-    Redix.command!(:redix, [
-      "HSET",
+    database_impl().set_config(
       guild_id,
       msg.channel_id,
       Jason.encode!(%{"host" => host, "port" => int_port})
-    ])
+    )
 
     discord_impl().send_message(
       msg.channel_id,
@@ -240,7 +239,7 @@ defmodule Bowser do
         _ -> msg.guild_id
       end
 
-    json = Bowser.Redis.get_guild_channel_config(guild_id, msg.channel_id)
+    json = database_impl().get_config(guild_id, msg.channel_id)
 
     if json do
       Jason.decode!(json)
@@ -251,5 +250,9 @@ defmodule Bowser do
 
   defp discord_impl do
     Application.get_env(:bowser, :discord_impl)
+  end
+
+  defp database_impl do
+    Application.get_env(:bowser, :database_impl)
   end
 end
