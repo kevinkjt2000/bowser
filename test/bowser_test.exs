@@ -10,4 +10,10 @@ defmodule BowserTest do
       assert "create_message was called with ?"
     end
   end
+
+  describe "get_guild_channel_config/2" do
+    test "older servers without nicknames default to nil" do
+
+    end
+  end
 end

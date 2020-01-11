@@ -2,7 +2,7 @@ import Config
 
 config :bowser,
   discord_impl: Bowser.Discord.Nostrum,
-  redis_impl: Redix
+  database_impl: Bowser.Database.Redix
 
 if Mix.env() == :dev do
   # Even though production also uses REDIS_PORT and BOT_TOKEN,
@@ -23,7 +23,7 @@ end
 if Mix.env() == :test do
   config :bowser,
     discord_impl: Bowser.Discord.Mock,
-    redis_impl: Bowser.Redis.Mock
+    database_impl: Bowser.Database.InMemory
 end
 
 if Mix.env() == :prod do
