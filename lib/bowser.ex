@@ -192,7 +192,7 @@ defmodule Bowser do
   end
 
   def handle_event({:GUILD_DELETE, {guild, _unavailable}, _ws_state}) do
-    Redix.command!(:redix, ["DEL", guild.id])
+    database_impl().delete_guild_config(guild.id)
   end
 
   @command_prefix "!"

@@ -7,4 +7,5 @@ defmodule Bowser.Database do
   @callback set_config(guild_id :: String.t(), channel_id :: integer, config :: Map.t()) ::
               no_return()
   @callback delete_config(guild_id :: String.t(), channel_id :: integer) :: no_return()
+  @callback delete_guild_config(guild_id :: String.t()) :: no_return()
 end

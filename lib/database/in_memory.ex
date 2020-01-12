@@ -1,5 +1,5 @@
 defmodule Bowser.Database.InMemory do
-  @moduledoc "Mock of Database implementation for unit tests"
+  @moduledoc "In memory database implementation for unit tests"
   @behaviour Bowser.Database
 
   @impl Bowser.Database
@@ -17,10 +17,14 @@ defmodule Bowser.Database.InMemory do
   end
 
   @impl Bowser.Database
+  def set_config(_guild_id, _channel_id, _config) do
+  end
+
+  @impl Bowser.Database
   def delete_config(_guild_id, _channel_id) do
   end
 
   @impl Bowser.Database
-  def set_config(_guild_id, _channel_id, _config) do
+  def delete_guild_config(_guild_id) do
   end
 end

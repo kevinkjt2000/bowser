@@ -38,4 +38,9 @@ defmodule Bowser.Database.Redix do
   def delete_config(guild_id, channel_id) do
     Redix.command!(:redix, ["HDEL", guild_id, channel_id])
   end
+
+  @impl Bowser.Database
+  def delete_guild_config(guild_id) do
+    Redix.command!(:redix, ["DEL", guild_id])
+  end
 end
