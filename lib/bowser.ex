@@ -182,7 +182,7 @@ defmodule Bowser do
   end
 
   def handle_event({:CHANNEL_DELETE, channel, _ws_state}) do
-    Redix.command!(:redix, ["HDEL", channel.guild_id, channel.id])
+    database_impl().delete_config(channel.guild_id, channel.id)
   end
 
   def handle_event({:GUILD_DELETE, {guild, _unavailable}, _ws_state}) do
@@ -239,13 +239,7 @@ defmodule Bowser do
         _ -> msg.guild_id
       end
 
-    json = database_impl().get_config(guild_id, msg.channel_id)
-
-    if json do
-      Jason.decode!(json)
-    else
-      raise ProtocolError, message: "There is not yet a game server configured for this channel."
-    end
+    database_impl().get_config(guild_id, msg.channel_id)
   end
 
   defp discord_impl do

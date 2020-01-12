@@ -2,9 +2,17 @@ defmodule Bowser.Database.Redix do
   @behaviour Bowser.Database
   @moduledoc "Wrapper of redix library"
 
+  alias Protocols.ProtocolError
+
   @impl Bowser.Database
   def get_config(guild_id, channel_id) do
-    Redix.command!(:redix, ["HGET", guild_id, channel_id])
+    json = Redix.command!(:redix, ["HGET", guild_id, channel_id])
+    if json do
+      Jason.decode!(json)
+      |> Map.put_new("nickname", nil)
+    else
+      raise ProtocolError, message: "There is not yet a game server configured for this channel."
+    end
   end
 
   @impl Bowser.Database
