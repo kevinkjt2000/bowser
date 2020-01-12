@@ -7,6 +7,7 @@ defmodule Bowser.Database.Redix do
   @impl Bowser.Database
   def get_config(guild_id, channel_id) do
     json = Redix.command!(:redix, ["HGET", guild_id, channel_id])
+
     if json do
       Jason.decode!(json)
       |> Map.put_new("nickname", nil)

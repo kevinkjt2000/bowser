@@ -144,6 +144,7 @@ defmodule Bowser do
 
         try do
           status = Protocols.Minecraft.get_status_message(host, port)
+
           case nickname do
             nil -> "#{host} #{status}"
             _ -> "#{nickname} #{host} #{status}"

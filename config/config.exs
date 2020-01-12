@@ -22,7 +22,8 @@ end
 
 if Mix.env() == :test do
   config :bowser,
-    database_impl: Bowser.Database.InMemory
+    redis_host: "localhost",
+    redis_port: String.to_integer(System.fetch_env!("REDIS_PORT"))
 end
 
 if Mix.env() == :prod do
