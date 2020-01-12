@@ -16,12 +16,21 @@ defmodule Bowser.Database.Redix do
   end
 
   @impl Bowser.Database
+  def get_all_configs(guild_id, _channel_id) do
+    Redix.command!(:redix, ["HVALS", guild_id])
+    |> Enum.map(fn data ->
+      data
+      |> Map.put_new("nickname", nil)
+    end)
+  end
+
+  @impl Bowser.Database
   def set_config(guild_id, channel_id, config) do
     Redix.command!(:redix, [
       "HSET",
       guild_id,
       channel_id,
-      config
+      Jason.encode!(config)
     ])
   end
 

@@ -95,7 +95,10 @@ defmodule Bowser do
   end
 
   def set_command(msg, [host, port]) do
-    # TODO: validate user input
+    set_command(msg, [host, port, nil])
+  end
+
+  def set_command(msg, [host, port, nickname]) do
     check_set_perms(msg)
     {int_port, ""} = Integer.parse(port)
 
@@ -108,7 +111,7 @@ defmodule Bowser do
     database_impl().set_config(
       guild_id,
       msg.channel_id,
-      Jason.encode!(%{"host" => host, "port" => int_port})
+      %{"host" => host, "port" => int_port, "nickname" => nickname}
     )
 
     discord_impl().send_message(
@@ -131,17 +134,20 @@ defmodule Bowser do
           [Redix.command!(:redix, ["HGET", "dm", msg.channel_id])]
 
         _ ->
-          Redix.command!(:redix, ["HVALS", msg.guild_id])
+          database_impl().get_all_configs(msg.guild_id, msg.channel_id)
       end
 
     statuses =
       for data <- datas do
         # TODO: parallelize this list comprehension
-        %{"host" => host, "port" => port} = Jason.decode!(data)
+        %{"host" => host, "port" => port, "nickname" => nickname} = Jason.decode!(data)
 
         try do
           status = Protocols.Minecraft.get_status_message(host, port)
-          "#{host} #{status}"
+          case nickname do
+            nil -> "#{host} #{status}"
+            _ -> "#{nickname} #{host} #{status}"
+          end
         rescue
           err in ProtocolError -> err.message
         end

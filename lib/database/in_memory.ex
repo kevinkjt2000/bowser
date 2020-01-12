@@ -4,11 +4,16 @@ defmodule Bowser.Database.InMemory do
 
   @impl Bowser.Database
   def get_config("dm", _channel_id) do
-    "{\"host\":\"localhost\",\"port\":20000}"
+    %{"host" => "localhost", "port" => 20_000}
   end
 
   def get_config("7890", 123_456) do
-    "{\"host\":\"localhost\",\"port\":20000}"
+    %{"host" => "localhost", "port" => 20_000}
+  end
+
+  @impl Bowser.Database
+  def get_all_configs(_guild_id, _channel_id) do
+    []
   end
 
   @impl Bowser.Database
