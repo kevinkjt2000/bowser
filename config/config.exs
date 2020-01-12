@@ -22,7 +22,6 @@ end
 
 if Mix.env() == :test do
   config :bowser,
-    discord_impl: Bowser.Discord.Mock,
     database_impl: Bowser.Database.InMemory
 end
 
