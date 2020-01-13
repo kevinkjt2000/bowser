@@ -106,9 +106,12 @@ defmodule BowserTest do
         content: "!set #{config["host"]} #{config["port"]} #{config["nickname"]}",
         author: author
       }
+
       Bowser.handle_event({:MESSAGE_CREATE, set_msg, nil})
 
-      expected_set_response = {channel_id, "Added `#{config["host"]}:#{config["port"]}` to the database."}
+      expected_set_response =
+        {channel_id, "Added `#{config["host"]}:#{config["port"]}` to the database."}
+
       assert_received(^expected_set_response)
 
       statuses_msg = %Nostrum.Struct.Message{
@@ -117,11 +120,14 @@ defmodule BowserTest do
         content: "!statuses",
         author: author
       }
+
       Bowser.handle_event({:MESSAGE_CREATE, statuses_msg, nil})
 
       # TODO: ponder if the nickname should be part of the error message
       # TODO: mock out the minecraft protocol to assert nickname shows
-      expected_statuses_response = {channel_id, "`#{config["host"]}` refused the connection to port #{config["port"]}."}
+      expected_statuses_response =
+        {channel_id, "`#{config["host"]}` refused the connection to port #{config["port"]}."}
+
       assert_received(^expected_statuses_response)
     end
   end
