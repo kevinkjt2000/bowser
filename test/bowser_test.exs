@@ -36,17 +36,17 @@ defmodule BowserTest do
       permissions: Nostrum.Permission.to_bit(:administrator)
     }
 
-    author_id = System.unique_integer([:monotonic, :positive])
+    admin_id = System.unique_integer([:monotonic, :positive])
 
-    author = %Nostrum.Struct.User{
-      id: author_id
+    admin = %Nostrum.Struct.User{
+      id: admin_id
     }
 
     guild = %Nostrum.Struct.Guild{
       id: guild_id,
       members: %{
-        author_id => %Nostrum.Struct.Guild.Member{
-          user: author,
+        admin_id => %Nostrum.Struct.Guild.Member{
+          user: admin,
           roles: [administrator_role_id]
         }
       },
@@ -66,7 +66,7 @@ defmodule BowserTest do
     [
       guild_id: guild_id,
       channel_id: channel_id,
-      author: author
+      admin: admin
     ]
   end
 
@@ -90,7 +90,7 @@ defmodule BowserTest do
     test "nicknames persist when setting configuration", %{
       guild_id: guild_id,
       channel_id: channel_id,
-      author: author
+      admin: admin
     } do
       config = %{
         "host" => "localhost",
@@ -104,7 +104,7 @@ defmodule BowserTest do
         guild_id: guild_id,
         channel_id: channel_id,
         content: "!set #{config["host"]} #{config["port"]} #{config["nickname"]}",
-        author: author
+        author: admin
       }
 
       Bowser.handle_event({:MESSAGE_CREATE, set_msg, nil})
@@ -118,7 +118,7 @@ defmodule BowserTest do
         guild_id: guild_id,
         channel_id: channel_id,
         content: "!statuses",
-        author: author
+        author: admin
       }
 
       Bowser.handle_event({:MESSAGE_CREATE, statuses_msg, nil})
