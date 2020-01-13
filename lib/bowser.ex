@@ -47,7 +47,7 @@ defmodule Bowser do
         :noop
 
       _ ->
-        guild = Nostrum.Cache.GuildCache.get!(msg.guild_id)
+        guild = discord_impl().get_guild_by_id(msg.guild_id)
         member = Map.get(guild.members, msg.author.id)
 
         perms =
@@ -140,7 +140,7 @@ defmodule Bowser do
     statuses =
       for data <- datas do
         # TODO: parallelize this list comprehension
-        %{"host" => host, "port" => port, "nickname" => nickname} = Jason.decode!(data)
+        %{"host" => host, "port" => port, "nickname" => nickname} = data
 
         try do
           status = Protocols.Minecraft.get_status_message(host, port)
@@ -222,7 +222,7 @@ defmodule Bowser do
         discord_impl().send_message(msg.channel_id, err.message)
 
       err ->
-        Logger.error(__STACKTRACE__, err)
+        Logger.error(Exception.format(:error, err, __STACKTRACE__))
 
         discord_impl().send_message(
           msg.channel_id,
