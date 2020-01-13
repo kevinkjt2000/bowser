@@ -17,6 +17,11 @@ defmodule BowserTest do
       |> Enum.at(0)
       |> elem(1)
     end
+
+    @impl Bowser.Discord
+    def get_permissions_of_member(member, guild, channel_id) do
+      Nostrum.Struct.Guild.Member.guild_channel_permissions(member, guild, channel_id)
+    end
   end
 
   setup_all do

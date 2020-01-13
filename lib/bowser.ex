@@ -50,8 +50,7 @@ defmodule Bowser do
         guild = discord_impl().get_guild_by_id(msg.guild_id)
         member = Map.get(guild.members, msg.author.id)
 
-        perms =
-          Nostrum.Struct.Guild.Member.guild_channel_permissions(member, guild, msg.channel_id)
+        perms = discord_impl().get_permissions_of_member(member, guild, msg.channel_id)
 
         if Enum.all?(
              [:administrator, :manage_channels, :manage_guild, :manage_roles],
