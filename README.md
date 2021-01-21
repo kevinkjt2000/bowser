@@ -4,6 +4,10 @@
 [![Discord Bots](https://discordbots.org/api/widget/status/392875945717137418.svg)](https://discordbots.org/bot/392875945717137418)
 [![Discord Bots](https://discordbots.org/api/widget/upvotes/392875945717137418.svg)](https://discordbots.org/bot/392875945717137418)
 [![Discord Bots](https://discordbots.org/api/widget/lib/392875945717137418.svg)](https://discordbots.org/bot/392875945717137418)
+
+# No longer maintained
+I stopped running this bot, but anyone else is welcome to pick up the torch. See [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on how to run the bot.
+
 # Bowser Bot for Discord
 Bowser responds to commands, such as `!status`, by querying channel's configured game server and responding with a message that shows who is online, how many mods are loaded, etc.
 
