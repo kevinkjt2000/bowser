@@ -43,7 +43,7 @@ defmodule Bowser.MixProject do
       {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false},
       {:jason, "~> 1.1"},
       {:mcping, git: "https://github.com/kevinkjt2000/mcping-elixir.git"},
-      {:nostrum, "~> 0.4"},
+      {:nostrum, "~> 0.8"},
       {:redix, "~> 0.10"},
       {:remix, git: "https://github.com/harlantwood/remix.git", only: :dev}
     ]
