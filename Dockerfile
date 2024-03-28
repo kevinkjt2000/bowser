@@ -1,7 +1,7 @@
 ARG APP_NAME=bowser
 ARG MIX_ENV=prod
 
-FROM elixir:1.9-alpine@sha256:9a59d8610699c0e98096eaa8c7f4a6e92382e96ec355bd784cd575e37ad1b9c4 as builder
+FROM elixir:1.9-alpine@sha256:76ef9fd310f3637d4d3acadab79c18aaa5405e60af0ea290964f96ef90f3719b as builder
 
 ARG APP_NAME
 ARG COOKIE
