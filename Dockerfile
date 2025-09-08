@@ -23,7 +23,7 @@ RUN mix release
 
 
 
-FROM alpine:3.11@sha256:3983cc12fb9dc20a009340149e382a18de6a8261b0ac0e8f5fcdf11f8dd5937e as production
+FROM alpine:3.11@sha256:a0ce0e57c6900f6f13cee6f1c1e0337cedd745ebc1bac226c61eb574667c6d04 as production
 
 ARG APP_NAME
 ARG MIX_ENV
