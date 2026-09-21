@@ -14,7 +14,7 @@ services:
     links:
       - redis
   redis:
-    image: "redis:alpine@sha256:8d59a79db48226c50072897977fa0a11d134a73f76f890c27c082c9d8d650484"
+    image: "redis:alpine@sha256:2d3814be5e9b06a30a0be54770b7e12052e7e79ec85271aefd34875c1f393b23"
     environment:
       REDIS_PORT: ${REDIS_PORT:-6381}
     command: redis-server --port ${REDIS_PORT:-6381} --appendonly yes
